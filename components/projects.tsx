@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { useLanguage } from "@/lib/language-context"
 import { useEffect, useState } from "react"
-import { X, ChevronLeft, ChevronRight } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, Sparkles } from "lucide-react"
 
 export function Projects() {
   const { t } = useLanguage()
@@ -108,31 +108,65 @@ export function Projects() {
           <p className="text-lg text-muted-foreground leading-relaxed">{t("projectsDescription")}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl mx-auto">
           {projects.map((project, index) => (
-            <Card
+            <div
               key={index}
               onClick={() => handleProjectClick(index)}
-              className="border-border overflow-hidden group cursor-pointer hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:scale-[1.02] glass-card"
+              className="group cursor-pointer relative"
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                  src={project.image || "/placeholder.svg"}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-white font-semibold text-lg bg-primary/90 px-6 py-2 rounded-full backdrop-blur-sm">
-                    View Gallery
-                  </span>
+              {/* Mirror frame decoration */}
+              <div className="absolute inset-0 z-10 pointer-events-none">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-200/20 via-amber-100/10 to-amber-200/20 blur-xl transform rotate-3 scale-110 group-hover:rotate-6 transition-transform duration-700" />
+                <div className="absolute -inset-2 rounded-full border-2 border-gradient-to-r from-amber-300/30 via-amber-200/20 to-amber-300/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute top-4 left-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <Sparkles className="h-6 w-6 animate-pulse" />
                 </div>
+                <div className="absolute bottom-4 right-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                  <Sparkles className="h-4 w-4 animate-pulse" />
+                </div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-amber-300/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </div>
-              <CardContent className="p-6">
-                <p className="text-sm text-primary font-medium mb-2">{project.category}</p>
-                <h3 className="text-2xl font-bold text-foreground">{project.title}</h3>
-              </CardContent>
-            </Card>
+              
+              {/* Main mirror oval container */}
+              <div className="relative aspect-[3/4] mx-auto max-w-md">
+                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-100/10 via-amber-50/5 to-amber-100/10 backdrop-blur-sm border border-amber-200/20 shadow-2xl group-hover:shadow-amber-200/25 transition-all duration-500" />
+                
+                {/* Image container with oval mask */}
+                <div className="relative inset-4 rounded-[50%] overflow-hidden">
+                  <img
+                    src={project.image || "/placeholder.svg"}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  
+                  {/* Mirror reflection effect */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                    <div className="text-center">
+                      <span className="text-white font-semibold text-lg bg-primary/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20">
+                        View Gallery
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Decorative corner elements */}
+                <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-amber-300/40 rounded-tl-lg" />
+                <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-amber-300/40 rounded-tr-lg" />
+                <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-amber-300/40 rounded-bl-lg" />
+                <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-amber-300/40 rounded-br-lg" />
+              </div>
+              
+              {/* Project info */}
+              <div className="text-center mt-8">
+                <p className="text-sm text-primary font-medium mb-2 tracking-wide uppercase">{project.category}</p>
+                <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">{project.title}</h3>
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -149,68 +183,103 @@ export function Projects() {
 
 
           <div className="max-w-6xl w-full">
-            <div className="relative aspect-[16/10] mb-6 rounded-lg overflow-hidden">
-              <img
-                src={projects[selectedProject].gallery[currentImageIndex] || "/placeholder.svg"}
-                alt={`${projects[selectedProject].title} - Image ${currentImageIndex + 1}`}
-                className="w-full h-full object-cover"
-              />
-
-              {/* Navigation Arrows - Always visible when there are multiple images */}
-              {projects[selectedProject].gallery.length > 1 && (
-                <>
-                  <button
-                    onClick={handlePrevImage}
-                    className="absolute top-1/2 -translate-y-1/2 ltr:left-4 rtl:right-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 rounded-full transition-all z-20"
-                    aria-label="Previous image"
-                  >
-                    <ChevronLeft className="h-6 w-6" />
-                  </button>
-                  <button
-                    onClick={handleNextImage}
-                    className="absolute top-1/2 -translate-y-1/2 ltr:right-4 rtl:left-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white p-3 rounded-full transition-all z-20"
-                    aria-label="Next image"
-                  >
-                    <ChevronRight className="h-6 w-6" />
-                  </button>
-                </>
-              )}
-
-              {/* Thumbnail strip overlayed at the bottom (wrap, no scrollbar) */}
-              {projects[selectedProject].gallery.length > 1 && (
-                <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/75 via-black/40 to-transparent p-3">
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    {projects[selectedProject].gallery.map((img, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setCurrentImageIndex(idx)}
-                        className={`w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-md overflow-hidden border-2 transition-all ${
-                          idx === currentImageIndex
-                            ? "border-primary scale-105"
-                            : "border-white/30 opacity-80 hover:opacity-100"
-                        }`}
-                        aria-label={`Thumbnail ${idx + 1}`}
-                      >
-                        <img src={img || "/placeholder.svg"} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
-                      </button>
-                    ))}
-                  </div>
+            {/* Gallery with mirror frame decoration */}
+            <div className="relative">
+              {/* Decorative frame elements */}
+              <div className="absolute inset-0 z-10 pointer-events-none">
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-amber-200/15 via-amber-100/8 to-amber-200/15 blur-2xl" />
+                <div className="absolute -inset-4 rounded-3xl border border-amber-300/20" />
+                <div className="absolute top-8 left-8 text-amber-400">
+                  <Sparkles className="h-8 w-8 animate-pulse" />
                 </div>
-              )}
+                <div className="absolute bottom-8 right-8 text-amber-400">
+                  <Sparkles className="h-6 w-6 animate-pulse delay-100" />
+                </div>
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-amber-300/10" />
+              </div>
+              
+              <div className="relative aspect-[16/10] mb-6 rounded-3xl overflow-hidden shadow-2xl">
+                <img
+                  src={projects[selectedProject].gallery[currentImageIndex] || "/placeholder.svg"}
+                  alt={`${projects[selectedProject].title} - Image ${currentImageIndex + 1}`}
+                  className="w-full h-full object-cover"
+                />
+                
+                {/* Mirror reflection overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/10" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+
+                {/* Navigation Arrows */}
+                {projects[selectedProject].gallery.length > 1 && (
+                  <>
+                    <button
+                      onClick={handlePrevImage}
+                      className="absolute top-1/2 -translate-y-1/2 ltr:left-6 rtl:right-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-20 border border-white/20 shadow-lg"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeft className="h-7 w-7" />
+                    </button>
+                    <button
+                      onClick={handleNextImage}
+                      className="absolute top-1/2 -translate-y-1/2 ltr:right-6 rtl:left-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-20 border border-white/20 shadow-lg"
+                      aria-label="Next image"
+                    >
+                      <ChevronRight className="h-7 w-7" />
+                    </button>
+                  </>
+                )}
+
+                {/* Thumbnail strip with mirror effect */}
+                {projects[selectedProject].gallery.length > 1 && (
+                  <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4">
+                    <div className="flex flex-wrap gap-3 justify-center">
+                      {projects[selectedProject].gallery.map((img, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => setCurrentImageIndex(idx)}
+                          className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-3 transition-all shadow-lg ${
+                            idx === currentImageIndex
+                              ? "border-amber-400 scale-110 shadow-amber-400/50"
+                              : "border-white/30 opacity-80 hover:opacity-100 hover:scale-105"
+                          }`}
+                          aria-label={`Thumbnail ${idx + 1}`}
+                        >
+                          <img 
+                            src={img || "/placeholder.svg"} 
+                            alt={`Thumbnail ${idx + 1}`} 
+                            className="w-full h-full object-cover" 
+                          />
+                          {idx === currentImageIndex && (
+                            <div className="absolute inset-0 bg-gradient-to-br from-amber-200/20 to-transparent" />
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
-            {/* Project Info */}
-            <div className="glass-card rounded-lg p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <span className="text-sm text-primary font-medium px-3 py-1 bg-primary/10 rounded-full">
-                  {projects[selectedProject].category}
-                </span>
-                <span className="text-white/60 text-sm">
-                  {currentImageIndex + 1} / {projects[selectedProject].gallery.length}
-                </span>
+            {/* Project Info with mirror styling */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-200/10 via-amber-100/5 to-amber-200/10 rounded-2xl blur-xl" />
+              <div className="relative glass-card rounded-2xl p-8 border border-amber-200/20 shadow-2xl">
+                <div className="flex items-center gap-4 mb-6">
+                  <span className="text-sm text-primary font-medium px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
+                    {projects[selectedProject].category}
+                  </span>
+                  <div className="flex items-center gap-2 text-white/60">
+                    <Sparkles className="h-4 w-4 text-amber-400" />
+                    <span className="text-sm">
+                      {currentImageIndex + 1} / {projects[selectedProject].gallery.length}
+                    </span>
+                  </div>
+                </div>
+                <h3 className="text-3xl font-bold text-white mb-4 bg-gradient-to-r from-white to-amber-100 bg-clip-text text-transparent">
+                  {projects[selectedProject].title}
+                </h3>
+                <p className="text-white/80 leading-relaxed text-lg">{projects[selectedProject].description}</p>
               </div>
-              <h3 className="text-3xl font-bold text-white mb-3">{projects[selectedProject].title}</h3>
-              <p className="text-white/80 leading-relaxed">{projects[selectedProject].description}</p>
             </div>
           </div>
         </div>
