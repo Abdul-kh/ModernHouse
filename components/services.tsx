@@ -49,7 +49,7 @@ export function Services() {
           {services.map((service, index) => (
             <Card
               key={index}
-              className="border-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:scale-105 group glass-card hover:border-primary/30 relative overflow-hidden"
+              className="border-border transition-all duration-300 group glass-card hover:border-primary/30 relative mirror-hover mirror-oval hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-1"
             >
               <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/5 to-transparent" />
@@ -57,7 +57,7 @@ export function Services() {
 
               <CardContent className="p-6 relative z-10">
                 <div className="mb-4">
-                  <div className="w-12 h-12 rounded-lg glass-effect flex items-center justify-center group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full glass-effect flex items-center justify-center group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300">
                     <service.icon className="h-6 w-6 text-primary" />
                   </div>
                 </div>

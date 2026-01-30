@@ -14,9 +14,9 @@ const cairo = Cairo({
 })
 
 export const metadata: Metadata = {
-  title: "Modern House - Premium Glass & Mirror Services",
+  title: "Modern House - Mirrors & Decorative Glass (Erbil, Iraq)",
   description:
-    "Leading glass and mirror services in the Middle East. Specializing in custom mirrors, decorative glass, and innovative design solutions.",
+    "Custom mirrors and etched decorative glass crafted in Erbil, Iraq. Specializing in mirror carving, oriental-inspired patterns, and premium installations.",
   generator: "v0.app",
 }
 

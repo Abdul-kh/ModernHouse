@@ -22,9 +22,11 @@ const translations = {
     getQuote: "Get a Quote",
 
     // Hero
-    heroTitle: "Exquisite glass & mirror craftsmanship",
+    heroKicker: "Mirrors • Etched Glass • Iraqi Craft",
+    heroLocation: "Erbil, Iraq",
+    heroTitle: "Handcrafted mirrors with decorative carving",
     heroDescription:
-      "Transform your spaces with custom mirrors, decorative glass, and innovative design solutions. Specializing in mirror decorations, colored glass, carved patterns, and shower mirrors with embedded lighting.",
+      "Elevate your space with custom mirrors and etched decorative glass inspired by oriental patterns. From statement mirrors to carved details and LED bathroom mirrors—crafted with precision and installed with care.",
     exploreWork: "Explore Our Work",
     requestConsultation: "Request Consultation",
 
@@ -75,7 +77,7 @@ const translations = {
     phone: "Phone",
     email: "Email",
     location: "Location",
-    address: "Dubai, United Arab Emirates",
+    address: "Erbil, Iraq",
     followUs: "Follow Us",
     chatWhatsApp: "Chat on WhatsApp",
 
@@ -127,6 +129,8 @@ const translations = {
     getQuote: "احصل على عرض سعر",
 
     // Hero
+    heroKicker: "مرايا • زجاج محفور • حرفة عراقية",
+    heroLocation: "أربيل، العراق",
     heroTitle: "حرفية زجاج ومرايا رائعة",
     heroDescription:
       "حوّل مساحاتك بمرايا مخصصة وزجاج زخرفي وحلول تصميم مبتكرة. متخصصون في زخارف المرايا والزجاج الملون والمنحوت والمنقوش ومرايا الدش مع إضاءة مدمجة.",
@@ -176,7 +180,7 @@ const translations = {
     phone: "الهاتف",
     email: "البريد الإلكتروني",
     location: "الموقع",
-    address: "دبي، الإمارات العربية المتحدة",
+    address: "أربيل، العراق",
     followUs: "تابعنا",
     chatWhatsApp: "تحدث على واتساب",
 

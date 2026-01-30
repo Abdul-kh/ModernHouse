@@ -7,9 +7,9 @@ import { useLanguage } from "@/lib/language-context"
 
 const heroImages = [
   "/modern-luxury-mirror-installation-in-elegant-inter.jpg",
-  "/decorative-colored-glass-panels-with-artistic-patt.jpg",
   "/contemporary-shower-with-led-mirror-lighting.jpg",
   "/carved-glass-decorative-wall-feature-in-upscale-sp.jpg",
+  "/decorative-colored-glass-panels-with-artistic-patt.jpg",
 ]
 
 export function Hero() {
@@ -61,9 +61,20 @@ export function Hero() {
         ))}
       </div>
 
+      <div className="absolute inset-0 z-[1] opacity-10 pointer-events-none">
+        <div className="absolute inset-0 oriental-mosaic" />
+      </div>
+
       <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-20">
         <div className="max-w-5xl mx-auto text-center">
           <div className="animate-fade-in-up">
+            <div className="flex flex-col items-center justify-center gap-3 mb-8">
+              <div className="inline-flex items-center gap-3 glass-card px-5 py-2 rounded-full border border-white/10">
+                <span className="text-xs md:text-sm tracking-wide text-white/90 uppercase">{t("heroKicker")}</span>
+                <span className="h-1 w-1 rounded-full bg-primary" />
+                <span className="text-xs md:text-sm text-white/80">{t("heroLocation")}</span>
+              </div>
+            </div>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-8 text-balance drop-shadow-2xl">
               {t("heroTitle")}
             </h1>
