@@ -40,13 +40,7 @@ export function Contact() {
   }
 
   return (
-    <section
-      id="contact"
-      className="py-24 px-4 lg:px-8 bg-gradient-to-b from-muted/30 to-background relative overflow-hidden"
-    >
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-
+    <section id="contact" className="py-24 px-4 lg:px-8 relative overflow-hidden">
       <div className="container mx-auto relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance">
@@ -57,19 +51,20 @@ export function Contact() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {/* Phone */}
-          <Card className="border-border hover:shadow-xl hover:border-primary/50 transition-all group bg-card/50 backdrop-blur-sm">
+          <Card className="border-border hover:shadow-xl hover:border-primary/50 transition-all group bg-card/50 backdrop-blur-sm mirror-hover lux-mirror-frame">
             <CardContent className="p-6">
               <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors group-hover:scale-110 duration-300">
-                  <Phone className="h-8 w-8 text-primary" />
+                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors group-hover:scale-110 duration-300">
+                  <Phone className="h-8 w-8 text-primary/90 group-hover:text-primary transition-colors" />
                 </div>
                 <div>
                   <h3 className="font-bold text-foreground mb-2 text-lg">{t("phone")}</h3>
                   <a
-                    href="tel:+97142345678"
-                    className="text-muted-foreground hover:text-primary transition-colors font-medium"
+                    href="tel:+9647507896581"
+                    dir="ltr"
+                    className="text-muted-foreground hover:text-primary transition-colors font-medium inline-flex"
                   >
-                    +971 4 234 5678
+                    +964 750 789 6581
                   </a>
                 </div>
               </div>
@@ -77,11 +72,11 @@ export function Contact() {
           </Card>
 
           {/* Email */}
-          <Card className="border-border hover:shadow-xl hover:border-primary/50 transition-all group bg-card/50 backdrop-blur-sm">
+          <Card className="border-border hover:shadow-xl hover:border-primary/50 transition-all group bg-card/50 backdrop-blur-sm mirror-hover lux-mirror-frame">
             <CardContent className="p-6">
               <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors group-hover:scale-110 duration-300">
-                  <Mail className="h-8 w-8 text-primary" />
+                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors group-hover:scale-110 duration-300">
+                  <Mail className="h-8 w-8 text-primary/90 group-hover:text-primary transition-colors" />
                 </div>
                 <div>
                   <h3 className="font-bold text-foreground mb-2 text-lg">{t("email")}</h3>
@@ -97,11 +92,11 @@ export function Contact() {
           </Card>
 
           {/* Location */}
-          <Card className="border-border hover:shadow-xl hover:border-primary/50 transition-all group bg-card/50 backdrop-blur-sm md:col-span-2 lg:col-span-1">
+          <Card className="border-border hover:shadow-xl hover:border-primary/50 transition-all group bg-card/50 backdrop-blur-sm md:col-span-2 lg:col-span-1 mirror-hover lux-mirror-frame">
             <CardContent className="p-6">
               <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors group-hover:scale-110 duration-300">
-                  <MapPin className="h-8 w-8 text-primary" />
+                <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors group-hover:scale-110 duration-300">
+                  <MapPin className="h-8 w-8 text-primary/90 group-hover:text-primary transition-colors" />
                 </div>
                 <div>
                   <h3 className="font-bold text-foreground mb-2 text-lg">{t("location")}</h3>
@@ -113,7 +108,7 @@ export function Contact() {
         </div>
 
         <div className="mt-16 max-w-3xl mx-auto">
-          <Card className="border-border shadow-xl bg-card/60 backdrop-blur-sm">
+          <Card className="border-border shadow-xl bg-card/60 backdrop-blur-sm lux-mirror-frame">
             <CardContent className="p-8">
               <h3 className="text-2xl font-bold text-foreground mb-6 text-center">{t("contactTitle")}</h3>
               <Form {...form}>
@@ -197,7 +192,7 @@ export function Contact() {
         </div>
 
         <div className="mt-16 max-w-2xl mx-auto">
-          <Card className="border-border shadow-xl bg-card/50 backdrop-blur-sm">
+          <Card className="border-border shadow-xl bg-card/50 backdrop-blur-sm lux-mirror-frame">
             <CardContent className="p-8">
               <h3 className="text-2xl font-bold text-foreground mb-6 text-center">{t("followUs")}</h3>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

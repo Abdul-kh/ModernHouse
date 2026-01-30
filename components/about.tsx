@@ -10,13 +10,11 @@ export function About() {
 
   return (
     <section id="about" className="py-24 px-4 lg:px-8 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-
       <div className="container mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
           {/* Image */}
           <div className="order-2 lg:order-1">
-            <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-2xl group">
+            <div className="relative aspect-[4/5] overflow-hidden shadow-2xl group mirror-hover lux-mirror-frame">
               <img
                 src="/modern-glass-manufacturing-facility-with-precision.jpg"
                 alt="Modern House manufacturing facility"

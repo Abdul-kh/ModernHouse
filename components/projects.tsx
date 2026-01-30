@@ -96,10 +96,25 @@ export function Projects() {
     }
   }, [selectedProject])
 
-  return (
-    <section id="projects" className="py-24 px-4 lg:px-8 bg-muted/10 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]" />
+  const handleTiltMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const target = event.currentTarget
+    const rect = target.getBoundingClientRect()
+    const x = event.clientX - rect.left
+    const y = event.clientY - rect.top
+    const rotateX = ((y / rect.height) - 0.5) * -12
+    const rotateY = ((x / rect.width) - 0.5) * 12
+    target.style.setProperty("--tilt-x", `${rotateX.toFixed(2)}deg`)
+    target.style.setProperty("--tilt-y", `${rotateY.toFixed(2)}deg`)
+  }
 
+  const handleTiltLeave = (event: React.MouseEvent<HTMLDivElement>) => {
+    const target = event.currentTarget
+    target.style.setProperty("--tilt-x", "0deg")
+    target.style.setProperty("--tilt-y", "0deg")
+  }
+
+  return (
+    <section id="projects" className="py-24 px-4 lg:px-8 relative overflow-hidden">
       <div className="container mx-auto relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance">
@@ -113,52 +128,58 @@ export function Projects() {
             <div
               key={index}
               onClick={() => handleProjectClick(index)}
-              className="group cursor-pointer relative"
+              onMouseMove={handleTiltMove}
+              onMouseLeave={handleTiltLeave}
+              className="group cursor-pointer relative [perspective:1200px]"
+              style={{
+                transform: "rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))",
+                transition: "transform 200ms ease",
+              }}
             >
               {/* Mirror frame decoration */}
               <div className="absolute inset-0 z-10 pointer-events-none">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-200/20 via-amber-100/10 to-amber-200/20 blur-xl transform rotate-3 scale-110 group-hover:rotate-6 transition-transform duration-700" />
-                <div className="absolute -inset-2 rounded-full border-2 border-gradient-to-r from-amber-300/30 via-amber-200/20 to-amber-300/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="absolute top-4 left-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="absolute -inset-6 rounded-[50%/65%] oriental-mosaic opacity-10 [mask-image:radial-gradient(closest-side,transparent_70%,black_73%,black_100%)]" />
+                <div className="absolute -inset-4 rounded-[50%/65%] border border-white/10 opacity-30" />
+                <div className="absolute inset-0 rounded-[50%/65%] bg-gradient-to-r from-primary/12 via-primary/6 to-primary/12 blur-lg transform rotate-3 scale-105 group-hover:rotate-6 transition-transform duration-700" />
+                <div className="absolute -inset-2 rounded-[50%/65%] border-2 border-gradient-to-r from-primary/20 via-primary/10 to-primary/20 opacity-0 group-hover:opacity-70 transition-opacity duration-500" />
+                <div className="absolute top-4 left-4 text-primary/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <Sparkles className="h-6 w-6 animate-pulse" />
                 </div>
-                <div className="absolute bottom-4 right-4 text-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                <div className="absolute bottom-4 right-4 text-primary/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
                   <Sparkles className="h-4 w-4 animate-pulse" />
                 </div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border border-amber-300/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-40 rounded-[50%/65%] border border-primary/12 opacity-0 group-hover:opacity-70 transition-opacity duration-700" />
               </div>
-              
+
               {/* Main mirror oval container */}
               <div className="relative aspect-[3/4] mx-auto max-w-md">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-amber-100/10 via-amber-50/5 to-amber-100/10 backdrop-blur-sm border border-amber-200/20 shadow-2xl group-hover:shadow-amber-200/25 transition-all duration-500" />
-                
+                <div className="absolute inset-0 rounded-[50%/65%] bg-gradient-to-br from-primary/10 via-primary/4 to-primary/10 backdrop-blur-sm border border-primary/14 shadow-2xl group-hover:shadow-primary/20 transition-all duration-500" />
+
                 {/* Image container with oval mask */}
-                <div className="relative inset-4 rounded-[50%] overflow-hidden">
-                  <img
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  
-                  {/* Mirror reflection effect */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                  
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                    <div className="text-center">
-                      <span className="text-white font-semibold text-lg bg-primary/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20">
-                        View Gallery
-                      </span>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="relative h-[84%] w-[78%] rounded-[50%/65%] overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_64%,transparent_68%)] [mask-repeat:no-repeat] [mask-size:100%_100%]">
+                    <img
+                      src={project.image || "/placeholder.svg"}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
+                      <div className="text-center">
+                        <span className="text-white font-semibold text-lg bg-primary/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20">
+                          {t("viewGallery")}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Decorative corner elements */}
-                <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-amber-300/40 rounded-tl-lg" />
-                <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-amber-300/40 rounded-tr-lg" />
-                <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-amber-300/40 rounded-bl-lg" />
-                <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-amber-300/40 rounded-br-lg" />
+                <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-primary/40 rounded-tl-lg" />
+                <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-primary/40 rounded-tr-lg" />
+                <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-primary/40 rounded-bl-lg" />
+                <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-primary/40 rounded-br-lg" />
               </div>
               
               {/* Project info */}
@@ -187,15 +208,15 @@ export function Projects() {
             <div className="relative">
               {/* Decorative frame elements */}
               <div className="absolute inset-0 z-10 pointer-events-none">
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-amber-200/15 via-amber-100/8 to-amber-200/15 blur-2xl" />
-                <div className="absolute -inset-4 rounded-3xl border border-amber-300/20" />
-                <div className="absolute top-8 left-8 text-amber-400">
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary/15 via-primary/8 to-primary/15 blur-2xl" />
+                <div className="absolute -inset-4 rounded-3xl border border-primary/20" />
+                <div className="absolute top-8 left-8 text-primary">
                   <Sparkles className="h-8 w-8 animate-pulse" />
                 </div>
-                <div className="absolute bottom-8 right-8 text-amber-400">
+                <div className="absolute bottom-8 right-8 text-primary">
                   <Sparkles className="h-6 w-6 animate-pulse delay-100" />
                 </div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-amber-300/10" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-primary/10" />
               </div>
               
               <div className="relative aspect-[16/10] mb-6 rounded-3xl overflow-hidden shadow-2xl">
@@ -239,7 +260,7 @@ export function Projects() {
                           onClick={() => setCurrentImageIndex(idx)}
                           className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-3 transition-all shadow-lg ${
                             idx === currentImageIndex
-                              ? "border-amber-400 scale-110 shadow-amber-400/50"
+                              ? "border-primary scale-110 shadow-primary/50"
                               : "border-white/30 opacity-80 hover:opacity-100 hover:scale-105"
                           }`}
                           aria-label={`Thumbnail ${idx + 1}`}
@@ -250,7 +271,7 @@ export function Projects() {
                             className="w-full h-full object-cover" 
                           />
                           {idx === currentImageIndex && (
-                            <div className="absolute inset-0 bg-gradient-to-br from-amber-200/20 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
                           )}
                         </button>
                       ))}
@@ -262,20 +283,20 @@ export function Projects() {
 
             {/* Project Info with mirror styling */}
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-200/10 via-amber-100/5 to-amber-200/10 rounded-2xl blur-xl" />
-              <div className="relative glass-card rounded-2xl p-8 border border-amber-200/20 shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl blur-xl" />
+              <div className="relative glass-card rounded-2xl p-8 border border-primary/20 shadow-2xl">
                 <div className="flex items-center gap-4 mb-6">
                   <span className="text-sm text-primary font-medium px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
                     {projects[selectedProject].category}
                   </span>
                   <div className="flex items-center gap-2 text-white/60">
-                    <Sparkles className="h-4 w-4 text-amber-400" />
+                    <Sparkles className="h-4 w-4 text-primary" />
                     <span className="text-sm">
                       {currentImageIndex + 1} / {projects[selectedProject].gallery.length}
                     </span>
                   </div>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-4 bg-gradient-to-r from-white to-amber-100 bg-clip-text text-transparent">
+                <h3 className="text-3xl font-bold text-white mb-4 bg-gradient-to-r from-white to-primary/40 bg-clip-text text-transparent">
                   {projects[selectedProject].title}
                 </h3>
                 <p className="text-white/80 leading-relaxed text-lg">{projects[selectedProject].description}</p>

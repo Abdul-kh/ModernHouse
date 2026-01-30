@@ -61,21 +61,37 @@ export function Hero() {
         ))}
       </div>
 
-      <div className="absolute inset-0 z-[1] opacity-10 pointer-events-none">
-        <div className="absolute inset-0 oriental-mosaic" />
+      <div className="absolute inset-0 z-[1] pointer-events-none">
+        <div className="absolute inset-0 damask-black opacity-35" />
+        <div className="absolute inset-0 lux-vignette opacity-90" />
+
+        <div className="absolute top-0 right-0 h-full w-[44%] hidden md:block">
+          <div className="absolute inset-0 bg-primary/20" />
+          <div className="absolute inset-0 damask-red opacity-35" />
+          <div className="absolute inset-0 bg-gradient-to-l from-black/40 via-black/10 to-transparent" />
+        </div>
+
+        <div className="absolute top-0 right-[44%] h-full w-24 hidden md:block">
+          <div className="absolute inset-y-[-20%] left-1/2 -translate-x-1/2 w-24 rounded-full bg-[linear-gradient(to_bottom,rgba(255,220,120,0.0),rgba(255,220,120,0.55),rgba(255,220,120,0.0))] blur-[0.5px] opacity-90" />
+          <div className="absolute inset-y-[-20%] left-1/2 -translate-x-1/2 w-14 rounded-full bg-[linear-gradient(to_bottom,rgba(0,0,0,0.75),rgba(0,0,0,0.25),rgba(0,0,0,0.75))] opacity-80" />
+          <div className="absolute inset-y-[-20%] left-1/2 -translate-x-1/2 w-10 rounded-full bg-[linear-gradient(to_bottom,rgba(255,255,255,0.0),rgba(255,255,255,0.25),rgba(255,255,255,0.0))] opacity-70" />
+        </div>
+
+        <div className="absolute inset-0 opacity-[0.08]">
+          <div className="absolute inset-0 oriental-mosaic" />
+        </div>
+
+        <img
+          src="/logo.png"
+          alt=""
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] max-w-[80vw] opacity-[0.06] blur-[0.2px] hidden sm:block"
+        />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-20">
         <div className="max-w-5xl mx-auto text-center">
           <div className="animate-fade-in-up">
-            <div className="flex flex-col items-center justify-center gap-3 mb-8">
-              <div className="inline-flex items-center gap-3 glass-card px-5 py-2 rounded-full border border-white/10">
-                <span className="text-xs md:text-sm tracking-wide text-white/90 uppercase">{t("heroKicker")}</span>
-                <span className="h-1 w-1 rounded-full bg-primary" />
-                <span className="text-xs md:text-sm text-white/80">{t("heroLocation")}</span>
-              </div>
-            </div>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-8 text-balance drop-shadow-2xl">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-8 text-balance drop-shadow-2xl [text-shadow:0_18px_60px_rgba(0,0,0,0.8)]">
               {t("heroTitle")}
             </h1>
             <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-12 leading-relaxed drop-shadow-lg">

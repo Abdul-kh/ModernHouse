@@ -69,6 +69,7 @@ const translations = {
     project2: "Luxury Villa Collection",
     project3: "Corporate Headquarters",
     project4: "Boutique Hotel",
+    viewGallery: "View Gallery",
 
     // Contact
     contactTitle: "Get in touch with us",
@@ -93,32 +94,6 @@ const translations = {
     warranty: "Warranty",
     allRightsReserved: "All rights reserved.",
 
-    // Reservation System
-    bookConsultation: "Book a Consultation",
-    consultationDescription: "Schedule a personalized consultation with our mirror and glass experts to discuss your project requirements.",
-    scheduleConsultation: "Schedule Your Consultation",
-    consultationType: "Service Type",
-    selectConsultationType: "Choose your consultation service",
-    generalConsultation: "Design Consultation",
-    commercialProject: "Commercial Project",
-    residentialProject: "Residential Project",
-    customDesign: "Custom Mirror Design",
-    selectDate: "Preferred Date",
-    pickDate: "Choose your preferred date",
-    selectTime: "Preferred Time",
-    selectTimeSlot: "Choose your time slot",
-    fullName: "Your Name",
-    enterName: "Enter your full name",
-    projectDetails: "Tell us about your mirror project",
-    projectDescription: "Describe your vision: mirror styles, room dimensions, special requirements...",
-    confirmBooking: "Schedule My Consultation",
-    booking: "Booking...",
-    bookingConfirmed: "Booking Confirmed!",
-    bookingDetails: "We'll send you a confirmation email with all the details.",
-    reservationEmail: "Email Address",
-    reservationEmailPlaceholder: "your.email@example.com",
-    reservationPhone: "Contact Number",
-    reservationPhonePlaceholder: "+1 (555) 123-4567",
   },
   ar: {
     // Header
@@ -172,6 +147,7 @@ const translations = {
     project2: "مجموعة الفلل الفاخرة",
     project3: "المقر الرئيسي للشركات",
     project4: "فندق بوتيك",
+    viewGallery: "عرض المعرض",
 
     // Contact
     contactTitle: "تواصل معنا",
@@ -196,32 +172,6 @@ const translations = {
     warranty: "الضمان",
     allRightsReserved: "جميع الحقوق محفوظة.",
 
-    // Reservation System
-    bookConsultation: "احجز استشارة",
-    consultationDescription: "جدولة استشارة شخصية مع خبراء المرايا والزجاج لمناقشة متطلبات مشروعك.",
-    scheduleConsultation: "جدولة استشارتك",
-    consultationType: "نوع الخدمة",
-    selectConsultationType: "اختر خدمة الاستشارة",
-    generalConsultation: "استشارة تصميم",
-    commercialProject: "مشروع تجاري",
-    residentialProject: "مشروع سكني",
-    customDesign: "تصميم مرآة مخصص",
-    selectDate: "التاريخ المفضل",
-    pickDate: "اختر تاريخك المفضل",
-    selectTime: "الوقت المفضل",
-    selectTimeSlot: "اختر الفترة الزمنية",
-    fullName: "اسمك الكامل",
-    enterName: "أدخل اسمك الكامل",
-    projectDetails: "أخبرنا عن مشروع المرآة الخاص بك",
-    projectDescription: "صف رؤيتك: أنماط المرايا، أبعاد الغرفة، متطلبات خاصة...",
-    confirmBooking: "جدولة استشارتي",
-    booking: "الحجز...",
-    bookingConfirmed: "تم تأكيد الحجز!",
-    bookingDetails: "سنرسل لك بريدًا إلكترونيًا للتأكيد مع جميع التفاصيل.",
-    reservationEmail: "البريد الإلكتروني",
-    reservationEmailPlaceholder: "your.email@example.com",
-    reservationPhone: "رقم الاتصال",
-    reservationPhonePlaceholder: "+971 50 123 4567",
   },
 }
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, type CSSProperties } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
@@ -39,10 +39,16 @@ export function Header() {
       }`}
       style={{
         '--mirror-gradient': 'radial-gradient(ellipse at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.4) 100%)',
-      } as React.CSSProperties}
+      } as CSSProperties}
     >
       {/* Mosaic pattern overlay */}
       <div className="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 damask-black opacity-50" />
+        <div className="absolute top-0 right-0 h-full w-48 hidden md:block">
+          <div className="absolute inset-0 bg-primary/15" />
+          <div className="absolute inset-0 damask-red opacity-30" />
+          <div className="absolute inset-0 bg-gradient-to-l from-black/40 via-black/10 to-transparent" />
+        </div>
         <div 
           className="absolute inset-0"
           style={{
@@ -54,7 +60,7 @@ export function Header() {
         />
       </div>
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20" dir="ltr">
           <div className="flex items-center gap-3">
             <Link href="/" className="group inline-flex items-center" aria-label="Go to home">
               <div className="relative">
@@ -73,7 +79,7 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-8" dir="ltr">
             <button
               onClick={() => scrollToSection("services")}
               className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
@@ -104,7 +110,7 @@ export function Header() {
             </button>
           </nav>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4" dir="ltr">
             <LanguageSwitcher />
             <Button
               onClick={() => scrollToSection("contact")}
