@@ -41,23 +41,9 @@ export function Header() {
         '--mirror-gradient': 'radial-gradient(ellipse at center, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.4) 100%)',
       } as CSSProperties}
     >
-      {/* Mosaic pattern overlay */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 damask-black opacity-50" />
-        <div className="absolute top-0 right-0 h-full w-48 hidden md:block">
-          <div className="absolute inset-0 bg-primary/15" />
-          <div className="absolute inset-0 damask-red opacity-30" />
-          <div className="absolute inset-0 bg-gradient-to-l from-black/40 via-black/10 to-transparent" />
-        </div>
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'40\' height=\'40\' viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.2\' fill-rule=\'evenodd\'%3E%3Cpath d=\'M0 40L40 0H20L0 20M40 40V20L20 40\'/%3E%3C/g%3E%3C/svg%3E")',
-            backgroundSize: '40px 40px',
-            maskImage: 'linear-gradient(to right, black, black)',
-            WebkitMaskImage: 'linear-gradient(to right, black, black)'
-          }}
-        />
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 damask-black opacity-30" />
       </div>
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20" dir="ltr">

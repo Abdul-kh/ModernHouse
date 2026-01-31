@@ -128,58 +128,62 @@ export function Projects() {
             <div
               key={index}
               onClick={() => handleProjectClick(index)}
-              onMouseMove={handleTiltMove}
-              onMouseLeave={handleTiltLeave}
-              className="group cursor-pointer relative [perspective:1200px]"
-              style={{
-                transform: "rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg))",
-                transition: "transform 200ms ease",
-              }}
+              className="group cursor-pointer relative"
             >
-              {/* Mirror frame decoration */}
-              <div className="absolute inset-0 z-10 pointer-events-none">
-                <div className="absolute -inset-6 rounded-[50%/65%] oriental-mosaic opacity-10 [mask-image:radial-gradient(closest-side,transparent_70%,black_73%,black_100%)]" />
-                <div className="absolute -inset-4 rounded-[50%/65%] border border-white/10 opacity-30" />
-                <div className="absolute inset-0 rounded-[50%/65%] bg-gradient-to-r from-primary/12 via-primary/6 to-primary/12 blur-lg transform rotate-3 scale-105 group-hover:rotate-6 transition-transform duration-700" />
-                <div className="absolute -inset-2 rounded-[50%/65%] border-2 border-gradient-to-r from-primary/20 via-primary/10 to-primary/20 opacity-0 group-hover:opacity-70 transition-opacity duration-500" />
-                <div className="absolute top-4 left-4 text-primary/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  <Sparkles className="h-6 w-6 animate-pulse" />
-                </div>
-                <div className="absolute bottom-4 right-4 text-primary/70 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                  <Sparkles className="h-4 w-4 animate-pulse" />
-                </div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-40 rounded-[50%/65%] border border-primary/12 opacity-0 group-hover:opacity-70 transition-opacity duration-700" />
-              </div>
+              {/* Floating decorative elements */}
+              <div className="absolute -top-4 -left-4 w-16 h-16 border border-primary/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" />
+              <div className="absolute -bottom-4 -right-4 w-20 h-20 border border-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" style={{ animationDelay: "0.5s" }} />
 
-              {/* Main mirror oval container */}
+              {/* Main mirror container */}
               <div className="relative aspect-[3/4] mx-auto max-w-md">
-                <div className="absolute inset-0 rounded-[50%/65%] bg-gradient-to-br from-primary/10 via-primary/4 to-primary/10 backdrop-blur-sm border border-primary/14 shadow-2xl group-hover:shadow-primary/20 transition-all duration-500" />
+                <div className="mirror-frame-3d animate-mirror-glow w-full h-full overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500">
+                  <img
+                    src={project.image || "/placeholder.svg"}
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  
+                  {/* Mirror reflections */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/40" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent" />
+                  
+                  {/* Engraved oriental decorations */}
+                  <div className="absolute inset-0 oriental-mosaic opacity-20 pointer-events-none mix-blend-overlay" />
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-0 left-0 w-24 h-24 oriental-mosaic opacity-40 bg-gradient-to-br from-white/30 to-transparent" />
+                    <div className="absolute top-0 right-0 w-24 h-24 oriental-mosaic opacity-40 bg-gradient-to-bl from-white/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 w-24 h-24 oriental-mosaic opacity-40 bg-gradient-to-tr from-white/30 to-transparent" />
+                    <div className="absolute bottom-0 right-0 w-24 h-24 oriental-mosaic opacity-40 bg-gradient-to-tl from-white/30 to-transparent" />
+                  </div>
 
-                {/* Image container with oval mask */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative h-[84%] w-[78%] rounded-[50%/65%] overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_64%,transparent_68%)] [mask-repeat:no-repeat] [mask-size:100%_100%]">
-                    <img
-                      src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <div className="text-center">
-                        <span className="text-white font-semibold text-lg bg-primary/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20">
-                          {t("viewGallery")}
-                        </span>
-                      </div>
+                  {/* Mirror frame SVG overlay */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 133" preserveAspectRatio="none">
+                    <defs>
+                      <linearGradient id={`projectFrameGradient${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.5)", stopOpacity: 1 }} />
+                        <stop offset="50%" style={{ stopColor: "rgba(255,255,255,0.2)", stopOpacity: 1 }} />
+                        <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.4)", stopOpacity: 1 }} />
+                      </linearGradient>
+                      <linearGradient id={`projectInnerFrame${index}`} x1="100%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.3)", stopOpacity: 1 }} />
+                        <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.1)", stopOpacity: 1 }} />
+                      </linearGradient>
+                    </defs>
+                    <rect x="0.5" y="0.5" width="99" height="132" rx="15" fill="none" stroke={`url(#projectFrameGradient${index})`} strokeWidth="3" opacity="0.8" />
+                    <rect x="2.5" y="2.5" width="95" height="128" rx="13" fill="none" stroke={`url(#projectInnerFrame${index})`} strokeWidth="1.5" opacity="0.6" />
+                    <rect x="4.5" y="4.5" width="91" height="124" rx="11" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" opacity="0.5" />
+                  </svg>
+
+                  {/* Hover overlay with view gallery text */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                    <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <Sparkles className="h-8 w-8 text-primary mx-auto mb-3 animate-pulse" />
+                      <span className="text-white font-semibold text-lg bg-primary/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20 inline-block">
+                        {t("viewGallery")}
+                      </span>
                     </div>
                   </div>
                 </div>
-
-                {/* Decorative corner elements */}
-                <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-primary/40 rounded-tl-lg" />
-                <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-primary/40 rounded-tr-lg" />
-                <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-primary/40 rounded-bl-lg" />
-                <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-primary/40 rounded-br-lg" />
               </div>
               
               {/* Project info */}
@@ -219,7 +223,7 @@ export function Projects() {
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-primary/10" />
               </div>
               
-              <div className="relative aspect-[16/10] mb-6 rounded-3xl overflow-hidden shadow-2xl">
+              <div className="relative aspect-[16/10] mb-6 rounded-3xl overflow-hidden shadow-2xl mirror-frame-3d">
                 <img
                   src={projects[selectedProject].gallery[currentImageIndex] || "/placeholder.svg"}
                   alt={`${projects[selectedProject].title} - Image ${currentImageIndex + 1}`}
@@ -229,6 +233,33 @@ export function Projects() {
                 {/* Mirror reflection overlay */}
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/10" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+                
+                {/* Engraved oriental mosaic decorations */}
+                <div className="absolute inset-0 oriental-mosaic opacity-25 pointer-events-none mix-blend-overlay" />
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-0 left-0 w-32 h-32 oriental-mosaic opacity-40 bg-gradient-to-br from-white/20 to-transparent" />
+                  <div className="absolute top-0 right-0 w-32 h-32 oriental-mosaic opacity-40 bg-gradient-to-bl from-white/20 to-transparent" />
+                  <div className="absolute bottom-0 left-0 w-32 h-32 oriental-mosaic opacity-40 bg-gradient-to-tr from-white/20 to-transparent" />
+                  <div className="absolute bottom-0 right-0 w-32 h-32 oriental-mosaic opacity-40 bg-gradient-to-tl from-white/20 to-transparent" />
+                </div>
+                
+                {/* Mirror frame SVG overlay */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 160 100" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="galleryFrameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.6)", stopOpacity: 1 }} />
+                      <stop offset="50%" style={{ stopColor: "rgba(255,255,255,0.3)", stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.5)", stopOpacity: 1 }} />
+                    </linearGradient>
+                    <linearGradient id="galleryInnerFrame" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.4)", stopOpacity: 1 }} />
+                      <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.2)", stopOpacity: 1 }} />
+                    </linearGradient>
+                  </defs>
+                  <rect x="0.5" y="0.5" width="159" height="99" rx="12" fill="none" stroke="url(#galleryFrameGradient)" strokeWidth="4" opacity="0.9" />
+                  <rect x="3" y="3" width="154" height="94" rx="10" fill="none" stroke="url(#galleryInnerFrame)" strokeWidth="2" opacity="0.7" />
+                  <rect x="5.5" y="5.5" width="149" height="89" rx="8" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" opacity="0.6" />
+                </svg>
 
                 {/* Navigation Arrows */}
                 {projects[selectedProject].gallery.length > 1 && (
