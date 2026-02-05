@@ -409,6 +409,36 @@ body::after {
   }
 }
 
+@keyframes mirrorGlowLightOn {
+  0%, 100% {
+    box-shadow: 
+      0 0 60px rgba(255, 255, 255, 0.5), 
+      0 0 120px rgba(255, 255, 255, 0.35),
+      0 0 180px rgba(255, 255, 255, 0.2),
+      inset 0 0 80px rgba(255, 255, 255, 0.15),
+      inset 0 0 120px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 80px rgba(255, 255, 255, 0.6), 
+      0 0 160px rgba(255, 255, 255, 0.45),
+      0 0 240px rgba(255, 255, 255, 0.3),
+      inset 0 0 100px rgba(255, 255, 255, 0.2),
+      inset 0 0 150px rgba(255, 255, 255, 0.15);
+  }
+}
+
+@keyframes lightPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes engravingShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out forwards;
 }
@@ -427,6 +457,159 @@ body::after {
 
 .animate-mirror-glow {
   animation: mirrorGlow 4s ease-in-out infinite;
+}
+
+/*
+  DISABLED: animate-mirror-glow-light-on creates surrounding glow
+  Now using only border engravings with LED illumination
+.animate-mirror-glow-light-on {
+  animation: mirrorGlowLightOn 3s ease-in-out infinite;
+}
+*/
+
+/*
+  DISABLED: mirror-light-border creates surrounding glow
+  Now using only border engravings with LED illumination
+.mirror-light-border {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.mirror-light-border.active {
+  opacity: 1;
+}
+
+.mirror-light-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 3px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.95) 0%, 
+    rgba(240, 240, 255, 0.8) 15%,
+    rgba(255, 255, 255, 0.6) 30%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(240, 240, 255, 0.6) 70%,
+    rgba(230, 230, 255, 0.8) 85%,
+    rgba(255, 255, 255, 0.95) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.mirror-light-border::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: calc(inherit + 8px);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5) 0%, transparent 50%),
+              radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.4) 0%, transparent 50%);
+  filter: blur(20px);
+  opacity: 0.8;
+}
+*/
+
+.engraved-light-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.engraved-light-button::before {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.2) 0%, 
+    transparent 50%,
+    rgba(255, 255, 255, 0.1) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.engraved-light-button:hover {
+  transform: scale(1.08);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 0 25px rgba(255, 255, 255, 0.08);
+}
+
+.engraved-light-button:active {
+  transform: scale(0.95);
+}
+
+.engraved-light-button .button-icon {
+  width: 26px;
+  height: 26px;
+  transition: all 0.3s ease;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  z-index: 1;
+}
+
+.engraved-light-button.active .button-icon {
+  color: rgba(255, 255, 255, 1);
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+}
+
+.engraved-light-button.active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    inset 0 1px 3px rgba(255, 255, 255, 0.5),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.4),
+    inset 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+.engraved-pattern {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.oriental-engraving-border {
+  position: absolute;
+  inset: 8px;
+  border-radius: calc(inherit - 8px);
+  pointer-events: none;
+}
+
+.oriental-engraving-border svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
 }
 
 .mirror-frame-3d {
@@ -476,4 +659,204 @@ body::after {
   opacity: 0.6;
   pointer-events: none;
   mix-blend-mode: overlay;
+}
+
+/* Through the Looking Glass - Section Transition Effects */
+@keyframes mirrorZoomIn {
+  0% {
+    transform: scale(1);
+    filter: blur(0px);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1.02);
+    filter: blur(0.5px);
+    opacity: 0.95;
+  }
+  70% {
+    transform: scale(2);
+    filter: blur(2px);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(4);
+    filter: blur(8px);
+    opacity: 0;
+  }
+}
+
+@keyframes mirrorZoomOut {
+  0% {
+    transform: scale(0.25);
+    filter: blur(8px);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(0.5);
+    filter: blur(4px);
+    opacity: 0.5;
+  }
+  60% {
+    transform: scale(0.98);
+    filter: blur(0.5px);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes rippleWave {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes glassShimmerWave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.mirror-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.mirror-transition-overlay.active {
+  opacity: 1;
+}
+
+.mirror-transition-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, 
+    rgba(255, 255, 255, 0.15) 0%, 
+    rgba(255, 255, 255, 0.05) 30%, 
+    transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.mirror-transition-overlay.active::before {
+  opacity: 1;
+}
+
+.mirror-portal {
+  width: 300px;
+  height: 400px;
+  border-radius: 3rem;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.2), 
+    rgba(255, 255, 255, 0.05));
+  border: 3px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 
+    0 0 60px rgba(255, 255, 255, 0.3),
+    0 0 120px rgba(255, 255, 255, 0.15),
+    inset 0 0 60px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  transform: scale(0);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mirror-transition-overlay.active .mirror-portal {
+  transform: scale(1);
+}
+
+.mirror-portal::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    transparent 100%
+  );
+  animation: glassShimmerWave 1.5s ease-in-out infinite;
+  transform: rotate(45deg);
+}
+
+.mirror-portal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.03) 2px,
+    rgba(255, 255, 255, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+.mirror-ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  opacity: 0;
+}
+
+.mirror-ripple.animating {
+  animation: rippleWave 1s ease-out forwards;
+}
+
+.section-exit {
+  animation: mirrorZoomIn 0.8s cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.section-enter {
+  animation: mirrorZoomOut 0.8s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+/* Smooth section scrolling with mirror effect */
+html {
+  scroll-behavior: smooth;
+}
+
+.section-mirror-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-mirror-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.section-mirror-wrapper.transitioning::before {
+  opacity: 1;
 }

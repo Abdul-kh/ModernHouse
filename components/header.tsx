@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { LanguageSwitcher } from "@/components/language-switcher"
+import { useTransition } from "@/app/layout"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -12,6 +13,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const { t } = useLanguage()
+  const { transitionToSection } = useTransition()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,14 +23,8 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const scrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId)
-    if (el) {
-      const header = document.querySelector("header") as HTMLElement | null
-      const headerHeight = header ? header.offsetHeight : 0
-      const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - 8
-      window.scrollTo({ top, behavior: "smooth" })
-    }
+  const handleNavClick = (sectionId: string) => {
+    transitionToSection(sectionId)
     setIsMenuOpen(false)
   }
 
@@ -67,28 +63,28 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8" dir="ltr">
             <button
-              onClick={() => scrollToSection("services")}
+              onClick={() => handleNavClick("services")}
               className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
             >
               <span className="relative z-10">{t("services")}</span>
               <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(255,255,255,0.1)_70%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform scale-0 group-hover:scale-150 origin-center h-full w-[200%] -left-1/2 rounded-full overflow-hidden"></span>
             </button>
             <button
-              onClick={() => scrollToSection("about")}
+              onClick={() => handleNavClick("about")}
               className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
             >
               <span className="relative z-10">{t("about")}</span>
               <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(255,255,255,0.1)_70%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform scale-0 group-hover:scale-150 origin-center h-full w-[200%] -left-1/2 rounded-full overflow-hidden"></span>
             </button>
             <button
-              onClick={() => scrollToSection("projects")}
+              onClick={() => handleNavClick("projects")}
               className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
             >
               <span className="relative z-10">{t("projects")}</span>
               <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(255,255,255,0.1)_70%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform scale-0 group-hover:scale-150 origin-center h-full w-[200%] -left-1/2 rounded-full overflow-hidden"></span>
             </button>
             <button
-              onClick={() => scrollToSection("contact")}
+              onClick={() => handleNavClick("contact")}
               className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
             >
               <span className="relative z-10">{t("contact")}</span>
@@ -99,7 +95,7 @@ export function Header() {
           <div className="hidden md:flex items-center gap-4" dir="ltr">
             <LanguageSwitcher />
             <Button
-              onClick={() => scrollToSection("contact")}
+              onClick={() => handleNavClick("contact")}
               className="bg-primary text-white hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 relative overflow-hidden group"
             >
               {t("getQuote")}
@@ -124,31 +120,31 @@ export function Header() {
                 <LanguageSwitcher />
               </div>
               <button
-                onClick={() => scrollToSection("services")}
+                onClick={() => handleNavClick("services")}
                 className="text-sm font-medium text-white hover:text-primary transition-colors text-left"
               >
                 {t("services")}
               </button>
               <button
-                onClick={() => scrollToSection("about")}
+                onClick={() => handleNavClick("about")}
                 className="text-sm font-medium text-white hover:text-primary transition-colors text-left"
               >
                 {t("about")}
               </button>
               <button
-                onClick={() => scrollToSection("projects")}
+                onClick={() => handleNavClick("projects")}
                 className="text-sm font-medium text-white hover:text-primary transition-colors text-left"
               >
                 {t("projects")}
               </button>
               <button
-                onClick={() => scrollToSection("contact")}
+                onClick={() => handleNavClick("contact")}
                 className="text-sm font-medium text-white hover:text-primary transition-colors text-left"
               >
                 {t("contact")}
               </button>
               <Button
-                onClick={() => scrollToSection("contact")}
+                onClick={() => handleNavClick("contact")}
                 className="bg-primary text-white hover:bg-primary/90 w-full"
               >
                 {t("getQuote")}

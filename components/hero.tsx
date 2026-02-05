@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, Lightbulb } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
+import { useTransition } from "@/app/layout"
 
 const heroImages = [
   "/modern-luxury-mirror-installation-in-elegant-inter.jpg",
@@ -14,8 +15,10 @@ const heroImages = [
 
 export function Hero() {
   const { t } = useLanguage()
+  const { transitionToSection } = useTransition()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [lightsOn, setLightsOn] = useState(true)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,16 +30,6 @@ export function Hero() {
     }, 5000)
     return () => clearInterval(interval)
   }, [])
-
-  const scrollToSection = (sectionId: string) => {
-    const el = document.getElementById(sectionId)
-    if (el) {
-      const header = document.querySelector("header") as HTMLElement | null
-      const headerHeight = header ? header.offsetHeight : 0
-      const top = el.getBoundingClientRect().top + window.scrollY - headerHeight - 8
-      window.scrollTo({ top, behavior: "smooth" })
-    }
-  }
 
   const getPrevIndex = () => (currentImageIndex - 1 + heroImages.length) % heroImages.length
   const getNextIndex = () => (currentImageIndex + 1) % heroImages.length
@@ -68,7 +61,7 @@ export function Hero() {
             <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
               <Button
                 size="lg"
-                onClick={() => scrollToSection("projects")}
+                onClick={() => transitionToSection("projects")}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 group shadow-2xl hover:shadow-primary/50 transition-all text-base px-8 py-6"
               >
                 {t("exploreWork")}
@@ -77,7 +70,7 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                onClick={() => scrollToSection("contact")}
+                onClick={() => transitionToSection("contact")}
                 className="border-2 border-white text-white hover:bg-white hover:text-black bg-transparent backdrop-blur-sm text-base px-8 py-6 shadow-2xl transition-all"
               >
                 {t("requestConsultation")}
@@ -118,24 +111,44 @@ export function Hero() {
               className="absolute left-0 top-1/2 -translate-y-1/2 w-[240px] h-[340px] md:w-[280px] md:h-[400px] opacity-50 hover:opacity-70 scale-80 hover:scale-85 -translate-x-4 md:-translate-x-8 z-0 transition-all duration-500 cursor-pointer group"
             >
               <div className="mirror-frame-3d w-full h-full overflow-hidden relative">
+                <div className="engraved-pattern">
+                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 140" preserveAspectRatio="none">
+                    <defs>
+                      <clipPath id="borderOnlyLeft">
+                        <rect x="0" y="0" width="100" height="140" rx="15"/>
+                        <rect x="10" y="10" width="80" height="120" rx="8"/>
+                      </clipPath>
+                      <pattern id="mosaicBorderLeft" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M5 0 L10 5 L5 10 L0 5 Z" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="0.6"/>
+                        <circle cx="5" cy="5" r="1.2" fill="rgba(255,255,255,0.3)"/>
+                      </pattern>
+                      <filter id="ledGlowLeft" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    <g clipPath="url(#borderOnlyLeft)">
+                      <rect x="0" y="0" width="100" height="140" rx="15" fill="url(#mosaicBorderLeft)" opacity="0.4"/>
+                      <rect x="2" y="2" width="96" height="136" rx="13" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" opacity="0.5"/>
+                      <rect x="6" y="6" width="88" height="128" rx="10" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" opacity="0.3"/>
+                    </g>
+                    <g opacity="0.5">
+                      <circle cx="50" cy="5" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                      <circle cx="50" cy="135" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                      <circle cx="5" cy="70" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                      <circle cx="95" cy="70" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                    </g>
+                  </svg>
+                </div>
                 <img
                   src={heroImages[getPrevIndex()] || "/placeholder.svg"}
                   alt="Previous mirror"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/30" />
                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 140" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="frameGradientSmall" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.3)", stopOpacity: 1 }} />
-                      <stop offset="50%" style={{ stopColor: "rgba(255,255,255,0.1)", stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.25)", stopOpacity: 1 }} />
-                    </linearGradient>
-                  </defs>
-                  <rect x="1" y="1" width="98" height="138" rx="12" fill="none" stroke="url(#frameGradientSmall)" strokeWidth="2" opacity="0.6" />
-                  <rect x="3" y="3" width="94" height="134" rx="10" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" opacity="0.4" />
-                </svg>
               </div>
             </button>
 
@@ -144,33 +157,118 @@ export function Hero() {
                 isTransitioning ? "scale-95 opacity-80" : "scale-100 opacity-100"
               }`}
             >
-              <div className="mirror-frame-3d animate-mirror-glow w-full h-full overflow-hidden relative">
+              <div className="mirror-frame-3d w-full h-full overflow-hidden relative">
+                
+                {/* Large Mirror Tile Engravings - Border Only */}
+                <div className="absolute inset-0 pointer-events-none" style={{ borderRadius: 'inherit' }}>
+                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 140" preserveAspectRatio="none">
+                    <defs>
+                      {/* LED Glow Filter */}
+                      <filter id="ledGlow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                      
+                      <filter id="ledGlowStrong" x="-100%" y="-100%" width="300%" height="300%">
+                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+
+                      {/* Large Mirror Tile Pattern - Much bigger tiles */}
+                      <pattern id="mirrorTilePattern" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+                        {/* Large diamond/tile shape */}
+                        <path d="M12 0 L24 12 L12 24 L0 12 Z" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="0.8"/>
+                        {/* Inner diamond */}
+                        <path d="M12 4 L20 12 L12 20 L4 12 Z" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="0.6"/>
+                        {/* Center dot */}
+                        <circle cx="12" cy="12" r="2" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="0.5"/>
+                        {/* Cross lines */}
+                        <path d="M12 0 L12 24 M0 12 L24 12" stroke="rgba(255,255,255,0.2)" strokeWidth="0.3"/>
+                      </pattern>
+
+                      {/* Corner Ornament - Large LED Style */}
+                      <g id="cornerTileLed">
+                        <circle cx="0" cy="0" r="8" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2"/>
+                        <circle cx="0" cy="0" r="4" fill="rgba(255,255,255,0.25)"/>
+                        <path d="M0 -8 L0 8 M-8 0 L8 0" stroke="rgba(255,255,255,0.4)" strokeWidth="0.6"/>
+                        <circle cx="0" cy="0" r="1.5" fill="rgba(255,255,255,0.8)"/>
+                      </g>
+                    </defs>
+
+                    {/* Outer Border Frame - Only the lines/tiles, no full rect fill */}
+                    <g clipPath="url(#borderOnly)">
+                      {/* Top border with large tiles */}
+                      <rect x="0" y="0" width="100" height="12" fill="url(#mirrorTilePattern)" opacity={lightsOn ? "0.8" : "0.3"} 
+                        filter={lightsOn ? "url(#ledGlow)" : ""}/>
+                      {/* Bottom border */}
+                      <rect x="0" y="128" width="100" height="12" fill="url(#mirrorTilePattern)" opacity={lightsOn ? "0.8" : "0.3"} 
+                        filter={lightsOn ? "url(#ledGlow)" : ""}/>
+                      {/* Left border */}
+                      <rect x="0" y="12" width="12" height="116" fill="url(#mirrorTilePattern)" opacity={lightsOn ? "0.8" : "0.3"} 
+                        filter={lightsOn ? "url(#ledGlow)" : ""}/>
+                      {/* Right border */}
+                      <rect x="88" y="12" width="12" height="116" fill="url(#mirrorTilePattern)" opacity={lightsOn ? "0.8" : "0.3"} 
+                        filter={lightsOn ? "url(#ledGlow)" : ""}/>
+                      
+                      {/* Inner decorative border lines - only engravings */}
+                      <rect x="12" y="12" width="76" height="116" rx="10" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" 
+                        opacity={lightsOn ? "0.9" : "0.4"} filter={lightsOn ? "url(#ledGlow)" : ""}/>
+                      <rect x="16" y="16" width="68" height="108" rx="8" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" 
+                        opacity={lightsOn ? "0.7" : "0.25"} filter={lightsOn ? "url(#ledGlow)" : ""}/>
+                    </g>
+
+                    {/* Corner LED Accents - Large */}
+                    <g opacity={lightsOn ? "1" : "0.5"}>
+                      <g transform="translate(12, 12)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}>
+                        <use href="#cornerTileLed"/>
+                      </g>
+                      <g transform="translate(88, 12)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}>
+                        <use href="#cornerTileLed"/>
+                      </g>
+                      <g transform="translate(88, 128)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}>
+                        <use href="#cornerTileLed"/>
+                      </g>
+                      <g transform="translate(12, 128)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}>
+                        <use href="#cornerTileLed"/>
+                      </g>
+                    </g>
+
+                    {/* Side Midpoint LED Accents - Large */}
+                    <g opacity={lightsOn ? "1" : "0.5"}>
+                      <circle cx="50" cy="10" r="4" fill="rgba(255,255,255,0.7)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
+                      <circle cx="50" cy="130" r="4" fill="rgba(255,255,255,0.7)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
+                      <circle cx="10" cy="70" r="4" fill="rgba(255,255,255,0.7)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
+                      <circle cx="90" cy="70" r="4" fill="rgba(255,255,255,0.7)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
+                    </g>
+                  </svg>
+                </div>
+
                 <img
                   src={heroImages[currentImageIndex] || "/placeholder.svg"}
                   alt={`Mirror showcase ${currentImageIndex + 1}`}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/40" />
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent animate-pulse" />
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 140" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="frameGradientMain" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.5)", stopOpacity: 1 }} />
-                      <stop offset="50%" style={{ stopColor: "rgba(255,255,255,0.2)", stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.4)", stopOpacity: 1 }} />
-                    </linearGradient>
-                    <linearGradient id="innerFrameGradient" x1="100%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.3)", stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.1)", stopOpacity: 1 }} />
-                    </linearGradient>
-                  </defs>
-                  <rect x="0.5" y="0.5" width="99" height="139" rx="15" fill="none" stroke="url(#frameGradientMain)" strokeWidth="3" opacity="0.8" />
-                  <rect x="2.5" y="2.5" width="95" height="135" rx="13" fill="none" stroke="url(#innerFrameGradient)" strokeWidth="1.5" opacity="0.6" />
-                  <rect x="4.5" y="4.5" width="91" height="131" rx="11" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" opacity="0.5" />
-                </svg>
+                
+                {/* Light Toggle Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setLightsOn(!lightsOn)
+                  }}
+                  className={`engraved-light-button ${lightsOn ? 'active' : ''}`}
+                  aria-label={lightsOn ? "Turn lights off" : "Turn lights on"}
+                >
+                  <Lightbulb className="button-icon" />
+                </button>
               </div>
               
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-3/4 h-8 bg-black/40 blur-2xl rounded-full" />
             </div>
 
             <button
@@ -184,24 +282,44 @@ export function Hero() {
               className="absolute right-0 top-1/2 -translate-y-1/2 w-[240px] h-[340px] md:w-[280px] md:h-[400px] opacity-50 hover:opacity-70 scale-80 hover:scale-85 translate-x-4 md:translate-x-8 z-0 transition-all duration-500 cursor-pointer group"
             >
               <div className="mirror-frame-3d w-full h-full overflow-hidden relative">
+                <div className="engraved-pattern">
+                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 140" preserveAspectRatio="none">
+                    <defs>
+                      <clipPath id="borderOnlyRight">
+                        <rect x="0" y="0" width="100" height="140" rx="15"/>
+                        <rect x="10" y="10" width="80" height="120" rx="8"/>
+                      </clipPath>
+                      <pattern id="mosaicBorderRight" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M5 0 L10 5 L5 10 L0 5 Z" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="0.6"/>
+                        <circle cx="5" cy="5" r="1.2" fill="rgba(255,255,255,0.3)"/>
+                      </pattern>
+                      <filter id="ledGlowRight" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                        <feMerge>
+                          <feMergeNode in="blur"/>
+                          <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    <g clipPath="url(#borderOnlyRight)">
+                      <rect x="0" y="0" width="100" height="140" rx="15" fill="url(#mosaicBorderRight)" opacity="0.4"/>
+                      <rect x="2" y="2" width="96" height="136" rx="13" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" opacity="0.5"/>
+                      <rect x="6" y="6" width="88" height="128" rx="10" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" opacity="0.3"/>
+                    </g>
+                    <g opacity="0.5">
+                      <circle cx="50" cy="5" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                      <circle cx="50" cy="135" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                      <circle cx="5" cy="70" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                      <circle cx="95" cy="70" r="2.5" fill="rgba(255,255,255,0.5)"/>
+                    </g>
+                  </svg>
+                </div>
                 <img
                   src={heroImages[getNextIndex()] || "/placeholder.svg"}
                   alt="Next mirror"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-bl from-white/10 via-transparent to-black/30" />
                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 140" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="frameGradientRight" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.3)", stopOpacity: 1 }} />
-                      <stop offset="50%" style={{ stopColor: "rgba(255,255,255,0.1)", stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.25)", stopOpacity: 1 }} />
-                    </linearGradient>
-                  </defs>
-                  <rect x="1" y="1" width="98" height="138" rx="12" fill="none" stroke="url(#frameGradientRight)" strokeWidth="2" opacity="0.6" />
-                  <rect x="3" y="3" width="94" height="134" rx="10" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="1" opacity="0.4" />
-                </svg>
               </div>
             </button>
 
