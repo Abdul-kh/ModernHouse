@@ -60,19 +60,19 @@ export function Contact() {
                 <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors group-hover:scale-110 duration-300">
                   <Phone className="h-8 w-8 text-primary/90 group-hover:text-primary transition-colors" />
                 </div>
-                <div>
+                <div className="space-y-2">
                   <h3 className="font-bold text-foreground mb-2 text-lg">{t("phone")}</h3>
                   <a
                     href="tel:+9647503562547"
                     dir="ltr"
-                    className="text-muted-foreground hover:text-primary transition-colors font-medium inline-flex"
+                    className="text-muted-foreground hover:text-primary transition-colors font-medium block"
                   >
                     +964 750 356 2547
                   </a>
                   <a
                     href="tel:+9647786897999"
                     dir="ltr"
-                    className="text-muted-foreground hover:text-primary transition-colors font-medium inline-flex"
+                    className="text-muted-foreground hover:text-primary transition-colors font-medium block"
                   >
                     +964 778 689 7999
                   </a>

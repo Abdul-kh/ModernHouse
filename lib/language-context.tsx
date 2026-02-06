@@ -62,9 +62,9 @@ const translations = {
     // Projects
     projectsTitle: "Featured projects",
     projectsDescription: "Explore our portfolio of exceptional glass and mirror installations across the Middle East.",
-    commercial: "Commercial",
-    residential: "Residential",
-    hospitality: "Hospitality",
+    commercialProject: "Commercial",
+    residentialProject: "Residential",
+    hospitalityProject: "Hospitality",
     project1: "Dubai Marina Tower",
     project2: "Luxury Villa Collection",
     project3: "Corporate Headquarters",
@@ -81,6 +81,14 @@ const translations = {
     address: "Erbil, Iraq",
     followUs: "Follow Us",
     chatWhatsApp: "Chat on WhatsApp",
+
+    // Clients
+    clientsTitle: "Our Big Clients",
+    clientsDescription: "Proudly serving leading companies, hotels, and facilities across the Middle East.",
+    hospitalityClients: "Hospitality",
+    commercialClients: "Commercial",
+    residentialClients: "Residential",
+    governmentClients: "Government",
 
     // Footer
     footerDescription: "Premium glass and mirror services for the Middle East.",
@@ -140,9 +148,9 @@ const translations = {
     // Projects
     projectsTitle: "المشاريع المميزة",
     projectsDescription: "استكشف محفظتنا من تركيبات الزجاج والمرايا الاستثنائية في جميع أنحاء الشرق الأوسط.",
-    commercial: "تجاري",
-    residential: "سكني",
-    hospitality: "ضيافة",
+    commercialProject: "تجاري",
+    residentialProject: "سكني",
+    hospitalityProject: "ضيافة",
     project1: "برج دبي مارينا",
     project2: "مجموعة الفلل الفاخرة",
     project3: "المقر الرئيسي للشركات",
@@ -159,6 +167,14 @@ const translations = {
     address: "أربيل، العراق",
     followUs: "تابعنا",
     chatWhatsApp: "تحدث على واتساب",
+
+    // Clients
+    clientsTitle: "عملاؤنا الكبار",
+    clientsDescription: "نفخر بخدمة الشركات الرائدة والفنادق والمنشآت في جميع أنحاء الشرق الأوسط.",
+    hospitalityClients: "ضيافة",
+    commercialClients: "تجاري",
+    residentialClients: "سكني",
+    governmentClients: "حكومي",
 
     // Footer
     footerDescription: "خدمات زجاج ومرايا فاخرة للشرق الأوسط.",
