@@ -60,6 +60,13 @@ export function Contact() {
                 <div>
                   <h3 className="font-bold text-foreground mb-2 text-lg">{t("phone")}</h3>
                   <a
+                    href="tel:+9647503562547"
+                    dir="ltr"
+                    className="text-muted-foreground hover:text-primary transition-colors font-medium inline-flex"
+                  >
+                    +964 750 356 2547
+                  </a>
+                  <a
                     href="tel:+9647786897999"
                     dir="ltr"
                     className="text-muted-foreground hover:text-primary transition-colors font-medium inline-flex"
