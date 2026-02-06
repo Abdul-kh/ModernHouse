@@ -62,7 +62,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-10 lg:gap-14" dir="ltr">
-            {(["services", "about", "projects", "Contact us"] as const).map((section) => (
+            {(["services", "about", "projects", "contact"] as const).map((section) => (
               <button
                 key={section}
                 data-nav-link
