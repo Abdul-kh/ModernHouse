@@ -2,7 +2,7 @@
 
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Phone, Mail, MapPin, Instagram, Facebook } from "lucide-react"
+import { Phone, Mail, MapPin } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -191,33 +191,6 @@ export function Contact() {
           </Card>
         </div>
 
-        <div className="mt-16 max-w-2xl mx-auto">
-          <Card className="border-border shadow-xl bg-card/50 backdrop-blur-sm lux-mirror-frame">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-foreground mb-6 text-center">{t("followUs")}</h3>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-2 w-full sm:w-auto group bg-transparent hover:bg-primary hover:text-white hover:border-primary transition-all"
-                  onClick={() => window.open("https://instagram.com/modern_house_erbil", "_blank")}
-                >
-                  <Instagram className="ltr:mr-2 rtl:ml-2 h-5 w-5" />
-                  Instagram
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-2 w-full sm:w-auto group bg-transparent hover:bg-primary hover:text-white hover:border-primary transition-all"
-                  onClick={() => window.open("https://facebook.com/Modern.H.Erbil", "_blank")}
-                >
-                  <Facebook className="ltr:mr-2 rtl:ml-2 h-5 w-5" />
-                  Facebook
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </section>
   )

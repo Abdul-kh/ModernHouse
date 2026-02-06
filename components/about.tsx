@@ -2,6 +2,7 @@
 
 import { CheckCircle2, Sparkles, Zap, Award } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
+import { MirrorEngravedFrame } from "@/components/mirror-engraved-frame"
 
 export function About() {
   const { t } = useLanguage()
@@ -26,48 +27,25 @@ export function About() {
             <div className="absolute -bottom-8 -right-8 w-32 h-32 border-2 border-white/20 rounded-full animate-mirror-float" style={{ animationDelay: "1s" }} />
             
             {/* Main mirror frame */}
-            <div className="relative aspect-[4/5] overflow-hidden shadow-2xl group mirror-frame-3d animate-mirror-glow">
+            <MirrorEngravedFrame className="aspect-[4/5] shadow-2xl group animate-mirror-glow">
               <img
                 src="/modern-glass-manufacturing-facility-with-precision.jpg"
                 alt="Modern House manufacturing facility"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               
-              {/* Engraved oriental decorations overlay */}
-              <div className="absolute inset-0 oriental-mosaic opacity-30 pointer-events-none mix-blend-overlay" />
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 left-0 w-40 h-40 oriental-mosaic opacity-50 bg-gradient-to-br from-white/30 to-transparent" />
-                <div className="absolute top-0 right-0 w-40 h-40 oriental-mosaic opacity-50 bg-gradient-to-bl from-white/30 to-transparent" />
-                <div className="absolute bottom-0 left-0 w-40 h-40 oriental-mosaic opacity-50 bg-gradient-to-tr from-white/30 to-transparent" />
-                <div className="absolute bottom-0 right-0 w-40 h-40 oriental-mosaic opacity-50 bg-gradient-to-tl from-white/30 to-transparent" />
-              </div>
-              
               {/* Mirror reflections */}
               <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/25 pointer-events-none" />
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/20 pointer-events-none" />
-              
-              {/* Mirror frame SVG */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 125" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="aboutFrameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.7)", stopOpacity: 1 }} />
-                    <stop offset="50%" style={{ stopColor: "rgba(255,255,255,0.4)", stopOpacity: 1 }} />
-                    <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.6)", stopOpacity: 1 }} />
-                  </linearGradient>
-                </defs>
-                <rect x="0.5" y="0.5" width="99" height="124" rx="15" fill="none" stroke="url(#aboutFrameGradient)" strokeWidth="4" opacity="0.9" />
-                <rect x="3" y="3" width="94" height="119" rx="13" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="2" opacity="0.7" />
-                <rect x="5.5" y="5.5" width="89" height="114" rx="11" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" opacity="0.6" />
-              </svg>
 
               {/* Specialty badge */}
-              <div className="absolute top-6 right-6 glass-card px-4 py-2 rounded-full border border-primary/30 backdrop-blur-md">
+              <div className="absolute top-6 right-6 glass-card px-4 py-2 rounded-full border border-primary/30 backdrop-blur-md z-10">
                 <div className="flex items-center gap-2">
                   <Award className="h-4 w-4 text-primary" />
                   <span className="text-xs font-semibold text-white">Mirror Specialists</span>
                 </div>
               </div>
-            </div>
+            </MirrorEngravedFrame>
 
             {/* Floating info cards */}
             <div className="absolute -bottom-6 -right-6 glass-card p-4 rounded-2xl border border-white/20 backdrop-blur-xl shadow-2xl max-w-[200px] animate-fade-in-up">

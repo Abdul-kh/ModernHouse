@@ -860,3 +860,39 @@ html {
 .section-mirror-wrapper.transitioning::before {
   opacity: 1;
 }
+
+/* Hide header when gallery is open */
+body.gallery-open header {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ==========================================
+   Mosaic Tile Flip Transition
+   ========================================== */
+
+@keyframes glassTileReveal {
+  0% {
+    opacity: 1;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  60% {
+    opacity: 0.4;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+  100% {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes glassTileReveal {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+}

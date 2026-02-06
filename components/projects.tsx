@@ -3,12 +3,14 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { useLanguage } from "@/lib/language-context"
 import { useEffect, useState } from "react"
-import { X, ChevronLeft, ChevronRight, Sparkles } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, Sparkles, ChevronUp, ChevronDown } from "lucide-react"
+import { MirrorEngravedFrame } from "@/components/mirror-engraved-frame"
 
 export function Projects() {
   const { t } = useLanguage()
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [infoExpanded, setInfoExpanded] = useState(false)
 
   const projects = [
     {
@@ -85,13 +87,15 @@ export function Projects() {
     }
   }
 
-  // Lock background scroll when preview is open
+  // Lock background scroll when preview is open and hide header
   useEffect(() => {
     if (selectedProject !== null) {
       const previous = document.body.style.overflow
       document.body.style.overflow = "hidden"
+      document.body.classList.add("gallery-open")
       return () => {
         document.body.style.overflow = previous
+        document.body.classList.remove("gallery-open")
       }
     }
   }, [selectedProject])
@@ -136,7 +140,7 @@ export function Projects() {
 
               {/* Main mirror container */}
               <div className="relative aspect-[3/4] mx-auto max-w-md">
-                <div className="mirror-frame-3d animate-mirror-glow w-full h-full overflow-hidden relative group-hover:scale-[1.02] transition-transform duration-500">
+                <MirrorEngravedFrame className="w-full h-full animate-mirror-glow group-hover:scale-[1.02] transition-transform duration-500">
                   <img
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
@@ -144,38 +148,11 @@ export function Projects() {
                   />
                   
                   {/* Mirror reflections */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-black/40" />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent" />
-                  
-                  {/* Engraved oriental decorations */}
-                  <div className="absolute inset-0 oriental-mosaic opacity-20 pointer-events-none mix-blend-overlay" />
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute top-0 left-0 w-24 h-24 oriental-mosaic opacity-40 bg-gradient-to-br from-white/30 to-transparent" />
-                    <div className="absolute top-0 right-0 w-24 h-24 oriental-mosaic opacity-40 bg-gradient-to-bl from-white/30 to-transparent" />
-                    <div className="absolute bottom-0 left-0 w-24 h-24 oriental-mosaic opacity-40 bg-gradient-to-tr from-white/30 to-transparent" />
-                    <div className="absolute bottom-0 right-0 w-24 h-24 oriental-mosaic opacity-40 bg-gradient-to-tl from-white/30 to-transparent" />
-                  </div>
-
-                  {/* Mirror frame SVG overlay */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 133" preserveAspectRatio="none">
-                    <defs>
-                      <linearGradient id={`projectFrameGradient${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.5)", stopOpacity: 1 }} />
-                        <stop offset="50%" style={{ stopColor: "rgba(255,255,255,0.2)", stopOpacity: 1 }} />
-                        <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.4)", stopOpacity: 1 }} />
-                      </linearGradient>
-                      <linearGradient id={`projectInnerFrame${index}`} x1="100%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.3)", stopOpacity: 1 }} />
-                        <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.1)", stopOpacity: 1 }} />
-                      </linearGradient>
-                    </defs>
-                    <rect x="0.5" y="0.5" width="99" height="132" rx="15" fill="none" stroke={`url(#projectFrameGradient${index})`} strokeWidth="3" opacity="0.8" />
-                    <rect x="2.5" y="2.5" width="95" height="128" rx="13" fill="none" stroke={`url(#projectInnerFrame${index})`} strokeWidth="1.5" opacity="0.6" />
-                    <rect x="4.5" y="4.5" width="91" height="124" rx="11" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" opacity="0.5" />
-                  </svg>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/30 pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
 
                   {/* Hover overlay with view gallery text */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-10">
                     <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                       <Sparkles className="h-8 w-8 text-primary mx-auto mb-3 animate-pulse" />
                       <span className="text-white font-semibold text-lg bg-primary/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20 inline-block">
@@ -183,7 +160,7 @@ export function Projects() {
                       </span>
                     </div>
                   </div>
-                </div>
+                </MirrorEngravedFrame>
               </div>
               
               {/* Project info */}
@@ -197,127 +174,123 @@ export function Projects() {
       </div>
 
       {selectedProject !== null && (
-        <div className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[100] bg-white/5 backdrop-blur-3xl overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/65" />
+            <div className="absolute inset-0 opacity-40 lux-vignette" />
+          </div>
           <button
             onClick={handleCloseGallery}
-            className="absolute top-4 ltr:right-4 rtl:left-4 text-white hover:text-primary transition-colors z-10"
+            className="absolute top-4 right-4 text-white hover:text-primary transition-colors z-[130]"
             aria-label="Close gallery"
           >
             <X className="h-8 w-8" />
           </button>
 
+          {/* Image stage */}
+          <div
+            className="absolute inset-0 flex items-center justify-center px-4 py-16 transition-transform duration-500"
+            style={{ transform: infoExpanded ? "translateY(-140px)" : "translateY(0px)" }}
+          >
+            <div className="relative w-full max-w-6xl">
+              <div
+                className="relative mx-auto rounded-3xl overflow-hidden shadow-2xl mirror-frame-3d"
+                style={{ maxHeight: "72vh" }}
+              >
+                {/* Constrain height without stretching */}
+                <div className="relative w-full" style={{ height: "72vh", maxHeight: "72vh" }}>
+                  <img
+                    src={projects[selectedProject].gallery[currentImageIndex] || "/placeholder.svg"}
+                    alt={`${projects[selectedProject].title} - Image ${currentImageIndex + 1}`}
+                    className="w-full h-full object-contain bg-transparent"
+                  />
 
-          <div className="max-w-6xl w-full">
-            {/* Gallery with mirror frame decoration */}
-            <div className="relative">
-              {/* Decorative frame elements */}
-              <div className="absolute inset-0 z-10 pointer-events-none">
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-primary/15 via-primary/8 to-primary/15 blur-2xl" />
-                <div className="absolute -inset-4 rounded-3xl border border-primary/20" />
-                <div className="absolute top-8 left-8 text-primary">
-                  <Sparkles className="h-8 w-8 animate-pulse" />
-                </div>
-                <div className="absolute bottom-8 right-8 text-primary">
-                  <Sparkles className="h-6 w-6 animate-pulse delay-100" />
-                </div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full border border-primary/10" />
-              </div>
-              
-              <div className="relative aspect-[16/10] mb-6 rounded-3xl overflow-hidden shadow-2xl mirror-frame-3d">
-                <img
-                  src={projects[selectedProject].gallery[currentImageIndex] || "/placeholder.svg"}
-                  alt={`${projects[selectedProject].title} - Image ${currentImageIndex + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Mirror reflection overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/10" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-                
-                {/* Engraved oriental mosaic decorations */}
-                <div className="absolute inset-0 oriental-mosaic opacity-25 pointer-events-none mix-blend-overlay" />
-                <div className="absolute inset-0 pointer-events-none">
-                  <div className="absolute top-0 left-0 w-32 h-32 oriental-mosaic opacity-40 bg-gradient-to-br from-white/20 to-transparent" />
-                  <div className="absolute top-0 right-0 w-32 h-32 oriental-mosaic opacity-40 bg-gradient-to-bl from-white/20 to-transparent" />
-                  <div className="absolute bottom-0 left-0 w-32 h-32 oriental-mosaic opacity-40 bg-gradient-to-tr from-white/20 to-transparent" />
-                  <div className="absolute bottom-0 right-0 w-32 h-32 oriental-mosaic opacity-40 bg-gradient-to-tl from-white/20 to-transparent" />
-                </div>
-                
-                {/* Mirror frame SVG overlay */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 160 100" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="galleryFrameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.6)", stopOpacity: 1 }} />
-                      <stop offset="50%" style={{ stopColor: "rgba(255,255,255,0.3)", stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.5)", stopOpacity: 1 }} />
-                    </linearGradient>
-                    <linearGradient id="galleryInnerFrame" x1="100%" y1="0%" x2="0%" y2="100%">
-                      <stop offset="0%" style={{ stopColor: "rgba(255,255,255,0.4)", stopOpacity: 1 }} />
-                      <stop offset="100%" style={{ stopColor: "rgba(255,255,255,0.2)", stopOpacity: 1 }} />
-                    </linearGradient>
-                  </defs>
-                  <rect x="0.5" y="0.5" width="159" height="99" rx="12" fill="none" stroke="url(#galleryFrameGradient)" strokeWidth="4" opacity="0.9" />
-                  <rect x="3" y="3" width="154" height="94" rx="10" fill="none" stroke="url(#galleryInnerFrame)" strokeWidth="2" opacity="0.7" />
-                  <rect x="5.5" y="5.5" width="149" height="89" rx="8" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" opacity="0.6" />
-                </svg>
-
-                {/* Navigation Arrows */}
-                {projects[selectedProject].gallery.length > 1 && (
-                  <>
-                    <button
-                      onClick={handlePrevImage}
-                      className="absolute top-1/2 -translate-y-1/2 ltr:left-6 rtl:right-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-20 border border-white/20 shadow-lg"
-                      aria-label="Previous image"
-                    >
-                      <ChevronLeft className="h-7 w-7" />
-                    </button>
-                    <button
-                      onClick={handleNextImage}
-                      className="absolute top-1/2 -translate-y-1/2 ltr:right-6 rtl:left-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-20 border border-white/20 shadow-lg"
-                      aria-label="Next image"
-                    >
-                      <ChevronRight className="h-7 w-7" />
-                    </button>
-                  </>
-                )}
-
-                {/* Thumbnail strip with mirror effect */}
-                {projects[selectedProject].gallery.length > 1 && (
-                  <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/80 via-black/50 to-transparent p-4">
-                    <div className="flex flex-wrap gap-3 justify-center">
-                      {projects[selectedProject].gallery.map((img, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => setCurrentImageIndex(idx)}
-                          className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-3 transition-all shadow-lg ${
-                            idx === currentImageIndex
-                              ? "border-primary scale-110 shadow-primary/50"
-                              : "border-white/30 opacity-80 hover:opacity-100 hover:scale-105"
-                          }`}
-                          aria-label={`Thumbnail ${idx + 1}`}
-                        >
-                          <img 
-                            src={img || "/placeholder.svg"} 
-                            alt={`Thumbnail ${idx + 1}`} 
-                            className="w-full h-full object-cover" 
-                          />
-                          {idx === currentImageIndex && (
-                            <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-black/35" />
+                    <div className="absolute top-0 left-0 right-0 h-14 oriental-mosaic opacity-20 mix-blend-overlay" />
+                    <div className="absolute bottom-0 left-0 right-0 h-16 oriental-mosaic opacity-18 mix-blend-overlay" />
+                    <div className="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-white/12 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white/10 to-transparent" />
                   </div>
-                )}
+
+                  {/* Mirror reflection overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/20 pointer-events-none" />
+
+                  {/* Navigation Arrows */}
+                  {projects[selectedProject].gallery.length > 1 && (
+                    <>
+                      <button
+                        onClick={handlePrevImage}
+                        className="absolute top-1/2 -translate-y-1/2 left-4 sm:left-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-30 border border-white/20 shadow-lg"
+                        aria-label="Previous image"
+                      >
+                        <ChevronLeft className="h-7 w-7" />
+                      </button>
+                      <button
+                        onClick={handleNextImage}
+                        className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-30 border border-white/20 shadow-lg"
+                        aria-label="Next image"
+                      >
+                        <ChevronRight className="h-7 w-7" />
+                      </button>
+                    </>
+                  )}
+
+                  {/* Round thumbnail previews */}
+                  {projects[selectedProject].gallery.length > 1 && (
+                    <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/90 via-black/55 to-transparent p-4">
+                      <div className="flex flex-wrap gap-3 justify-center">
+                        {projects[selectedProject].gallery.map((img, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => setCurrentImageIndex(idx)}
+                            className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-3 transition-all shadow-lg ${
+                              idx === currentImageIndex
+                                ? "border-white scale-110 shadow-white/30"
+                                : "border-white/30 opacity-80 hover:opacity-100 hover:scale-105"
+                            }`}
+                            aria-label={`Thumbnail ${idx + 1}`}
+                          >
+                            <img
+                              src={img || "/placeholder.svg"}
+                              alt={`Thumbnail ${idx + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                            {idx === currentImageIndex && (
+                              <div className="absolute inset-0 bg-white/10" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
+          </div>
 
-            {/* Project Info with mirror styling */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl blur-xl" />
-              <div className="relative glass-card rounded-2xl p-8 border border-primary/20 shadow-2xl">
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="text-sm text-primary font-medium px-4 py-2 bg-primary/10 rounded-full border border-primary/20">
+          {/* Bottom-center toggle button */}
+          <div className="absolute left-1/2 -translate-x-1/2 bottom-6 z-[140]">
+            <button
+              onClick={() => setInfoExpanded(!infoExpanded)}
+              className="flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-xl border border-white/20 text-white shadow-2xl transition-all"
+              aria-label={infoExpanded ? "Hide project details" : "Show project details"}
+            >
+              {infoExpanded ? <ChevronDown className="h-5 w-5" /> : <ChevronUp className="h-5 w-5" />}
+              <span className="text-sm font-semibold">{infoExpanded ? "Hide details" : "Show details"}</span>
+            </button>
+          </div>
+
+          {/* Fixed bottom drawer */}
+          <div
+            className={`fixed left-0 right-0 bottom-0 z-[120] transition-transform duration-500 ${
+              infoExpanded ? "translate-y-0" : "translate-y-full"
+            }`}
+          >
+            <div className="mx-auto max-w-6xl px-4 pb-8">
+              <div className="glass-card rounded-3xl p-6 border border-white/20 shadow-2xl">
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-sm text-primary font-medium px-4 py-2 bg-primary/10 rounded-full border border-white/20">
                     {projects[selectedProject].category}
                   </span>
                   <div className="flex items-center gap-2 text-white/60">
@@ -327,10 +300,12 @@ export function Projects() {
                     </span>
                   </div>
                 </div>
-                <h3 className="text-3xl font-bold text-white mb-4 bg-gradient-to-r from-white to-primary/40 bg-clip-text text-transparent">
+                <h3 className="text-2xl font-bold text-white mb-3 bg-gradient-to-r from-white to-primary/40 bg-clip-text text-transparent">
                   {projects[selectedProject].title}
                 </h3>
-                <p className="text-white/80 leading-relaxed text-lg">{projects[selectedProject].description}</p>
+                <div className="max-h-[30vh] overflow-y-auto pr-2">
+                  <p className="text-white/80 leading-relaxed text-base">{projects[selectedProject].description}</p>
+                </div>
               </div>
             </div>
           </div>
