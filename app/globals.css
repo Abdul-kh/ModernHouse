@@ -970,3 +970,73 @@ body.gallery-open header {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
 }
+
+/* ==========================================
+   English Font Options for LTR Content
+   ========================================== */
+
+/* Apply selected font to LTR content - more specific selectors */
+html.font-playfair body,
+html.font-playfair,
+html.font-playfair * {
+  font-family: var(--font-playfair), 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+html.font-montserrat body,
+html.font-montserrat,
+html.font-montserrat * {
+  font-family: var(--font-montserrat), 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+html.font-raleway body,
+html.font-raleway,
+html.font-raleway * {
+  font-family: var(--font-raleway), 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+html.font-oswald body,
+html.font-oswald,
+html.font-oswald * {
+  font-family: var(--font-oswald), 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+html.font-poppins body,
+html.font-poppins,
+html.font-poppins * {
+  font-family: var(--font-poppins), 'Geist Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+/* ==========================================
+   Arabic Font Options for RTL Content
+   ========================================== */
+
+/* Apply selected font to RTL content - more specific selectors */
+html[dir="rtl"].font-amiri body,
+html[dir="rtl"].font-amiri,
+html[dir="rtl"].font-amiri * {
+  font-family: var(--font-amiri), 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+html[dir="rtl"].font-tajawal body,
+html[dir="rtl"].font-tajawal,
+html[dir="rtl"].font-tajawal * {
+  font-family: var(--font-tajawal), 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+html[dir="rtl"].font-katibeh body,
+html[dir="rtl"].font-katibeh,
+html[dir="rtl"].font-katibeh * {
+  font-family: var(--font-katibeh), 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+html[dir="rtl"].font-almarai body,
+html[dir="rtl"].font-almarai,
+html[dir="rtl"].font-almarai * {
+  font-family: var(--font-almarai), 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
+
+html[dir="rtl"].font-scheherazade body,
+html[dir="rtl"].font-scheherazade,
+html[dir="rtl"].font-scheherazade * {
+  font-family: var(--font-scheherazade), 'Cairo', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif !important;
+}
