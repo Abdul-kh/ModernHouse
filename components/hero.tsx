@@ -20,8 +20,8 @@ export function Hero() {
   const [isTransitioning, setIsTransitioning] = useState(false)
   const lightModes = [
     { name: "white", color: "255,255,255", filterHue: "none" },
-    { name: "warm", color: "255,183,110", filterHue: "sepia(0.35) saturate(1.4) brightness(1.1)" },
     { name: "neutral", color: "255,225,190", filterHue: "sepia(0.15) saturate(1.2) brightness(1.05)" },
+    { name: "warm", color: "255,183,110", filterHue: "sepia(0.35) saturate(1.4) brightness(1.1)" },
     { name: "off", color: "255,255,255", filterHue: "none" },
   ]
   const [lightModeIndex, setLightModeIndex] = useState(0)
