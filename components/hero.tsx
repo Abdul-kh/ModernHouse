@@ -25,6 +25,8 @@ export function Hero() {
     { name: "off", color: "255,255,255", filterHue: "none" },
   ]
   const [lightModeIndex, setLightModeIndex] = useState(0)
+  const [autoCycle, setAutoCycle] = useState(true)
+  const [lastManualChange, setLastManualChange] = useState(0)
   const currentLight = lightModes[lightModeIndex]
   const lightsOn = currentLight.name !== "off"
 
@@ -38,6 +40,32 @@ export function Hero() {
     }, 5000)
     return () => clearInterval(interval)
   }, [])
+
+  // Auto-cycle light modes
+  useEffect(() => {
+    if (!autoCycle) return
+    
+    const interval = setInterval(() => {
+      // Skip auto-cycling if user manually changed lights recently (within 10 seconds)
+      const now = Date.now()
+      if (now - lastManualChange < 10000) return
+      
+      setLightModeIndex((prev) => (prev + 1) % lightModes.length)
+    }, 1500) // Change light every 3 seconds
+    
+    return () => clearInterval(interval)
+  }, [autoCycle, lastManualChange, lightModes.length])
+
+  const handleManualLightChange = () => {
+    const now = Date.now()
+    setLastManualChange(now)
+    
+    // Temporarily disable auto-cycle for 10 seconds after manual change
+    setAutoCycle(false)
+    setTimeout(() => setAutoCycle(true), 10000)
+    
+    setLightModeIndex((prev) => (prev + 1) % lightModes.length)
+  }
 
   const getPrevIndex = () => (currentImageIndex - 1 + heroImages.length) % heroImages.length
   const getNextIndex = () => (currentImageIndex + 1) % heroImages.length
@@ -262,7 +290,7 @@ export function Hero() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    setLightModeIndex((prev) => (prev + 1) % lightModes.length)
+                    handleManualLightChange()
                   }}
                   className={`engraved-light-button ${lightsOn ? 'active' : ''}`}
                   style={lightsOn ? { '--light-color': currentLight.color } as React.CSSProperties : undefined}
