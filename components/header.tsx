@@ -62,7 +62,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-10 lg:gap-14" dir="ltr">
-            {(["services", "about", "projects", "contact"] as const).map((section) => (
+            {(["services", "about", "projects", "clients", "contact"] as const).map((section) => (
               <button
                 key={section}
                 data-nav-link
@@ -120,6 +120,12 @@ export function Header() {
                 className="text-sm font-medium text-white hover:text-primary transition-colors text-left"
               >
                 {t("projects")}
+              </button>
+              <button
+                onClick={() => handleNavClick("clients")}
+                className="text-sm font-medium text-white hover:text-primary transition-colors text-left"
+              >
+                {t("clients")}
               </button>
               <button
                 onClick={() => handleNavClick("contact")}

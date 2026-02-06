@@ -18,6 +18,7 @@ const translations = {
     services: "Services",
     about: "About",
     projects: "Projects",
+    clients: "Clients",
     contact: "Contact",
     getQuote: "Get a Quote",
 
@@ -108,6 +109,7 @@ const translations = {
     services: "الخدمات",
     about: "من نحن",
     projects: "المشاريع",
+    clients: "العملاء",
     contact: "اتصل بنا",
     getQuote: "احصل على عرض سعر",
 
