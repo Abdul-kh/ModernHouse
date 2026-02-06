@@ -5,47 +5,24 @@ import { Building2, Hotel, Home, Landmark } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
 
 const clients = [
-  {
-    category: "hospitalityClients",
-    icon: Hotel,
-    companies: [
-      { name: "Rotana Hotel Erbil", logo: "🏨" },
-      { name: "Divan Erbil Hotel", logo: "🏨" },
-      { name: "Cristal Erbil Hotel", logo: "🏨" },
-      { name: "Khanzad Hotel", logo: "🏨" },
-    ],
-  },
-  {
-    category: "commercialClients",
-    icon: Building2,
-    companies: [
-      { name: "Erbil International Airport", logo: "✈️" },
-      { name: "Royal Mall Erbil", logo: "🏢" },
-      { name: "Family Mall", logo: "🏢" },
-      { name: "Majidi Mall", logo: "🏢" },
-    ],
-  },
-  {
-    category: "residentialClients",
-    icon: Home,
-    companies: [
-      { name: "Dream City", logo: "🏘️" },
-      { name: "Italian Village", logo: "🏘️" },
-      { name: "Royal City", logo: "🏘️" },
-      { name: "Erbil Citadel Residences", logo: "🏘️" },
-    ],
-  },
-  {
-    category: "governmentClients",
-    icon: Landmark,
-    companies: [
-      { name: "Erbil Governorate", logo: "🏛️" },
-      { name: "Kurdistan Regional Government", logo: "🏛️" },
-      { name: "Erbil Municipality", logo: "🏛️" },
-      { name: "Ministry of Health", logo: "🏛️" },
-    ],
-  },
+  { name: "Rotana Hotel Erbil", category: "hospitality", logo: "🏨" },
+  { name: "Divan Erbil Hotel", category: "hospitality", logo: "🏨" },
+  { name: "Cristal Erbil Hotel", category: "hospitality", logo: "🏨" },
+  { name: "Erbil International Airport", category: "commercial", logo: "✈️" },
+  { name: "Royal Mall Erbil", category: "commercial", logo: "🏢" },
+  { name: "Family Mall", category: "commercial", logo: "🏢" },
+  { name: "Dream City", category: "residential", logo: "🏘️" },
+  { name: "Italian Village", category: "residential", logo: "🏘️" },
+  { name: "Erbil Governorate", category: "government", logo: "🏛️" },
+  { name: "Kurdistan Regional Government", category: "government", logo: "🏛️" },
 ]
+
+const categoryIcons = {
+  hospitality: Hotel,
+  commercial: Building2,
+  residential: Home,
+  government: Landmark,
+}
 
 export function Clients() {
   const { t } = useLanguage()
@@ -63,38 +40,60 @@ export function Clients() {
           <p className="text-lg text-muted-foreground leading-relaxed">{t("clientsDescription")}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {clients.map((category) => {
-            const IconComponent = category.icon
-            return (
-              <Card key={category.category} className="border-border hover:shadow-xl hover:border-primary/50 transition-all group bg-card/50 backdrop-blur-sm mirror-hover lux-mirror-frame">
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/15 transition-colors group-hover:scale-110 duration-300">
-                      <IconComponent className="h-6 w-6 text-primary/90 group-hover:text-primary transition-colors" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground">{t(category.category)}</h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    {category.companies.map((company, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center gap-3 p-3 rounded-lg bg-background/50 hover:bg-background/80 transition-colors group/item"
-                      >
-                        <span className="text-2xl filter grayscale group-hover/item:grayscale-0 transition-all duration-300">
-                          {company.logo}
-                        </span>
-                        <span className="text-sm font-medium text-muted-foreground group-hover/item:text-foreground transition-colors">
-                          {company.name}
-                        </span>
+        <Card className="border-border hover:shadow-xl hover:border-primary/50 transition-all bg-card/50 backdrop-blur-sm mirror-hover lux-mirror-frame">
+          <CardContent className="p-6 md:p-8">
+            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+              {clients.map((client, index) => {
+                const IconComponent = categoryIcons[client.category as keyof typeof categoryIcons]
+                return (
+                  <div
+                    key={index}
+                    className="group relative flex flex-col items-center justify-center p-4 rounded-lg bg-background/50 hover:bg-background/80 transition-all duration-300 hover:scale-105 border border-border/50 hover:border-primary/30"
+                  >
+                    {/* Category indicator */}
+                    <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                        <IconComponent className="h-2.5 w-2.5 text-primary" />
                       </div>
-                    ))}
+                    </div>
+                    
+                    {/* Logo/Icon */}
+                    <div className="text-2xl md:text-3xl mb-2 filter grayscale group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110">
+                      {client.logo}
+                    </div>
+                    
+                    {/* Company name */}
+                    <h3 className="text-xs md:text-sm font-medium text-center text-muted-foreground group-hover:text-foreground transition-colors duration-300 leading-tight">
+                      {client.name}
+                    </h3>
                   </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+                )
+              })}
+            </div>
+            
+            {/* Category legend */}
+            <div className="mt-8 pt-6 border-t border-border/50">
+              <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <Hotel className="h-3.5 w-3.5 text-primary" />
+                  <span>{t("hospitalityClients")}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Building2 className="h-3.5 w-3.5 text-primary" />
+                  <span>{t("commercialClients")}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Home className="h-3.5 w-3.5 text-primary" />
+                  <span>{t("residentialClients")}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Landmark className="h-3.5 w-3.5 text-primary" />
+                  <span>{t("governmentClients")}</span>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </section>
   )
