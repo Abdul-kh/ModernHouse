@@ -60,11 +60,11 @@ export function Contact() {
                 <div>
                   <h3 className="font-bold text-foreground mb-2 text-lg">{t("phone")}</h3>
                   <a
-                    href="tel:+9647507896581"
+                    href="tel:+9647786897999"
                     dir="ltr"
                     className="text-muted-foreground hover:text-primary transition-colors font-medium inline-flex"
                   >
-                    +964 750 789 6581
+                    +964 778 689 7999
                   </a>
                 </div>
               </div>
@@ -81,10 +81,10 @@ export function Contact() {
                 <div>
                   <h3 className="font-bold text-foreground mb-2 text-lg">{t("email")}</h3>
                   <a
-                    href="mailto:info@modernhouse.ae"
+                    href="mailto:info@modernhouse.com"
                     className="text-muted-foreground hover:text-primary transition-colors font-medium"
                   >
-                    info@modernhouse.ae
+                    info@modernhouse.com
                   </a>
                 </div>
               </div>
@@ -146,7 +146,7 @@ export function Contact() {
                       <FormItem className="md:col-span-2">
                         <FormLabel>Phone (optional)</FormLabel>
                         <FormControl>
-                          <Input placeholder="+971 ..." {...field} />
+                          <Input placeholder="+964 ..." {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -161,21 +161,6 @@ export function Contact() {
                         <FormControl>
                           <Textarea rows={6} placeholder="Tell us about your project..." {...field} />
                         </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="agree"
-                    render={({ field }) => (
-                      <FormItem className="md:col-span-2">
-                        <div className="flex items-center gap-2">
-                          <FormControl>
-                            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                          </FormControl>
-                          <FormLabel className="!m-0 text-sm text-muted-foreground">I agree to the Privacy Policy</FormLabel>
-                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
