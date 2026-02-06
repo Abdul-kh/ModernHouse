@@ -84,7 +84,7 @@ export function Contact() {
                     href="mailto:info@modernhouse.com"
                     className="text-muted-foreground hover:text-primary transition-colors font-medium"
                   >
-                    info@modernhouse.com
+                    info@modernhouse.co
                   </a>
                 </div>
               </div>
