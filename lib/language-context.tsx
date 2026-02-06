@@ -48,10 +48,33 @@ const translations = {
     showerMirrorsDesc:
       "Modern shower mirrors with integrated LED lighting, combining functionality with contemporary design.",
 
+    // Service Gallery Descriptions
+    mirrorsDecorationsGalleryDesc: "Our custom mirrors and decorations service offers unparalleled craftsmanship in creating unique mirror designs for any space. From statement pieces that serve as focal points to subtle decorative accents that enhance ambiance, we specialize in unconventional mirror solutions that transform ordinary spaces into extraordinary experiences. Our artisans combine traditional techniques with modern innovations to create mirrors that are not just functional, but works of art that reflect your unique style and vision.",
+    glassDecorationsGalleryDesc: "Our glass decorations service brings artistic vision to life through stunning glass creations. We specialize in custom glass pieces that add elegance, character, and sophistication to any interior or exterior space. From colored glass panels that play with light to intricate glass art installations, our team crafts each piece with meticulous attention to detail, ensuring that every creation is a perfect blend of beauty and functionality.",
+    specialtyGlassGalleryDesc: "Our specialty glass service offers innovative solutions for unique design challenges. We work with colored glass, carved glass, and patterned glass to create distinctive features that set your space apart. Whether you're looking for bold statements or subtle accents, our specialty glass options provide endless possibilities for creative expression, allowing you to achieve truly personalized design outcomes.",
+    showerMirrorsGalleryDesc: "Our shower mirrors and lighting service combines functionality with contemporary design to create stunning bathroom features. We specialize in modern shower mirrors with integrated LED lighting that provide perfect illumination while adding a touch of luxury to your daily routine. Our solutions are designed to withstand humid environments while maintaining their beauty and performance, ensuring that your bathroom becomes a sanctuary of style and comfort.",
+
+    // Service Gallery UI
+    service: "Service",
+    showDetails: "Show details",
+    hideDetails: "Hide",
+    clickToViewGallery: "→ Click to view gallery",
+
+    // Project Gallery UI
+    closeGallery: "Close gallery",
+    previousImage: "Previous image",
+    nextImage: "Next image",
+    thumbnail: "Thumbnail",
+    showProjectDetails: "Show project details",
+    hideProjectDetails: "Hide project details",
+
     // About
     aboutTitle: "Crafting excellence in glass & mirror services",
     aboutDescription:
       "Modern House specializes in providing premium glass and mirror services throughout the Middle East. We combine artistic vision with expert craftsmanship to create custom solutions that transform residential and commercial spaces.",
+    premiumMirrorManufacturing: "Premium Mirror Manufacturing",
+    engravedMirrorArtistry: "Engraved Mirror Artistry",
+    engravedMirrorArtistryDesc: "Specializing in custom oriental mosaic engravings and decorative patterns on premium mirrors and glass surfaces.",
     feature1: "Custom mirror designs & decorations",
     feature2: "Colored, carved & patterned glass",
     feature3: "Shower mirrors with LED lighting",
@@ -67,9 +90,13 @@ const translations = {
     residentialProject: "Residential",
     hospitalityProject: "Hospitality",
     project1: "Dubai Marina Tower",
+    project1Desc: "A stunning commercial tower featuring floor-to-ceiling glass installations with custom mirror accents throughout the lobby and common areas.",
     project2: "Luxury Villa Collection",
+    project2Desc: "Luxury villa collection featuring custom decorative mirrors, colored glass partitions, and LED-lit shower mirrors in master bathrooms.",
     project3: "Corporate Headquarters",
+    project3Desc: "Corporate headquarters with carved glass features, patterned glass conference rooms, and artistic mirror installations.",
     project4: "Boutique Hotel",
+    project4Desc: "Boutique hotel featuring unconventional mirror designs, colored glass art installations, and custom decorative glass throughout.",
     viewGallery: "View Gallery",
 
     // Contact
@@ -93,6 +120,9 @@ const translations = {
 
     // Footer
     footerDescription: "Premium glass and mirror services for the Middle East.",
+    architecturalGlass: "Architectural Glass",
+    residentialSolutions: "Residential Solutions",
+    customMirrors: "Custom Mirrors",
     servicesFooter: "Services",
     company: "Company",
     aboutUs: "About Us",
@@ -135,10 +165,33 @@ const translations = {
     showerMirrors: "مرايا الدش والإضاءة",
     showerMirrorsDesc: "مرايا دش حديثة مع إضاءة LED متكاملة، تجمع بين الوظيفة والتصميم المعاصر.",
 
+    // Service Gallery Descriptions
+    mirrorsDecorationsGalleryDesc: "خدمة المرايا والزخارف المخصصة لدينا تقدم حرفية لا مثيل في إنشاء تصاميم مرايا فريدة لأي مساحة. من القطع التي تخدم كنقاط محورية إلى الزخارف الدقيقة التي تعزز الأجواء، نتخصص في حلول المرايا غير التقليدية التي تحول المساحات العادية إلى تجارب استثنائية. يجمع حرفيوننا بين التقنيات التقليدية والابتكارات الحديثة لإنشاء مرايا ليست وظيفية فقط، بل أعمال فنية تعكس أسلوبك ورؤيتك الفريدة.",
+    glassDecorationsGalleryDesc: "خدمة الزخارف الزجاجية لدينا تحقق الرؤية الفنية من خلال إبداعات زجاجية مذهلة. نتخصص في قطع زجاجية مخصصة تضيف الأناقة والطابع والرقي إلى أي مساحة داخلية أو خارجية. من ألواح الزجاج الملون التي تلعب بالضوء إلى تركيبات فنية زجاجية معقدة، يصنع فريقنا كل قطع باهتمام دقيق بالتفاصيل، مما يضمن أن كل إبداع هو مزيج مثالي من الجمال والوظيفة.",
+    specialtyGlassGalleryDesc: "خدمة الزجاج المتخصص لدينا تقدم حلولاً مبتكرة لتحديات التصميم الفريدة. نعمل مع الزجاج الملون والمنحوت والمنقوش لإنشاء ميزات مميزة تميز مساحتك. سواء كنت تبحث عن بيانات جريئة أو لمسات خفية، توفر خيارات الزجاج المتخصص لدينا إمكانيات لا نهائية للتعبير الإبداعي، مما يسمح لك بتحقيق نتائج تصميمية شخصية حقاً.",
+    showerMirrorsGalleryDesc: "خدمة مرايا الدش والإضاءة لدينا تجمع بين الوظيفة والتصميم المعاصر لإنشاء ميزات رائعة في الحمام. نتخصص في مرايا دش حديثة مع إضاءة LED متكاملة توفر إضاءة مثالية مع إضافة لمسة من الفخامة إلى روتينك اليومي. تم تصميم حلولنا لتحمل البيئات الرطبة مع الحفاظ على جمالها وأدائها، مما يضمن أن يصبح حمامك ملاذاً للأناقة والراحة.",
+
+    // Service Gallery UI
+    service: "خدمة",
+    showDetails: "عرض التفاصيل",
+    hideDetails: "إخفاء",
+    clickToViewGallery: " ← اضغط لعرض المعرض ",
+
+    // Project Gallery UI
+    closeGallery: "إغلاق المعرض",
+    previousImage: "الصورة السابقة",
+    nextImage: "الصورة التالية",
+    thumbnail: "صورة مصغرة",
+    showProjectDetails: "عرض تفاصيل المشروع",
+    hideProjectDetails: "إخفاء تفاصيل المشروع",
+
     // About
     aboutTitle: "صناعة التميز في خدمات الزجاج والمرايا",
     aboutDescription:
       "تتخصص مودرن هاوس في تقديم خدمات زجاج ومرايا فاخرة في جميع أنحاء الشرق الأوسط. نجمع بين الرؤية الفنية والحرفية الخبيرة لإنشاء حلول مخصصة تحول المساحات السكنية والتجارية.",
+    premiumMirrorManufacturing: "تصنيع المرايا المتميز",
+    engravedMirrorArtistry: "فن حفر المرايا",
+    engravedMirrorArtistryDesc: "متخصصون في الزخارف الفسيفسائية الشرقية والأنماط الزخرفية على المرايا والأسطح الزجاجية الفاخرة.",
     feature1: "تصاميم مرايا مخصصة وزخارف",
     feature2: "زجاج ملون ومنحوت ومنقوش",
     feature3: "مرايا دش مع إضاءة LED",
@@ -154,9 +207,13 @@ const translations = {
     residentialProject: "سكني",
     hospitalityProject: "ضيافة",
     project1: "برج دبي مارينا",
+    project1Desc: "برج تجاري رائع يتميز بتركيبات زجاجية من الأرض إلى السقف مع لمسات مرايا مخصصة في جميع أنحاء الردهة والمناطق المشتركة.",
     project2: "مجموعة الفلل الفاخرة",
+    project2Desc: "مجموعة فلل فاخرة تتميز بمرايا زخرفية مخصصة وأقسام زجاج ملون ومرايا دش بإضاءة LED في غرف النوم الرئيسية.",
     project3: "المقر الرئيسي للشركات",
+    project3Desc: "المقر الرئيسي للشركات مع ميزات زجاج منحوت وقاعات اجتماعات زجاج منقوش وتركيبات مرايا فنية.",
     project4: "فندق بوتيك",
+    project4Desc: "فندق بوتيك يتميز بتصاميم مرايا غير تقليدية وتركيبات فنية زجاج ملون وزخارف زجاجية مخصصة في جميع أنحائه.",
     viewGallery: "عرض المعرض",
 
     // Contact
@@ -180,6 +237,9 @@ const translations = {
 
     // Footer
     footerDescription: "خدمات زجاج ومرايا فاخرة للشرق الأوسط.",
+    architecturalGlass: "الزجاج المعماري",
+    residentialSolutions: "حلول سكنية",
+    customMirrors: "مرايا مخصصة",
     servicesFooter: "الخدمات",
     company: "الشركة",
     aboutUs: "من نحن",

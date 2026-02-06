@@ -23,7 +23,7 @@ export function Services() {
         "/luxury-hotel-lobby-with-custom-glass-features.jpg",
         "/decorative-colored-glass-panels-with-artistic-patt.jpg",
       ],
-      detailedDescription: "Our custom mirrors and decorations service offers unparalleled craftsmanship in creating unique mirror designs for any space. From statement pieces that serve as focal points to subtle decorative accents that enhance ambiance, we specialize in unconventional mirror solutions that transform ordinary spaces into extraordinary experiences. Our artisans combine traditional techniques with modern innovations to create mirrors that are not just functional, but works of art that reflect your unique style and vision."
+      detailedDescription: t("mirrorsDecorationsGalleryDesc"),
     },
     {
       icon: Frame,
@@ -35,7 +35,7 @@ export function Services() {
         "/modern-glass-tower-building-facade-in-dubai.jpg",
         "/luxury-hotel-lobby-with-custom-glass-features.jpg",
       ],
-      detailedDescription: "Our glass decorations service brings artistic vision to life through stunning glass creations. We specialize in custom glass pieces that add elegance, character, and sophistication to any interior or exterior space. From colored glass panels that play with light to intricate glass art installations, our team crafts each piece with meticulous attention to detail, ensuring that every creation is a perfect blend of beauty and functionality."
+      detailedDescription: t("glassDecorationsGalleryDesc"),
     },
     {
       icon: Palette,
@@ -47,7 +47,7 @@ export function Services() {
         "/modern-office-building-with-glass-curtain-wall.jpg",
         "/luxury-villa-with-floor-to-ceiling-glass-windows.jpg",
       ],
-      detailedDescription: "Our specialty glass service offers innovative solutions for unique design challenges. We work with colored glass, carved glass, and patterned glass to create distinctive features that set your space apart. Whether you're looking for bold statements or subtle accents, our specialty glass options provide endless possibilities for creative expression, allowing you to achieve truly personalized design outcomes."
+      detailedDescription: t("specialtyGlassGalleryDesc"),
     },
     {
       icon: Droplets,
@@ -59,7 +59,7 @@ export function Services() {
         "/modern-luxury-mirror-installation-in-elegant-inter.jpg",
         "/carved-glass-decorative-wall-feature-in-upscale-sp.jpg",
       ],
-      detailedDescription: "Our shower mirrors and lighting service combines functionality with contemporary design to create stunning bathroom features. We specialize in modern shower mirrors with integrated LED lighting that provide perfect illumination while adding a touch of luxury to your daily routine. Our solutions are designed to withstand humid environments while maintaining their beauty and performance, ensuring that your bathroom becomes a sanctuary of style and comfort."
+      detailedDescription: t("showerMirrorsGalleryDesc"),
     },
   ]
 
@@ -137,7 +137,7 @@ export function Services() {
                 
                 {/* View gallery hint */}
                 <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-sm text-primary font-medium">Click to view gallery →</span>
+                  <span className="text-sm text-primary font-medium">{t("clickToViewGallery")}</span>
                 </div>
               </CardContent>
             </Card>
@@ -250,7 +250,7 @@ export function Services() {
                 aria-label="Show service details"
               >
                 <ChevronUp className="h-4 w-4" />
-                <span className="font-semibold">Show details</span>
+                <span className="font-semibold">{t("showDetails")}</span>
               </button>
             </div>
           )}
@@ -270,12 +270,12 @@ export function Services() {
                   aria-label="Hide service details"
                 >
                   <ChevronDown className="h-3 w-3" />
-                  <span className="font-semibold">Hide</span>
+                  <span className="font-semibold">{t("hideDetails")}</span>
                 </button>
 
                 <div className="flex items-center gap-3 mb-2 pr-16">
                   <span className="text-xs text-primary font-medium px-3 py-1 bg-primary/10 rounded-full border border-white/20">
-                    Service
+                    {t("service")}
                   </span>
                   <div className="flex items-center gap-2 text-white/60">
                     <Sparkles className="h-3 w-3 text-primary" />

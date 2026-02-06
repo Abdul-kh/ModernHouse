@@ -15,10 +15,9 @@ export function Projects() {
   const projects = [
     {
       title: t("project1"),
-      category: t("commercial"),
+      category: t("commercialProject"),
       image: "/modern-glass-tower-building-facade-in-dubai.jpg",
-      description:
-        "A stunning commercial tower featuring floor-to-ceiling glass installations with custom mirror accents throughout the lobby and common areas.",
+      description: t("project1Desc"),
       gallery: [
         "/modern-glass-tower-building-facade-in-dubai.jpg",
         "/modern-luxury-mirror-installation-in-elegant-inter.jpg",
@@ -27,10 +26,9 @@ export function Projects() {
     },
     {
       title: t("project2"),
-      category: t("residential"),
+      category: t("residentialProject"),
       image: "/luxury-villa-with-floor-to-ceiling-glass-windows.jpg",
-      description:
-        "Luxury villa collection featuring custom decorative mirrors, colored glass partitions, and LED-lit shower mirrors in master bathrooms.",
+      description: t("project2Desc"),
       gallery: [
         "/luxury-villa-with-floor-to-ceiling-glass-windows.jpg",
         "/contemporary-shower-with-led-mirror-lighting.jpg",
@@ -39,10 +37,9 @@ export function Projects() {
     },
     {
       title: t("project3"),
-      category: t("commercial"),
+      category: t("commercialProject"),
       image: "/modern-office-building-with-glass-curtain-wall.jpg",
-      description:
-        "Corporate headquarters with carved glass features, patterned glass conference rooms, and artistic mirror installations.",
+      description: t("project3Desc"),
       gallery: [
         "/modern-office-building-with-glass-curtain-wall.jpg",
         "/carved-glass-decorative-wall-feature-in-upscale-sp.jpg",
@@ -51,10 +48,9 @@ export function Projects() {
     },
     {
       title: t("project4"),
-      category: t("hospitality"),
+      category: t("hospitalityProject"),
       image: "/luxury-hotel-lobby-with-custom-glass-features.jpg",
-      description:
-        "Boutique hotel featuring unconventional mirror designs, colored glass art installations, and custom decorative glass throughout.",
+      description: t("project4Desc"),
       gallery: [
         "/luxury-hotel-lobby-with-custom-glass-features.jpg",
         "/modern-luxury-mirror-installation-in-elegant-inter.jpg",
@@ -185,7 +181,7 @@ export function Projects() {
           <button
             onClick={handleCloseGallery}
             className="absolute top-4 right-4 text-white hover:text-primary transition-colors z-[130]"
-            aria-label="Close gallery"
+            aria-label={t("closeGallery")}
           >
             <X className="h-8 w-8" />
           </button>
@@ -225,14 +221,14 @@ export function Projects() {
                       <button
                         onClick={handlePrevImage}
                         className="absolute top-1/2 -translate-y-1/2 left-4 sm:left-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-30 border border-white/20 shadow-lg"
-                        aria-label="Previous image"
+                        aria-label={t("previousImage")}
                       >
                         <ChevronLeft className="h-7 w-7" />
                       </button>
                       <button
                         onClick={handleNextImage}
                         className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-30 border border-white/20 shadow-lg"
-                        aria-label="Next image"
+                        aria-label={t("nextImage")}
                       >
                         <ChevronRight className="h-7 w-7" />
                       </button>
@@ -252,7 +248,7 @@ export function Projects() {
                                 ? "border-white scale-110 shadow-white/30"
                                 : "border-white/30 opacity-80 hover:opacity-100 hover:scale-105"
                             }`}
-                            aria-label={`Thumbnail ${idx + 1}`}
+                            aria-label={`${t("thumbnail")} ${idx + 1}`}
                           >
                             <img
                               src={img || "/placeholder.svg"}
@@ -277,10 +273,10 @@ export function Projects() {
             <button
               onClick={() => setInfoExpanded(!infoExpanded)}
               className="flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-xl border border-white/20 text-white shadow-2xl transition-all"
-              aria-label={infoExpanded ? "Hide project details" : "Show project details"}
+              aria-label={infoExpanded ? t("hideProjectDetails") : t("showProjectDetails")}
             >
               {infoExpanded ? <ChevronDown className="h-5 w-5" /> : <ChevronUp className="h-5 w-5" />}
-              <span className="text-sm font-semibold">{infoExpanded ? "Hide details" : "Show details"}</span>
+              <span className="text-sm font-semibold">{infoExpanded ? t("hideProjectDetails") : t("showProjectDetails")}</span>
             </button>
           </div>
 
