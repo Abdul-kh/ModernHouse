@@ -31,7 +31,10 @@ export function Services() {
   ]
 
   return (
-    <section id="services" className="py-24 px-4 lg:px-8 relative overflow-hidden">
+    <section id="services" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background">
+      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
+        <div className="absolute inset-0 damask-black opacity-20" />
+      </div>
       <div className="container mx-auto relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance">

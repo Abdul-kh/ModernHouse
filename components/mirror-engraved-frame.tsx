@@ -12,7 +12,15 @@ export function MirrorEngravedFrame({
   children,
   className = "",
 }: MirrorEngravedFrameProps) {
-  const [lightsOn, setLightsOn] = useState(true)
+  const lightModes = [
+    { name: "white", color: "255,255,255" },
+    { name: "warm", color: "255,183,110" },
+    { name: "neutral", color: "255,225,190" },
+    { name: "off", color: "255,255,255" },
+  ]
+  const [lightModeIndex, setLightModeIndex] = useState(0)
+  const currentLight = lightModes[lightModeIndex]
+  const lightsOn = currentLight.name !== "off"
   const uid = useId().replace(/:/g, "")
 
   const w = 100
@@ -72,13 +80,13 @@ export function MirrorEngravedFrame({
               <path
                 d="M12 0 L24 12 L12 24 L0 12 Z"
                 fill="none"
-                stroke="rgba(255,255,255,0.5)"
+                stroke={`rgba(${currentLight.color},0.5)`}
                 strokeWidth="0.8"
               />
               <path
                 d="M12 4 L20 12 L12 20 L4 12 Z"
                 fill="none"
-                stroke="rgba(255,255,255,0.35)"
+                stroke={`rgba(${currentLight.color},0.35)`}
                 strokeWidth="0.6"
               />
               <circle
@@ -86,12 +94,12 @@ export function MirrorEngravedFrame({
                 cy="12"
                 r="2"
                 fill="none"
-                stroke="rgba(255,255,255,0.4)"
+                stroke={`rgba(${currentLight.color},0.4)`}
                 strokeWidth="0.5"
               />
               <path
                 d="M12 0 L12 24 M0 12 L24 12"
-                stroke="rgba(255,255,255,0.2)"
+                stroke={`rgba(${currentLight.color},0.2)`}
                 strokeWidth="0.3"
               />
             </pattern>
@@ -102,16 +110,16 @@ export function MirrorEngravedFrame({
                 cy="0"
                 r="8"
                 fill="none"
-                stroke="rgba(255,255,255,0.6)"
+                stroke={`rgba(${currentLight.color},0.6)`}
                 strokeWidth="1.2"
               />
-              <circle cx="0" cy="0" r="4" fill="rgba(255,255,255,0.25)" />
+              <circle cx="0" cy="0" r="4" fill={`rgba(${currentLight.color},0.25)`} />
               <path
                 d="M0 -8 L0 8 M-8 0 L8 0"
-                stroke="rgba(255,255,255,0.4)"
+                stroke={`rgba(${currentLight.color},0.4)`}
                 strokeWidth="0.6"
               />
-              <circle cx="0" cy="0" r="1.5" fill="rgba(255,255,255,0.8)" />
+              <circle cx="0" cy="0" r="1.5" fill={`rgba(${currentLight.color},0.8)`} />
             </g>
           </defs>
 
@@ -161,7 +169,7 @@ export function MirrorEngravedFrame({
             height={h - 2 * bw}
             rx="10"
             fill="none"
-            stroke="rgba(255,255,255,0.5)"
+            stroke={`rgba(${currentLight.color},0.5)`}
             strokeWidth="2"
             opacity={lightsOn ? 0.9 : 0.4}
             filter={lightsOn ? `url(#ledGlow${uid})` : undefined}
@@ -173,7 +181,7 @@ export function MirrorEngravedFrame({
             height={h - 2 * bw - 8}
             rx="8"
             fill="none"
-            stroke="rgba(255,255,255,0.3)"
+            stroke={`rgba(${currentLight.color},0.3)`}
             strokeWidth="1"
             opacity={lightsOn ? 0.7 : 0.25}
             filter={lightsOn ? `url(#ledGlow${uid})` : undefined}
@@ -213,28 +221,28 @@ export function MirrorEngravedFrame({
               cx={w / 2}
               cy={bw * 0.4}
               r="4"
-              fill="rgba(255,255,255,0.7)"
+              fill={`rgba(${currentLight.color},0.7)`}
               filter={lightsOn ? `url(#ledGlowS${uid})` : undefined}
             />
             <circle
               cx={w / 2}
               cy={h - bw * 0.4}
               r="4"
-              fill="rgba(255,255,255,0.7)"
+              fill={`rgba(${currentLight.color},0.7)`}
               filter={lightsOn ? `url(#ledGlowS${uid})` : undefined}
             />
             <circle
               cx={bw * 0.4}
               cy={h / 2}
               r="4"
-              fill="rgba(255,255,255,0.7)"
+              fill={`rgba(${currentLight.color},0.7)`}
               filter={lightsOn ? `url(#ledGlowS${uid})` : undefined}
             />
             <circle
               cx={w - bw * 0.4}
               cy={h / 2}
               r="4"
-              fill="rgba(255,255,255,0.7)"
+              fill={`rgba(${currentLight.color},0.7)`}
               filter={lightsOn ? `url(#ledGlowS${uid})` : undefined}
             />
           </g>
@@ -247,10 +255,11 @@ export function MirrorEngravedFrame({
       <button
         onClick={(e) => {
           e.stopPropagation()
-          setLightsOn(!lightsOn)
+          setLightModeIndex((prev) => (prev + 1) % lightModes.length)
         }}
         className={`engraved-light-button ${lightsOn ? "active" : ""}`}
-        aria-label={lightsOn ? "Turn lights off" : "Turn lights on"}
+        style={lightsOn ? { '--light-color': currentLight.color } as React.CSSProperties : undefined}
+        aria-label={`Light mode: ${currentLight.name}`}
       >
         <Lightbulb className="button-icon" />
       </button>

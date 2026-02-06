@@ -61,35 +61,19 @@ export function Header() {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8" dir="ltr">
-            <button
-              onClick={() => handleNavClick("services")}
-              className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
-            >
-              <span className="relative z-10">{t("services")}</span>
-              <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(255,255,255,0.1)_70%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform scale-0 group-hover:scale-150 origin-center h-full w-[200%] -left-1/2 rounded-full overflow-hidden"></span>
-            </button>
-            <button
-              onClick={() => handleNavClick("about")}
-              className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
-            >
-              <span className="relative z-10">{t("about")}</span>
-              <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(255,255,255,0.1)_70%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform scale-0 group-hover:scale-150 origin-center h-full w-[200%] -left-1/2 rounded-full overflow-hidden"></span>
-            </button>
-            <button
-              onClick={() => handleNavClick("projects")}
-              className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
-            >
-              <span className="relative z-10">{t("projects")}</span>
-              <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(255,255,255,0.1)_70%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform scale-0 group-hover:scale-150 origin-center h-full w-[200%] -left-1/2 rounded-full overflow-hidden"></span>
-            </button>
-            <button
-              onClick={() => handleNavClick("contact")}
-              className="relative text-base font-semibold text-white hover:text-primary transition-all duration-300 group px-4 py-2 overflow-hidden"
-            >
-              <span className="relative z-10">{t("contact")}</span>
-              <span className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(255,255,255,0.1)_70%,transparent_100%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform scale-0 group-hover:scale-150 origin-center h-full w-[200%] -left-1/2 rounded-full overflow-hidden"></span>
-            </button>
+          <nav className="hidden md:flex items-center gap-10 lg:gap-14" dir="ltr">
+            {(["services", "about", "projects", "Contact us"] as const).map((section) => (
+              <button
+                key={section}
+                data-nav-link
+                onClick={() => handleNavClick(section)}
+              >
+                <span className="relative z-10">{t(section)}</span>
+                <span className="absolute inset-0 rounded-full overflow-hidden pointer-events-none">
+                  <span className="nav-shine" />
+                </span>
+              </button>
+            ))}
           </nav>
 
           <div className="hidden md:flex items-center gap-4" dir="ltr">

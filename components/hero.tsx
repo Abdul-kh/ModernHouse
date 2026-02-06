@@ -18,7 +18,15 @@ export function Hero() {
   const { transitionToSection } = useTransition()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [lightsOn, setLightsOn] = useState(true)
+  const lightModes = [
+    { name: "white", color: "255,255,255", filterHue: "none" },
+    { name: "warm", color: "255,183,110", filterHue: "sepia(0.35) saturate(1.4) brightness(1.1)" },
+    { name: "neutral", color: "255,225,190", filterHue: "sepia(0.15) saturate(1.2) brightness(1.05)" },
+    { name: "off", color: "255,255,255", filterHue: "none" },
+  ]
+  const [lightModeIndex, setLightModeIndex] = useState(0)
+  const currentLight = lightModes[lightModeIndex]
+  const lightsOn = currentLight.name !== "off"
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,14 +44,8 @@ export function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-background to-black/40" />
+      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
         <div className="absolute inset-0 damask-black opacity-20" />
-      </div>
-
-      <div className="absolute inset-0 z-[1] pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-black/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-black/50 to-transparent" />
       </div>
 
       <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-20">
@@ -108,7 +110,7 @@ export function Hero() {
                   setIsTransitioning(false)
                 }, 600)
               }}
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-[240px] h-[340px] md:w-[280px] md:h-[400px] opacity-50 hover:opacity-70 scale-80 hover:scale-85 -translate-x-4 md:-translate-x-8 z-0 transition-all duration-500 cursor-pointer group"
+              className="absolute left-0 top-1/2 -translate-y-1/2 w-[140px] h-[200px] sm:w-[180px] sm:h-[260px] md:w-[280px] md:h-[400px] opacity-30 sm:opacity-40 md:opacity-50 hover:opacity-70 scale-80 hover:scale-85 translate-x-[-55%] sm:translate-x-[-40%] md:-translate-x-8 z-0 transition-all duration-500 cursor-pointer group"
             >
               <div className="mirror-frame-3d w-full h-full overflow-hidden relative">
                 <div className="engraved-pattern">
@@ -184,21 +186,21 @@ export function Hero() {
                       {/* Large Mirror Tile Pattern - Much bigger tiles */}
                       <pattern id="mirrorTilePattern" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
                         {/* Large diamond/tile shape */}
-                        <path d="M12 0 L24 12 L12 24 L0 12 Z" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="0.8"/>
+                        <path d="M12 0 L24 12 L12 24 L0 12 Z" fill="none" stroke={`rgba(${currentLight.color},0.5)`} strokeWidth="0.8"/>
                         {/* Inner diamond */}
-                        <path d="M12 4 L20 12 L12 20 L4 12 Z" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="0.6"/>
+                        <path d="M12 4 L20 12 L12 20 L4 12 Z" fill="none" stroke={`rgba(${currentLight.color},0.35)`} strokeWidth="0.6"/>
                         {/* Center dot */}
-                        <circle cx="12" cy="12" r="2" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="0.5"/>
+                        <circle cx="12" cy="12" r="2" fill="none" stroke={`rgba(${currentLight.color},0.4)`} strokeWidth="0.5"/>
                         {/* Cross lines */}
-                        <path d="M12 0 L12 24 M0 12 L24 12" stroke="rgba(255,255,255,0.2)" strokeWidth="0.3"/>
+                        <path d="M12 0 L12 24 M0 12 L24 12" stroke={`rgba(${currentLight.color},0.2)`} strokeWidth="0.3"/>
                       </pattern>
 
                       {/* Corner Ornament - Large LED Style */}
                       <g id="cornerTileLed">
-                        <circle cx="0" cy="0" r="8" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2"/>
-                        <circle cx="0" cy="0" r="4" fill="rgba(255,255,255,0.25)"/>
-                        <path d="M0 -8 L0 8 M-8 0 L8 0" stroke="rgba(255,255,255,0.4)" strokeWidth="0.6"/>
-                        <circle cx="0" cy="0" r="1.5" fill="rgba(255,255,255,0.8)"/>
+                        <circle cx="0" cy="0" r="8" fill="none" stroke={`rgba(${currentLight.color},0.6)`} strokeWidth="1.2"/>
+                        <circle cx="0" cy="0" r="4" fill={`rgba(${currentLight.color},0.25)`}/>
+                        <path d="M0 -8 L0 8 M-8 0 L8 0" stroke={`rgba(${currentLight.color},0.4)`} strokeWidth="0.6"/>
+                        <circle cx="0" cy="0" r="1.5" fill={`rgba(${currentLight.color},0.8)`}/>
                       </g>
                     </defs>
 
@@ -218,9 +220,9 @@ export function Hero() {
                         filter={lightsOn ? "url(#ledGlow)" : ""}/>
                       
                       {/* Inner decorative border lines - only engravings */}
-                      <rect x="12" y="12" width="76" height="116" rx="10" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" 
+                      <rect x="12" y="12" width="76" height="116" rx="10" fill="none" stroke={`rgba(${currentLight.color},0.5)`} strokeWidth="2" 
                         opacity={lightsOn ? "0.9" : "0.4"} filter={lightsOn ? "url(#ledGlow)" : ""}/>
-                      <rect x="16" y="16" width="68" height="108" rx="8" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" 
+                      <rect x="16" y="16" width="68" height="108" rx="8" fill="none" stroke={`rgba(${currentLight.color},0.3)`} strokeWidth="1" 
                         opacity={lightsOn ? "0.7" : "0.25"} filter={lightsOn ? "url(#ledGlow)" : ""}/>
                     </g>
 
@@ -242,10 +244,10 @@ export function Hero() {
 
                     {/* Side Midpoint LED Accents - Large */}
                     <g opacity={lightsOn ? "1" : "0.5"}>
-                      <circle cx="50" cy="10" r="4" fill="rgba(255,255,255,0.7)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
-                      <circle cx="50" cy="130" r="4" fill="rgba(255,255,255,0.7)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
-                      <circle cx="10" cy="70" r="4" fill="rgba(255,255,255,0.7)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
-                      <circle cx="90" cy="70" r="4" fill="rgba(255,255,255,0.7)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
+                      <circle cx="50" cy="10" r="4" fill={`rgba(${currentLight.color},0.7)`} filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
+                      <circle cx="50" cy="130" r="4" fill={`rgba(${currentLight.color},0.7)`} filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
+                      <circle cx="10" cy="70" r="4" fill={`rgba(${currentLight.color},0.7)`} filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
+                      <circle cx="90" cy="70" r="4" fill={`rgba(${currentLight.color},0.7)`} filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
                     </g>
                   </svg>
                 </div>
@@ -260,10 +262,11 @@ export function Hero() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    setLightsOn(!lightsOn)
+                    setLightModeIndex((prev) => (prev + 1) % lightModes.length)
                   }}
                   className={`engraved-light-button ${lightsOn ? 'active' : ''}`}
-                  aria-label={lightsOn ? "Turn lights off" : "Turn lights on"}
+                  style={lightsOn ? { '--light-color': currentLight.color } as React.CSSProperties : undefined}
+                  aria-label={`Light mode: ${currentLight.name}`}
                 >
                   <Lightbulb className="button-icon" />
                 </button>
@@ -279,7 +282,7 @@ export function Hero() {
                   setIsTransitioning(false)
                 }, 600)
               }}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-[240px] h-[340px] md:w-[280px] md:h-[400px] opacity-50 hover:opacity-70 scale-80 hover:scale-85 translate-x-4 md:translate-x-8 z-0 transition-all duration-500 cursor-pointer group"
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-[140px] h-[200px] sm:w-[180px] sm:h-[260px] md:w-[280px] md:h-[400px] opacity-30 sm:opacity-40 md:opacity-50 hover:opacity-70 scale-80 hover:scale-85 translate-x-[55%] sm:translate-x-[40%] md:translate-x-8 z-0 transition-all duration-500 cursor-pointer group"
             >
               <div className="mirror-frame-3d w-full h-full overflow-hidden relative">
                 <div className="engraved-pattern">

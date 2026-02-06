@@ -515,6 +515,58 @@ body::after {
 }
 */
 
+/* Mirror-inspired nav link hover */
+[data-nav-link] {
+  position: relative;
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  overflow: hidden;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.35s ease, background-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+[data-nav-link]:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 0 16px rgba(255, 255, 255, 0.06),
+    inset 0 1px 2px rgba(255, 255, 255, 0.18),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.06);
+}
+
+@keyframes mirrorShineSweep {
+  0%   { left: -100%; opacity: 1; }
+  100% { left: 150%;  opacity: 1; }
+}
+
+[data-nav-link] .nav-shine {
+  position: absolute;
+  top: -20%;
+  left: -100%;
+  width: 60%;
+  height: 140%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 30%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.06) 70%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+[data-nav-link]:hover .nav-shine {
+  animation: mirrorShineSweep 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
 .engraved-light-button {
   position: absolute;
   bottom: 20px;
@@ -576,19 +628,19 @@ body::after {
 }
 
 .engraved-light-button.active .button-icon {
-  color: rgba(255, 255, 255, 1);
-  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+  color: rgba(var(--light-color, 255, 255, 255), 1);
+  filter: drop-shadow(0 0 12px rgba(var(--light-color, 255, 255, 255), 0.9));
 }
 
 .engraved-light-button.active {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(var(--light-color, 255, 255, 255), 0.15);
+  border-color: rgba(var(--light-color, 255, 255, 255), 0.6);
   box-shadow: 
-    inset 0 1px 3px rgba(255, 255, 255, 0.5),
+    inset 0 1px 3px rgba(var(--light-color, 255, 255, 255), 0.5),
     inset 0 -1px 2px rgba(0, 0, 0, 0.2),
     0 4px 12px rgba(0, 0, 0, 0.3),
-    0 0 30px rgba(255, 255, 255, 0.4),
-    inset 0 0 30px rgba(255, 255, 255, 0.15);
+    0 0 30px rgba(var(--light-color, 255, 255, 255), 0.4),
+    inset 0 0 30px rgba(var(--light-color, 255, 255, 255), 0.15);
 }
 
 .engraved-pattern {

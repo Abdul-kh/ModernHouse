@@ -10,7 +10,10 @@ export function About() {
   const features = [t("feature1"), t("feature2"), t("feature3"), t("feature4"), t("feature5"), t("feature6")]
 
   return (
-    <section id="about" className="py-24 px-4 lg:px-8 relative overflow-hidden">
+    <section id="about" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background">
+      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
+        <div className="absolute inset-0 damask-black opacity-20" />
+      </div>
       {/* Futuristic background elements */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-64 h-64 bg-primary/5 rounded-full blur-[100px] animate-pulse" />

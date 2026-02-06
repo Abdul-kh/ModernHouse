@@ -118,7 +118,10 @@ export function Projects() {
   }
 
   return (
-    <section id="projects" className="py-24 px-4 lg:px-8 relative overflow-hidden">
+    <section id="projects" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background">
+      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
+        <div className="absolute inset-0 damask-black opacity-20" />
+      </div>
       <div className="container mx-auto relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance">
@@ -152,7 +155,7 @@ export function Projects() {
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
 
                   {/* Hover overlay with view gallery text */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-10">
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-[4]">
                     <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                       <Sparkles className="h-8 w-8 text-primary mx-auto mb-3 animate-pulse" />
                       <span className="text-white font-semibold text-lg bg-primary/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20 inline-block">
