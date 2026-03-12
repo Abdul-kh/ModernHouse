@@ -1,16 +1,17 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Sparkles, Palette, Droplets, Frame, X, ChevronLeft, ChevronRight, ChevronUp, ChevronDown } from "lucide-react"
+import React, { useEffect, useState } from "react"
+import { Sparkles, Palette, Droplets, Frame, X, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, ArrowRight } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
-import { useEffect, useState } from "react"
-import { MirrorEngravedFrame } from "@/components/mirror-engraved-frame"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 
 export function Services() {
   const { t } = useLanguage()
   const [selectedService, setSelectedService] = useState<number | null>(null)
+  const [hoveredService, setHoveredService] = useState<number>(0)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [infoExpanded, setInfoExpanded] = useState(false)
+  const ref = useScrollReveal()
 
   const services = [
     {
@@ -101,47 +102,91 @@ export function Services() {
   }, [selectedService])
 
   return (
-    <section id="services" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background">
+    <section id="services" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
         <div className="absolute inset-0 damask-black opacity-20" />
       </div>
+      <div className="mirror-divider absolute top-0 left-0 right-0" />
+
       <div className="container mx-auto relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance">
+        {/* Section header */}
+        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
+          <div className="flex justify-center mb-4">
+            <span className="section-label">{t("servicesLabel")}</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-5 text-balance section-heading-editorial">
             {t("servicesTitle")}
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">{t("servicesDescription")}</p>
+          <p className="text-base text-white/50 leading-relaxed">{t("servicesDescription")}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {services.map((service, index) => (
-            <Card
-              key={index}
-              onClick={() => handleServiceClick(index)}
-              className="border-border transition-all duration-300 group glass-card hover:border-primary/30 relative mirror-hover lux-mirror-frame hover:shadow-2xl hover:shadow-primary/15 hover:-translate-y-1 cursor-pointer"
+        {/* Asymmetric split layout */}
+        <div className="grid lg:grid-cols-[3fr_2fr] gap-8 lg:gap-16 max-w-7xl mx-auto items-start">
+          {/* Left: featured image — updates on hover */}
+          <div className="reveal reveal-delay-1 order-2 lg:order-1">
+            <div
+              className="relative rounded-3xl overflow-hidden mirror-frame-3d shadow-2xl"
+              style={{ aspectRatio: "4/3" }}
             >
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary/5 to-transparent" />
-              </div>
-
-              <CardContent className="p-6 relative z-10">
-                <div className="mb-4">
-                  <div className="w-12 h-12 rounded-full glass-effect flex items-center justify-center group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-300">
-                    <service.icon className="h-6 w-6 text-primary/90 group-hover:text-primary transition-colors" />
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                  {service.title}
+              <img
+                src={services[hoveredService].gallery[0]}
+                alt={services[hoveredService].title}
+                className="w-full h-full object-cover transition-all duration-700"
+              />
+              {/* Mirror reflection overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-black/40 pointer-events-none" />
+              {/* Service name watermark on image */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+                <p className="text-xs text-white/40 uppercase tracking-[0.2em] mb-1">{t("servicesLabel")}</p>
+                <h3 className="text-xl md:text-2xl font-bold text-white font-playfair-heading">
+                  {services[hoveredService].title}
                 </h3>
-                <p className="text-muted-foreground leading-relaxed">{service.description}</p>
-                
-                {/* View gallery hint */}
-                <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-sm text-primary font-medium">{t("clickToViewGallery")}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: vertical service list */}
+          <div className="order-1 lg:order-2 flex flex-col justify-center reveal reveal-delay-2">
+            {services.map((service, index) => (
+              <button
+                key={index}
+                onMouseEnter={() => setHoveredService(index)}
+                onClick={() => handleServiceClick(index)}
+                className={`service-row group text-left py-6 px-4 rounded-xl transition-all duration-300 ${
+                  hoveredService === index ? "bg-white/[0.04] border-b border-white/10" : ""
+                }`}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-start gap-4">
+                    <div className={`mt-1 w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                      hoveredService === index
+                        ? "bg-primary/15 border border-primary/30"
+                        : "bg-white/[0.04] border border-white/10"
+                    }`}>
+                      <service.icon className={`h-4 w-4 transition-colors duration-300 ${
+                        hoveredService === index ? "text-primary" : "text-white/40"
+                      }`} />
+                    </div>
+                    <div>
+                      <h3 className={`text-lg font-bold transition-colors duration-300 ${
+                        hoveredService === index ? "text-white" : "text-white/60"
+                      }`}>
+                        {service.title}
+                      </h3>
+                      <p className={`text-sm leading-relaxed mt-1 transition-all duration-300 ${
+                        hoveredService === index ? "text-white/55 max-h-20 opacity-100" : "text-transparent max-h-0 opacity-0 overflow-hidden"
+                      }`}>
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+                  <ArrowRight className={`h-4 w-4 flex-shrink-0 mt-1 transition-all duration-300 ${
+                    hoveredService === index ? "text-primary opacity-100 translate-x-0" : "text-white/20 opacity-0 -translate-x-2"
+                  }`} />
                 </div>
-              </CardContent>
-            </Card>
-          ))}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

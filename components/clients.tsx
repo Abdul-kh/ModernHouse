@@ -1,100 +1,84 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
-import { Building2, Hotel, Home, Landmark } from "lucide-react"
+import React from "react"
 import { useLanguage } from "@/lib/language-context"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 
-const clients = [
-  { name: "Rotana Hotel Erbil", category: "hospitality", logo: "🏨" },
-  { name: "Divan Erbil Hotel", category: "hospitality", logo: "🏨" },
-  { name: "Cristal Erbil Hotel", category: "hospitality", logo: "🏨" },
-  { name: "Erbil International Airport", category: "commercial", logo: "✈️" },
-  { name: "Royal Mall Erbil", category: "commercial", logo: "🏢" },
-  { name: "Family Mall", category: "commercial", logo: "🏢" },
-  { name: "Dream City", category: "residential", logo: "🏘️" },
-  { name: "Italian Village", category: "residential", logo: "🏘️" },
-  { name: "Erbil Governorate", category: "government", logo: "🏛️" },
-  { name: "Kurdistan Regional Government", category: "government", logo: "🏛️" },
+const clientsRow1 = [
+  { name: "Rotana Hotel Erbil", initials: "RH", category: "Hospitality" },
+  { name: "Divan Erbil Hotel", initials: "DE", category: "Hospitality" },
+  { name: "Cristal Erbil Hotel", initials: "CE", category: "Hospitality" },
+  { name: "Erbil International Airport", initials: "EIA", category: "Commercial" },
+  { name: "Royal Mall Erbil", initials: "RM", category: "Commercial" },
+  { name: "Family Mall", initials: "FM", category: "Commercial" },
 ]
 
-const categoryIcons = {
-  hospitality: Hotel,
-  commercial: Building2,
-  residential: Home,
-  government: Landmark,
+const clientsRow2 = [
+  { name: "Dream City", initials: "DC", category: "Residential" },
+  { name: "Italian Village", initials: "IV", category: "Residential" },
+  { name: "Erbil Governorate", initials: "EG", category: "Government" },
+  { name: "Kurdistan Regional Government", initials: "KRG", category: "Government" },
+  { name: "Ankawa Mall", initials: "AM", category: "Commercial" },
+  { name: "Empire World", initials: "EW", category: "Residential" },
+]
+
+function ClientCard({ client }: { client: { name: string; initials: string; category: string } }) {
+  return (
+    <div className="client-card mx-3">
+      <div className="client-initials">
+        {client.initials}
+      </div>
+      <div className="text-center">
+        <p className="text-xs font-semibold text-white/80 leading-tight max-w-[110px] text-center">{client.name}</p>
+        <p className="text-[10px] text-white/35 mt-0.5 uppercase tracking-wide">{client.category}</p>
+      </div>
+    </div>
+  )
 }
 
 export function Clients() {
   const { t } = useLanguage()
+  const ref = useScrollReveal()
 
   return (
-    <section id="clients" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background">
+    <section id="clients" className="py-24 relative overflow-hidden bg-background" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
         <div className="absolute inset-0 damask-black opacity-20" />
       </div>
-      <div className="container mx-auto relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance">
+
+      <div className="mirror-divider absolute top-0 left-0 right-0" />
+
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
+          <div className="flex justify-center mb-4">
+            <span className="section-label">{t("clientsLabel")}</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance section-heading-editorial">
             {t("clientsTitle")}
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">{t("clientsDescription")}</p>
+          <p className="text-lg text-white/55 leading-relaxed">{t("clientsDescription")}</p>
         </div>
-
-        <Card className="border-border hover:shadow-xl hover:border-primary/50 transition-all bg-card/50 backdrop-blur-sm mirror-hover lux-mirror-frame">
-          <CardContent className="p-6 md:p-8">
-            <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-              {clients.map((client, index) => {
-                const IconComponent = categoryIcons[client.category as keyof typeof categoryIcons]
-                return (
-                  <div
-                    key={index}
-                    className="group relative flex flex-col items-center justify-center p-4 rounded-lg bg-background/50 hover:bg-background/80 transition-all duration-300 hover:scale-105 border border-border/50 hover:border-primary/30"
-                  >
-                    {/* Category indicator */}
-                    <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-                        <IconComponent className="h-2.5 w-2.5 text-primary" />
-                      </div>
-                    </div>
-                    
-                    {/* Logo/Icon */}
-                    <div className="text-2xl md:text-3xl mb-2 filter grayscale group-hover:grayscale-0 transition-all duration-300 transform group-hover:scale-110">
-                      {client.logo}
-                    </div>
-                    
-                    {/* Company name */}
-                    <h3 className="text-xs md:text-sm font-medium text-center text-muted-foreground group-hover:text-foreground transition-colors duration-300 leading-tight">
-                      {client.name}
-                    </h3>
-                  </div>
-                )
-              })}
-            </div>
-            
-            {/* Category legend */}
-            <div className="mt-8 pt-6 border-t border-border/50">
-              <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <Hotel className="h-3.5 w-3.5 text-primary" />
-                  <span>{t("hospitalityClients")}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Building2 className="h-3.5 w-3.5 text-primary" />
-                  <span>{t("commercialClients")}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Home className="h-3.5 w-3.5 text-primary" />
-                  <span>{t("residentialClients")}</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Landmark className="h-3.5 w-3.5 text-primary" />
-                  <span>{t("governmentClients")}</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
+
+      {/* Marquee row 1 — left to right */}
+      <div className="overflow-hidden mb-4 reveal reveal-delay-1">
+        <div className="marquee-track">
+          {[...clientsRow1, ...clientsRow1].map((client, i) => (
+            <ClientCard key={i} client={client} />
+          ))}
+        </div>
+      </div>
+
+      {/* Marquee row 2 — right to left */}
+      <div className="overflow-hidden reveal reveal-delay-2">
+        <div className="marquee-track-reverse">
+          {[...clientsRow2, ...clientsRow2].map((client, i) => (
+            <ClientCard key={i} client={client} />
+          ))}
+        </div>
+      </div>
+
+      <div className="mirror-divider absolute bottom-0 left-0 right-0" />
     </section>
   )
 }

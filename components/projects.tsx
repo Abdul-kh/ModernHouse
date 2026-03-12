@@ -1,16 +1,17 @@
 "use client"
 
-import { Card, CardContent } from "@/components/ui/card"
+import React, { useEffect, useState } from "react"
 import { useLanguage } from "@/lib/language-context"
-import { useEffect, useState } from "react"
 import { X, ChevronLeft, ChevronRight, Sparkles, ChevronUp, ChevronDown } from "lucide-react"
 import { MirrorEngravedFrame } from "@/components/mirror-engraved-frame"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 
 export function Projects() {
   const { t } = useLanguage()
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [infoExpanded, setInfoExpanded] = useState(false)
+  const ref = useScrollReveal()
 
   const projects = [
     {
@@ -96,61 +97,47 @@ export function Projects() {
     }
   }, [selectedProject])
 
-  const handleTiltMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    const target = event.currentTarget
-    const rect = target.getBoundingClientRect()
-    const x = event.clientX - rect.left
-    const y = event.clientY - rect.top
-    const rotateX = ((y / rect.height) - 0.5) * -12
-    const rotateY = ((x / rect.width) - 0.5) * 12
-    target.style.setProperty("--tilt-x", `${rotateX.toFixed(2)}deg`)
-    target.style.setProperty("--tilt-y", `${rotateY.toFixed(2)}deg`)
-  }
-
-  const handleTiltLeave = (event: React.MouseEvent<HTMLDivElement>) => {
-    const target = event.currentTarget
-    target.style.setProperty("--tilt-x", "0deg")
-    target.style.setProperty("--tilt-y", "0deg")
-  }
-
   return (
-    <section id="projects" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background">
+    <section id="projects" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
         <div className="absolute inset-0 damask-black opacity-20" />
       </div>
+      <div className="mirror-divider absolute top-0 left-0 right-0" />
+
       <div className="container mx-auto relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance">
+        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
+          <div className="flex justify-center mb-4">
+            <span className="section-label">{t("projectsLabel")}</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-5 text-balance section-heading-editorial">
             {t("projectsTitle")}
           </h2>
-          <p className="text-lg text-muted-foreground leading-relaxed">{t("projectsDescription")}</p>
+          <p className="text-base text-white/50 leading-relaxed">{t("projectsDescription")}</p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-7xl mx-auto">
+        {/* Asymmetric masonry grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {projects.map((project, index) => (
             <div
               key={index}
               onClick={() => handleProjectClick(index)}
-              className="group cursor-pointer relative"
+              className={`group cursor-pointer relative reveal reveal-delay-${(index % 4) + 1}`}
             >
-              {/* Floating decorative elements */}
-              <div className="absolute -top-4 -left-4 w-16 h-16 border border-primary/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" />
-              <div className="absolute -bottom-4 -right-4 w-20 h-20 border border-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-pulse" style={{ animationDelay: "0.5s" }} />
-
-              {/* Main mirror container */}
-              <div className="relative aspect-[3/4] mx-auto max-w-md">
+              {/* Main mirror container — alternating portrait/landscape proportions */}
+              <div className={`relative mx-auto ${
+                index === 0 ? "aspect-[3/4]" :
+                index === 1 ? "aspect-[4/5]" :
+                index === 2 ? "aspect-[4/5]" :
+                "aspect-[3/4]"
+              }`}>
                 <MirrorEngravedFrame className="w-full h-full animate-mirror-glow group-hover:scale-[1.02] transition-transform duration-500">
                   <img
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  
-                  {/* Mirror reflections */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/30 pointer-events-none" />
                   <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
-
-                  {/* Hover overlay with view gallery text */}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-[4]">
                     <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                       <Sparkles className="h-8 w-8 text-primary mx-auto mb-3 animate-pulse" />
@@ -161,11 +148,11 @@ export function Projects() {
                   </div>
                 </MirrorEngravedFrame>
               </div>
-              
+
               {/* Project info */}
-              <div className="text-center mt-8">
-                <p className="text-sm text-primary font-medium mb-2 tracking-wide uppercase">{project.category}</p>
-                <h3 className="text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300">{project.title}</h3>
+              <div className="text-center mt-6">
+                <span className="section-label justify-center">{project.category}</span>
+                <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 mt-2 font-playfair-heading">{project.title}</h3>
               </div>
             </div>
           ))}

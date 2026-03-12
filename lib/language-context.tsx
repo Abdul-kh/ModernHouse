@@ -25,13 +25,17 @@ const translations = {
     // Hero
     heroKicker: "Mirrors • Etched Glass • Iraqi Craft",
     heroLocation: "Erbil, Iraq",
+    heroLabel: "Est. Erbil, Iraq · Since 2009",
+    heroTitleLine1: "Mirrors That",
+    heroTitleLine2: "Define Spaces",
     heroTitle: "Handcrafted mirrors with decorative carving",
     heroDescription:
-      "Elevate your space with custom mirrors and etched decorative glass inspired by oriental patterns. From statement mirrors to carved details and LED bathroom mirrors—crafted with precision and installed with care.",
+      "Custom mirrors, carved glass & LED lighting — crafted by artisans in Erbil. Every piece is a statement, every installation a signature.",
     exploreWork: "Explore Our Work",
     requestConsultation: "Request Consultation",
 
     // Services
+    servicesLabel: "What We Do",
     servicesTitle: "Our specialized glass & mirror services",
     servicesDescription:
       "From custom designs to expert installation, we bring your vision to life with exceptional craftsmanship.",
@@ -68,7 +72,18 @@ const translations = {
     showProjectDetails: "Show project details",
     hideProjectDetails: "Hide project details",
 
+    // Stats
+    statYearsNum: "15",
+    statYearsLabel: "Years in Erbil",
+    statProjectsNum: "500",
+    statProjectsLabel: "Projects Completed",
+    statClientsNum: "50",
+    statClientsLabel: "Premium Clients",
+    statServicesNum: "4",
+    statServicesLabel: "Service Categories",
+
     // About
+    aboutLabel: "Our Story",
     aboutTitle: "Crafting excellence in glass & mirror services",
     aboutDescription:
       "Modern House specializes in providing premium glass and mirror services throughout the Middle East. We combine artistic vision with expert craftsmanship to create custom solutions that transform residential and commercial spaces.",
@@ -84,22 +99,30 @@ const translations = {
     learnMore: "Learn More About Us",
 
     // Projects
+    projectsLabel: "Our Portfolio",
     projectsTitle: "Featured projects",
     projectsDescription: "Explore our portfolio of exceptional glass and mirror installations across the Middle East.",
     commercialProject: "Commercial",
     residentialProject: "Residential",
     hospitalityProject: "Hospitality",
-    project1: "Dubai Marina Tower",
-    project1Desc: "A stunning commercial tower featuring floor-to-ceiling glass installations with custom mirror accents throughout the lobby and common areas.",
-    project2: "Luxury Villa Collection",
-    project2Desc: "Luxury villa collection featuring custom decorative mirrors, colored glass partitions, and LED-lit shower mirrors in master bathrooms.",
-    project3: "Corporate Headquarters",
-    project3Desc: "Corporate headquarters with carved glass features, patterned glass conference rooms, and artistic mirror installations.",
-    project4: "Boutique Hotel",
-    project4Desc: "Boutique hotel featuring unconventional mirror designs, colored glass art installations, and custom decorative glass throughout.",
+    project1: "Rotana Hotel Erbil",
+    project1Desc: "Full-service mirror and glass installation across guest rooms, lobby corridors, and spa facilities at Rotana Hotel Erbil — featuring engraved decorative panels and LED bathroom mirrors.",
+    project2: "Dream City Residences",
+    project2Desc: "Bespoke decorative mirrors, colored glass partitions, and LED-lit shower mirrors for premium villas in Dream City, Erbil's leading residential compound.",
+    project3: "Family Mall Erbil",
+    project3Desc: "Large-scale architectural glass and carved decorative mirror installations throughout the mall's public areas, elevators, and branded retail spaces.",
+    project4: "Kurdistan Government Complex",
+    project4Desc: "Premium glass and mirror installations for official reception halls and corridors, combining oriental engraving motifs with modern LED lighting.",
     viewGallery: "View Gallery",
 
+    // Testimonial
+    testimonialLabel: "Client Stories",
+    testimonialQuote: "Modern House transformed our hotel lobby into something extraordinary. The engraved mirror panels they crafted are unlike anything we have seen — guests photograph them every day. The attention to detail and the quality of installation was truly exceptional.",
+    testimonialAuthor: "General Manager",
+    testimonialCompany: "Rotana Hotel Erbil",
+
     // Contact
+    contactLabel: "Get In Touch",
     contactTitle: "Get in touch with us",
     contactDescription:
       "Connect with our team through your preferred channel. We're here to help with all your glass and mirror needs.",
@@ -111,6 +134,7 @@ const translations = {
     chatWhatsApp: "Chat on WhatsApp",
 
     // Clients
+    clientsLabel: "Trusted By Leaders",
     clientsTitle: "Our Big Clients",
     clientsDescription: "Proudly serving leading companies, hotels, and facilities across the Middle East.",
     hospitalityClients: "Hospitality",
@@ -119,6 +143,7 @@ const translations = {
     governmentClients: "Government",
 
     // Footer
+    footerTagline: "Crafting reflections since 2009 · Erbil, Iraq",
     footerDescription: "Premium glass and mirror services for the Middle East.",
     architecturalGlass: "Architectural Glass",
     residentialSolutions: "Residential Solutions",
@@ -146,13 +171,17 @@ const translations = {
     // Hero
     heroKicker: "مرايا • زجاج محفور • حرفة عراقية",
     heroLocation: "أربيل، العراق",
+    heroLabel: "تأسست في أربيل · منذ 2009",
+    heroTitleLine1: "مرايا تُعرِّف",
+    heroTitleLine2: "المساحات",
     heroTitle: "حرفية زجاج ومرايا رائعة",
     heroDescription:
-      "حوّل مساحاتك بمرايا مخصصة وزجاج زخرفي وحلول تصميم مبتكرة. متخصصون في زخارف المرايا والزجاج الملون والمنحوت والمنقوش ومرايا الدش مع إضاءة مدمجة.",
+      "مرايا مخصصة، زجاج محفور وإضاءة LED — مصنوعة بيد الحرفيين في أربيل. كل قطعة بيان، كل تركيب توقيع.",
     exploreWork: "استكشف أعمالنا",
     requestConsultation: "اطلب استشارة",
 
     // Services
+    servicesLabel: "ما نقدمه",
     servicesTitle: "خدماتنا المتخصصة في الزجاج والمرايا",
     servicesDescription: "من التصاميم المخصصة إلى التركيب الخبير، نحقق رؤيتك بحرفية استثنائية.",
     mirrorsDecorations: "المرايا والزخارف",
@@ -185,7 +214,18 @@ const translations = {
     showProjectDetails: "عرض تفاصيل المشروع",
     hideProjectDetails: "إخفاء تفاصيل المشروع",
 
+    // Stats
+    statYearsNum: "15",
+    statYearsLabel: "سنة في أربيل",
+    statProjectsNum: "500",
+    statProjectsLabel: "مشروع منجز",
+    statClientsNum: "50",
+    statClientsLabel: "عميل متميز",
+    statServicesNum: "4",
+    statServicesLabel: "تخصصات خدمية",
+
     // About
+    aboutLabel: "قصتنا",
     aboutTitle: "صناعة التميز في خدمات الزجاج والمرايا",
     aboutDescription:
       "تتخصص مودرن هاوس في تقديم خدمات زجاج ومرايا فاخرة في جميع أنحاء الشرق الأوسط. نجمع بين الرؤية الفنية والحرفية الخبيرة لإنشاء حلول مخصصة تحول المساحات السكنية والتجارية.",
@@ -201,22 +241,30 @@ const translations = {
     learnMore: "اعرف المزيد عنا",
 
     // Projects
+    projectsLabel: "معرض أعمالنا",
     projectsTitle: "المشاريع المميزة",
     projectsDescription: "استكشف محفظتنا من تركيبات الزجاج والمرايا الاستثنائية في جميع أنحاء الشرق الأوسط.",
     commercialProject: "تجاري",
     residentialProject: "سكني",
     hospitalityProject: "ضيافة",
-    project1: "برج دبي مارينا",
-    project1Desc: "برج تجاري رائع يتميز بتركيبات زجاجية من الأرض إلى السقف مع لمسات مرايا مخصصة في جميع أنحاء الردهة والمناطق المشتركة.",
-    project2: "مجموعة الفلل الفاخرة",
-    project2Desc: "مجموعة فلل فاخرة تتميز بمرايا زخرفية مخصصة وأقسام زجاج ملون ومرايا دش بإضاءة LED في غرف النوم الرئيسية.",
-    project3: "المقر الرئيسي للشركات",
-    project3Desc: "المقر الرئيسي للشركات مع ميزات زجاج منحوت وقاعات اجتماعات زجاج منقوش وتركيبات مرايا فنية.",
-    project4: "فندق بوتيك",
-    project4Desc: "فندق بوتيك يتميز بتصاميم مرايا غير تقليدية وتركيبات فنية زجاج ملون وزخارف زجاجية مخصصة في جميع أنحائه.",
+    project1: "فندق روتانا أربيل",
+    project1Desc: "تركيب شامل للمرايا والزجاج في غرف النزلاء والممرات والمنتجع الصحي بفندق روتانا أربيل — يتضمن ألواحاً زخرفية محفورة ومرايا حمام بإضاءة LED.",
+    project2: "مساكن دريم سيتي",
+    project2Desc: "مرايا زخرفية مخصصة وأقسام زجاج ملون ومرايا دش بإضاءة LED لفلل فاخرة في دريم سيتي، المجمع السكني الرائد في أربيل.",
+    project3: "فاميلي مول أربيل",
+    project3Desc: "تركيبات زجاجية معمارية واسعة النطاق ومرايا زخرفية منحوتة في جميع أنحاء المول.",
+    project4: "مجمع الحكومة الكردستانية",
+    project4Desc: "تركيبات زجاج ومرايا فاخرة لقاعات الاستقبال الرسمية والممرات، تجمع بين الزخارف الشرقية المنقوشة والإضاءة LED الحديثة.",
     viewGallery: "عرض المعرض",
 
+    // Testimonial
+    testimonialLabel: "قصص العملاء",
+    testimonialQuote: "حوّلت مودرن هاوس ردهة فندقنا إلى شيء استثنائي. ألواح المرايا المحفورة التي صنعوها لم نرَ مثيلها من قبل — الضيوف يصورونها كل يوم. كان الاهتمام بالتفاصيل وجودة التركيب استثنائيين حقاً.",
+    testimonialAuthor: "المدير العام",
+    testimonialCompany: "فندق روتانا أربيل",
+
     // Contact
+    contactLabel: "تواصل معنا",
     contactTitle: "تواصل معنا",
     contactDescription:
       "تواصل مع فريقنا عبر القناة المفضلة لديك. نحن هنا للمساعدة في جميع احتياجاتك من الزجاج والمرايا.",
@@ -228,6 +276,7 @@ const translations = {
     chatWhatsApp: "تحدث على واتساب",
 
     // Clients
+    clientsLabel: "موثوق به من قِبل الرواد",
     clientsTitle: "عملاؤنا الكبار",
     clientsDescription: "نفخر بخدمة الشركات الرائدة والفنادق والمنشآت في جميع أنحاء الشرق الأوسط.",
     hospitalityClients: "ضيافة",
@@ -236,6 +285,7 @@ const translations = {
     governmentClients: "حكومي",
 
     // Footer
+    footerTagline: "نصنع الانعكاسات منذ 2009 · أربيل، العراق",
     footerDescription: "خدمات زجاج ومرايا فاخرة للشرق الأوسط.",
     architecturalGlass: "الزجاج المعماري",
     residentialSolutions: "حلول سكنية",

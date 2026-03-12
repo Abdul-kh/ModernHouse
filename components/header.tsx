@@ -44,19 +44,22 @@ export function Header() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-20" dir="ltr">
           <div className="flex items-center gap-3">
-            <Link href="/" className="group inline-flex items-center" aria-label="Go to home">
-              <div className="relative">
+            <Link href="/" className="group inline-flex items-center gap-3" aria-label="Go to home">
+              <div className="relative flex-shrink-0">
                 <Image
                   src="/logo.png"
                   alt="Modern House Logo"
-                  width={56}
-                  height={56}
+                  width={48}
+                  height={48}
                   className="object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]"
                   priority
                 />
                 <span className="pointer-events-none absolute inset-0 rounded-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]" />
               </div>
-              <span className="sr-only">Modern House</span>
+              <div className="hidden sm:flex flex-col leading-none">
+                <span className="wordmark">Modern</span>
+                <span className="wordmark" style={{ color: 'var(--lux-gold)', WebkitTextFillColor: 'var(--lux-gold)' }}>House</span>
+              </div>
             </Link>
           </div>
 

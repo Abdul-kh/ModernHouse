@@ -71,19 +71,31 @@ export function Hero() {
   const getNextIndex = () => (currentImageIndex + 1) % heroImages.length
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
       <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
         <div className="absolute inset-0 damask-black opacity-20" />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-20 flex-1 flex items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto w-full">
           <div className="order-2 lg:order-1 text-center lg:text-left space-y-8 animate-fade-in-up">
-            <div className="space-y-6">
-              <h1 className="text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight text-white text-balance drop-shadow-2xl [text-shadow:0_18px_60px_rgba(0,0,0,0.8)]">
-                {t("heroTitle")}
+            <div className="space-y-5">
+              {/* Gold label */}
+              <div className="flex justify-center lg:justify-start">
+                <span className="section-label">{t("heroLabel")}</span>
+              </div>
+
+              {/* Editorial two-line headline */}
+              <h1 className="text-balance drop-shadow-2xl">
+                <span className="block text-4xl md:text-5xl xl:text-6xl font-light tracking-tight text-white/70 font-playfair-heading">
+                  {t("heroTitleLine1")}
+                </span>
+                <span className="block text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight text-white font-playfair-heading [text-shadow:0_18px_60px_rgba(0,0,0,0.8)]">
+                  {t("heroTitleLine2")}
+                </span>
               </h1>
-              <p className="text-lg md:text-xl text-white/80 leading-relaxed drop-shadow-lg max-w-xl lg:max-w-none mx-auto lg:mx-0">
+
+              <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-md lg:max-w-none mx-auto lg:mx-0">
                 {t("heroDescription")}
               </p>
             </div>
@@ -101,13 +113,13 @@ export function Hero() {
                 size="lg"
                 variant="outline"
                 onClick={() => transitionToSection("contact")}
-                className="border-2 border-white text-white hover:bg-white hover:text-black bg-transparent backdrop-blur-sm text-base px-8 py-6 shadow-2xl transition-all"
+                className="border-2 border-white/30 text-white hover:bg-white/10 bg-transparent backdrop-blur-sm text-base px-8 py-6 shadow-2xl transition-all"
               >
                 {t("requestConsultation")}
               </Button>
             </div>
 
-            <div className="flex items-center justify-center lg:justify-start gap-3 pt-4">
+            <div className="flex items-center justify-center lg:justify-start gap-3 pt-2">
               {heroImages.map((_, index) => (
                 <button
                   key={index}
@@ -118,10 +130,10 @@ export function Hero() {
                       setIsTransitioning(false)
                     }, 600)
                   }}
-                  className={`h-2 rounded-full transition-all duration-300 ${
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
                     index === currentImageIndex 
-                      ? "w-12 bg-primary shadow-lg shadow-primary/50" 
-                      : "w-2 bg-white/40 hover:bg-white/70 hover:w-6"
+                      ? "w-10 bg-[var(--lux-gold)] shadow-lg" 
+                      : "w-1.5 bg-white/25 hover:bg-white/50 hover:w-5"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -365,6 +377,39 @@ export function Hero() {
       <div className="absolute inset-0 pointer-events-none z-[2]">
         <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
+      </div>
+
+      {/* Keyword marquee strip at the very bottom */}
+      <div className="relative z-10 w-full pb-8 pt-4 overflow-hidden">
+        <div className="mirror-divider mb-5 opacity-40" />
+        <div className="overflow-hidden">
+          <div className="keyword-strip">
+            {[
+              "CUSTOM MIRRORS", "·", "CARVED GLASS", "·", "LED LIGHTING", "·",
+              "ORIENTAL PATTERNS", "·", "SHOWER MIRRORS", "·", "ENGRAVED FRAMES", "·",
+              "DECORATIVE GLASS", "·", "ERBIL CRAFT", "·",
+              "CUSTOM MIRRORS", "·", "CARVED GLASS", "·", "LED LIGHTING", "·",
+              "ORIENTAL PATTERNS", "·", "SHOWER MIRRORS", "·", "ENGRAVED FRAMES", "·",
+              "DECORATIVE GLASS", "·", "ERBIL CRAFT", "·",
+            ].map((word, i) => (
+              <span
+                key={i}
+                className={`text-[10px] font-bold tracking-[0.25em] px-4 whitespace-nowrap ${
+                  word === "·" ? "text-[var(--lux-gold)] opacity-50" : "text-white/25"
+                }`}
+              >
+                {word}
+              </span>
+            ))}
+          </div>
+        </div>
+        {/* Scroll indicator */}
+        <div className="flex justify-center mt-5">
+          <div className="scroll-indicator flex flex-col items-center gap-1.5 opacity-40">
+            <span className="text-[9px] text-white tracking-[0.3em] uppercase">Scroll</span>
+            <div className="w-px h-8 bg-gradient-to-b from-white/60 to-transparent" />
+          </div>
+        </div>
       </div>
     </section>
   )
