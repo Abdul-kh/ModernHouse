@@ -1,96 +1,123 @@
 "use client"
 
-import React from "react"
-import { CheckCircle2, Award } from "lucide-react"
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
 import { useLanguage } from "@/lib/language-context"
-import { MirrorEngravedFrame } from "@/components/mirror-engraved-frame"
-import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 
 export function About() {
   const { t } = useLanguage()
-  const ref = useScrollReveal()
+  const ref = useRef<HTMLElement>(null)
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   const features = [t("feature1"), t("feature2"), t("feature3"), t("feature4"), t("feature5"), t("feature6")]
 
-  return (
-    <section id="about" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background" ref={ref as React.RefObject<HTMLDivElement>}>
-      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
-        <div className="absolute inset-0 damask-black opacity-20" />
-      </div>
-      <div className="mirror-divider absolute top-0 left-0 right-0" />
+  const stats = [
+    { num: "15+", label: t("statYearsLabel") },
+    { num: "500+", label: t("statProjectsLabel") },
+    { num: "50+", label: t("statClientsLabel") },
+  ]
 
-      <div className="container mx-auto relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-7xl mx-auto">
-          {/* Mirror showcase */}
-          <div className="order-2 lg:order-1 relative reveal reveal-delay-2">
-            <MirrorEngravedFrame className="aspect-[4/5] shadow-2xl mirror-border-small">
+  return (
+    <section id="about" ref={ref} className="py-24 relative overflow-hidden section-bg-3">
+      <div className="absolute inset-0 damask-black opacity-12 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,220,120,0.2), transparent)" }} />
+
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-center max-w-7xl mx-auto">
+
+          {/* Left — image */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="order-2 lg:order-1 relative"
+          >
+            <div className="relative rounded-2xl overflow-hidden mirror-frame-3d shadow-2xl" style={{ aspectRatio: "4/5" }}>
               <img
                 src="/modern-glass-manufacturing-facility-with-precision.jpg"
                 alt="Modern House manufacturing facility"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-white/25 pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/20 pointer-events-none" />
-            </MirrorEngravedFrame>
-          </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-black/40 pointer-events-none" />
+            </div>
+            {/* Floating stat badges */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="absolute -bottom-5 -right-5 rounded-2xl p-5 shadow-2xl backdrop-blur-xl"
+              style={{ background: "rgba(10,10,10,0.85)", border: "1px solid rgba(255,220,120,0.2)" }}
+            >
+              <p className="text-3xl font-black text-white">15<span style={{ color: "var(--lux-gold)" }}>+</span></p>
+              <p className="text-[10px] text-white/40 uppercase tracking-widest mt-1">{t("statYearsLabel")}</p>
+            </motion.div>
+          </motion.div>
 
-          {/* Content */}
-          <div className="order-1 lg:order-2 space-y-8 reveal">
-            <div className="space-y-5">
-              <span className="section-label">{t("aboutLabel")}</span>
-
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground text-balance section-heading-editorial">
+          {/* Right — content */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
+            className="order-1 lg:order-2 space-y-8"
+          >
+            <div>
+              <span className="section-label mb-4 inline-flex">{t("aboutLabel")}</span>
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mt-4 mb-5 section-heading-editorial">
                 {t("aboutTitle")}
               </h2>
-              <p className="text-base text-white/55 leading-relaxed">{t("aboutDescription")}</p>
-
-              {/* Inline stat strip */}
-              <div className="flex items-center gap-6 py-4 border-y border-white/[0.07]">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-white">15<span style={{ color: 'var(--lux-gold)' }}>+</span></p>
-                  <p className="text-[10px] text-white/40 uppercase tracking-widest mt-0.5">{t("statYearsLabel")}</p>
-                </div>
-                <div className="w-px h-10 bg-white/10" />
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-white">500<span style={{ color: 'var(--lux-gold)' }}>+</span></p>
-                  <p className="text-[10px] text-white/40 uppercase tracking-widest mt-0.5">{t("statProjectsLabel")}</p>
-                </div>
-                <div className="w-px h-10 bg-white/10" />
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-white">50<span style={{ color: 'var(--lux-gold)' }}>+</span></p>
-                  <p className="text-[10px] text-white/40 uppercase tracking-widest mt-0.5">{t("statClientsLabel")}</p>
-                </div>
-              </div>
+              <p className="text-base text-white/50 leading-relaxed">{t("aboutDescription")}</p>
             </div>
 
-            {/* Features list */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-3 py-3 px-4 rounded-xl border border-white/[0.06] hover:border-white/[0.12] hover:bg-white/[0.02] transition-all duration-300"
+            {/* Stats row */}
+            <div className="grid grid-cols-3 gap-4">
+              {stats.map((s, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+                  className="text-center py-4 px-3 rounded-xl"
+                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
                 >
-                  <CheckCircle2 className="h-4 w-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--lux-gold)' }} />
-                  <span className="text-white/65 text-sm leading-relaxed">{feature}</span>
-                </div>
+                  <p className="text-2xl font-black text-white" style={{ WebkitTextFillColor: "white" }}>
+                    {s.num.replace("+", "")}<span style={{ color: "var(--lux-gold)", WebkitTextFillColor: "var(--lux-gold)" }}>{s.num.includes("+") ? "+" : ""}</span>
+                  </p>
+                  <p className="text-[9px] text-white/35 uppercase tracking-widest mt-1">{s.label}</p>
+                </motion.div>
               ))}
             </div>
 
-            {/* Signature highlight */}
-            <div className="glass-card p-6 rounded-2xl border border-white/10 backdrop-blur-xl">
-              <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl" style={{ background: 'rgba(255,220,120,0.08)', border: '1px solid rgba(255,220,120,0.2)' }}>
-                  <Award className="h-6 w-6" style={{ color: 'var(--lux-gold)' }} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-white mb-1.5 font-playfair-heading">{t("engravedMirrorArtistry")}</h3>
-                  <p className="text-white/55 text-sm leading-relaxed">
-                    {t("engravedMirrorArtistryDesc")}
-                  </p>
-                </div>
+            {/* Features as pills */}
+            <div>
+              <p className="text-xs text-white/30 uppercase tracking-widest mb-4">{t("aboutLabel")}</p>
+              <div className="flex flex-wrap gap-2">
+                {features.map((feature, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                    transition={{ duration: 0.4, delay: 0.5 + i * 0.06 }}
+                    className="px-4 py-2 rounded-full text-sm text-white/70 transition-all hover:text-white"
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  >
+                    {feature}
+                  </motion.span>
+                ))}
               </div>
             </div>
-          </div>
+
+            {/* Signature card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="rounded-2xl p-5 backdrop-blur-xl"
+              style={{ background: "linear-gradient(135deg, rgba(255,220,120,0.06), rgba(255,220,120,0.02))", border: "1px solid rgba(255,220,120,0.15)" }}
+            >
+              <p className="text-xs uppercase tracking-[0.2em] mb-2" style={{ color: "var(--lux-gold)" }}>{t("engravedMirrorArtistry")}</p>
+              <p className="text-white/60 text-sm leading-relaxed">{t("engravedMirrorArtistryDesc")}</p>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

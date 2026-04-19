@@ -1,197 +1,181 @@
 "use client"
 
-import React from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Phone, Mail, MapPin, MessageCircle } from "lucide-react"
-import { useLanguage } from "@/lib/language-context"
+import { useRef, useState } from "react"
+import { motion, useInView } from "framer-motion"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import * as z from "zod"
+import { MapPin, Phone, Mail, MessageCircle, Send } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
-import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+import { useLanguage } from "@/lib/language-context"
 
 export function Contact() {
   const { t } = useLanguage()
   const { toast } = useToast()
-  const ref = useScrollReveal()
+  const ref = useRef<HTMLElement>(null)
+  const isInView = useInView(ref, { once: true, margin: "-80px" })
+  const [submitting, setSubmitting] = useState(false)
 
   const schema = z.object({
-    name: z.string().min(2, { message: "Please enter your full name" }),
-    email: z.string().email({ message: "Please enter a valid email" }),
+    name: z.string().min(2),
+    email: z.string().email(),
     phone: z.string().optional(),
-    message: z.string().min(10, { message: "Message must be at least 10 characters" }),
+    message: z.string().min(10),
   })
-
   type FormValues = z.infer<typeof schema>
 
-  const form = useForm<FormValues>({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: { name: "", email: "", phone: "", message: "" },
-    mode: "onTouched",
   })
 
   const onSubmit = async (values: FormValues) => {
-    await new Promise((r) => setTimeout(r, 400))
+    setSubmitting(true)
+    await new Promise((r) => setTimeout(r, 600))
+    setSubmitting(false)
     toast({ title: "Message sent", description: "We will get back to you shortly." })
-    form.reset()
+    reset()
   }
 
+  const contactItems = [
+    { icon: MessageCircle, label: "WhatsApp", value: t("chatWhatsApp"), href: "https://wa.me/9647503562547", color: "rgb(37,211,102)" },
+    { icon: Phone, label: t("phone"), value: "+964 750 356 2547", href: "tel:+9647503562547", color: "var(--lux-gold)" },
+    { icon: Mail, label: t("email"), value: "info@modernhouse.com", href: "mailto:info@modernhouse.com", color: "var(--lux-gold)" },
+    { icon: MapPin, label: t("location"), value: t("address"), href: undefined, color: "var(--lux-gold)" },
+  ]
+
   return (
-    <section id="contact" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background" ref={ref as React.RefObject<HTMLDivElement>}>
-      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
-        <div className="absolute inset-0 damask-black opacity-20" />
-      </div>
-      <div className="mirror-divider absolute top-0 left-0 right-0" />
+    <section id="contact" ref={ref} className="py-24 relative overflow-hidden section-bg-2">
+      <div className="absolute inset-0 damask-black opacity-12 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,220,120,0.2), transparent)" }} />
 
-      <div className="container mx-auto relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
-          <div className="flex justify-center mb-4">
-            <span className="section-label">{t("contactLabel")}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-5 text-balance section-heading-editorial">
-            {t("contactTitle")}
-          </h2>
-          <p className="text-base text-white/50 leading-relaxed">{t("contactDescription")}</p>
-        </div>
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          className="max-w-3xl mx-auto text-center mb-14"
+        >
+          <div className="flex justify-center mb-4"><span className="section-label">{t("contactLabel")}</span></div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4 section-heading-editorial">{t("contactTitle")}</h2>
+          <p className="text-base text-white/45 leading-relaxed">{t("contactDescription")}</p>
+        </motion.div>
 
-        {/* Contact cards row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto mb-16">
-          {/* WhatsApp — prominent */}
-          <a
-            href="https://wa.me/9647503562547"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="whatsapp-cta reveal lg:col-span-1 group flex flex-col items-center text-center gap-4 p-6 rounded-2xl transition-all duration-300 hover:scale-[1.02] cursor-pointer"
+        {/* 2-column split */}
+        <div className="grid lg:grid-cols-[5fr_7fr] gap-10 lg:gap-16 max-w-6xl mx-auto">
+
+          {/* LEFT — decorative panel with contact details */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7 }}
+            className="relative rounded-2xl overflow-hidden"
+            style={{ minHeight: "460px" }}
           >
-            <div className="w-14 h-14 rounded-xl flex items-center justify-center" style={{ background: 'rgba(37,211,102,0.12)', border: '1px solid rgba(37,211,102,0.25)' }}>
-              <MessageCircle className="h-7 w-7" style={{ color: 'rgb(37,211,102)' }} />
-            </div>
-            <div>
-              <h3 className="font-bold text-white text-base mb-1">WhatsApp</h3>
-              <p className="text-white/45 text-xs">{t("chatWhatsApp")}</p>
-            </div>
-          </a>
+            <img
+              src="/modern-luxury-mirror-installation-in-elegant-inter.jpg"
+              alt="Contact Modern House"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.85) 100%)" }} />
 
-          {/* Phone */}
-          <Card className="reveal reveal-delay-1 border-white/[0.07] hover:border-white/15 transition-all group bg-white/[0.025] backdrop-blur-sm">
-            <CardContent className="p-6">
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center group-hover:border-primary/30 transition-colors">
-                  <Phone className="h-5 w-5 text-white/50 group-hover:text-primary transition-colors" />
+            <div className="relative z-10 p-8 h-full flex flex-col justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] mb-2" style={{ color: "var(--lux-gold)" }}>{t("contactLabel")}</p>
+                <h3 className="text-2xl font-bold text-white font-playfair-heading mb-6">{t("contactTitle")}</h3>
+              </div>
+              <div className="space-y-5">
+                {contactItems.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+                    className="flex items-start gap-4"
+                  >
+                    <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                      <item.icon className="h-4 w-4" style={{ color: item.color }} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest text-white/35 mb-0.5">{item.label}</p>
+                      {item.href ? (
+                        <a href={item.href} target={item.href.startsWith("http") ? "_blank" : undefined}
+                          rel="noopener noreferrer" className="text-sm text-white/75 hover:text-white transition-colors">
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-sm text-white/75">{item.value}</p>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* RIGHT — form */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.1 }}
+          >
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label className="text-[10px] uppercase tracking-[0.18em] text-white/40 font-semibold block mb-2">Name</label>
+                  <input
+                    {...register("name")}
+                    placeholder="Your name"
+                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-white/30 transition-colors"
+                  />
+                  {errors.name && <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>}
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white/80 text-sm mb-2">{t("phone")}</h3>
-                  <a href="tel:+9647503562547" dir="ltr" className="text-white/45 hover:text-primary transition-colors text-xs block">+964 750 356 2547</a>
-                  <a href="tel:+9647786897999" dir="ltr" className="text-white/45 hover:text-primary transition-colors text-xs block mt-1">+964 778 689 7999</a>
+                  <label className="text-[10px] uppercase tracking-[0.18em] text-white/40 font-semibold block mb-2">Email</label>
+                  <input
+                    {...register("email")}
+                    type="email"
+                    placeholder="you@example.com"
+                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-white/30 transition-colors"
+                  />
+                  {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Email */}
-          <Card className="reveal reveal-delay-2 border-white/[0.07] hover:border-white/15 transition-all group bg-white/[0.025] backdrop-blur-sm">
-            <CardContent className="p-6">
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center group-hover:border-primary/30 transition-colors">
-                  <Mail className="h-5 w-5 text-white/50 group-hover:text-primary transition-colors" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white/80 text-sm mb-2">{t("email")}</h3>
-                  <a href="mailto:info@modernhouse.com" className="text-white/45 hover:text-primary transition-colors text-xs">info@modernhouse.com</a>
-                </div>
+              <div>
+                <label className="text-[10px] uppercase tracking-[0.18em] text-white/40 font-semibold block mb-2">Phone (optional)</label>
+                <input
+                  {...register("phone")}
+                  placeholder="+964 ..."
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-white/30 transition-colors"
+                />
               </div>
-            </CardContent>
-          </Card>
-
-          {/* Location */}
-          <Card className="reveal reveal-delay-3 border-white/[0.07] hover:border-white/15 transition-all group bg-white/[0.025] backdrop-blur-sm">
-            <CardContent className="p-6">
-              <div className="flex flex-col items-center text-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white/[0.04] border border-white/[0.07] flex items-center justify-center group-hover:border-primary/30 transition-colors">
-                  <MapPin className="h-5 w-5 text-white/50 group-hover:text-primary transition-colors" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-white/80 text-sm mb-2">{t("location")}</h3>
-                  <p className="text-white/45 text-xs">{t("address")}</p>
-                </div>
+              <div>
+                <label className="text-[10px] uppercase tracking-[0.18em] text-white/40 font-semibold block mb-2">Message</label>
+                <textarea
+                  {...register("message")}
+                  rows={5}
+                  placeholder="Tell us about your project..."
+                  className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/20 focus:outline-none focus:border-white/30 transition-colors resize-none"
+                />
+                {errors.message && <p className="text-red-400 text-xs mt-1">{errors.message.message}</p>}
               </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Contact form */}
-        <div className="max-w-3xl mx-auto reveal reveal-delay-2">
-          <div className="glass-card rounded-3xl p-8 border border-white/10">
-            <div className="text-center mb-8">
-              <h3 className="text-xl font-bold text-white font-playfair-heading">{t("requestConsultation")}</h3>
-              <div className="mirror-divider mt-4 opacity-50" />
-            </div>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[10px] uppercase tracking-[0.18em] text-white/40 font-semibold">Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Your name" {...field} className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/20 focus:border-white/25" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-[10px] uppercase tracking-[0.18em] text-white/40 font-semibold">Email</FormLabel>
-                      <FormControl>
-                        <Input type="email" placeholder="you@example.com" {...field} className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/20 focus:border-white/25" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="phone"
-                  render={({ field }) => (
-                    <FormItem className="md:col-span-2">
-                      <FormLabel className="text-[10px] uppercase tracking-[0.18em] text-white/40 font-semibold">Phone (optional)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="+964 ..." {...field} className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/20 focus:border-white/25" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem className="md:col-span-2">
-                      <FormLabel className="text-[10px] uppercase tracking-[0.18em] text-white/40 font-semibold">Message</FormLabel>
-                      <FormControl>
-                        <Textarea rows={5} placeholder="Tell us about your project..." {...field} className="bg-white/[0.03] border-white/10 text-white placeholder:text-white/20 focus:border-white/25 resize-none" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="md:col-span-2 flex justify-center pt-2">
-                  <Button type="submit" className="bg-white text-black hover:bg-white/90 px-10 py-3 font-semibold tracking-wide text-sm">
-                    {t("requestConsultation")}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </div>
+              <Button
+                type="submit"
+                disabled={submitting}
+                className="w-full py-6 text-sm font-semibold tracking-wide transition-all"
+                style={{ background: "var(--lux-gold)", color: "#0a0a0a" }}
+              >
+                {submitting ? "Sending..." : (
+                  <span className="flex items-center gap-2 justify-center">
+                    {t("requestConsultation")} <Send className="h-4 w-4" />
+                  </span>
+                )}
+              </Button>
+            </form>
+          </motion.div>
         </div>
       </div>
     </section>

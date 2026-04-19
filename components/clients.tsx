@@ -1,8 +1,8 @@
 "use client"
 
-import React from "react"
+import { useRef } from "react"
+import { motion, useInView } from "framer-motion"
 import { useLanguage } from "@/lib/language-context"
-import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 
 const clientsRow1 = [
   { name: "Rotana Hotel Erbil", initials: "RH", category: "Hospitality" },
@@ -24,13 +24,11 @@ const clientsRow2 = [
 
 function ClientCard({ client }: { client: { name: string; initials: string; category: string } }) {
   return (
-    <div className="client-card mx-3">
-      <div className="client-initials">
-        {client.initials}
-      </div>
-      <div className="text-center">
-        <p className="text-xs font-semibold text-white/80 leading-tight max-w-[110px] text-center">{client.name}</p>
-        <p className="text-[10px] text-white/35 mt-0.5 uppercase tracking-wide">{client.category}</p>
+    <div className="client-card mx-4 flex-shrink-0">
+      <div className="client-initials">{client.initials}</div>
+      <div className="text-center mt-2">
+        <p className="text-xs font-semibold text-white/75 leading-tight max-w-[120px] text-center">{client.name}</p>
+        <p className="text-[9px] text-white/30 mt-0.5 uppercase tracking-wider">{client.category}</p>
       </div>
     </div>
   )
@@ -38,47 +36,56 @@ function ClientCard({ client }: { client: { name: string; initials: string; cate
 
 export function Clients() {
   const { t } = useLanguage()
-  const ref = useScrollReveal()
+  const ref = useRef<HTMLElement>(null)
+  const isInView = useInView(ref, { once: true, margin: "-60px" })
 
   return (
-    <section id="clients" className="py-24 relative overflow-hidden bg-background" ref={ref as React.RefObject<HTMLDivElement>}>
-      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
-        <div className="absolute inset-0 damask-black opacity-20" />
+    <section id="clients" ref={ref} className="py-20 relative overflow-hidden section-bg-3">
+      <div className="absolute inset-0 damask-black opacity-12 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent)" }} />
+
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="max-w-3xl mx-auto text-center"
+        >
+          <div className="flex justify-center mb-4"><span className="section-label">{t("clientsLabel")}</span></div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4 section-heading-editorial">{t("clientsTitle")}</h2>
+          <p className="text-base text-white/45 leading-relaxed">{t("clientsDescription")}</p>
+        </motion.div>
       </div>
 
-      <div className="mirror-divider absolute top-0 left-0 right-0" />
-
-      <div className="container mx-auto px-4 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
-          <div className="flex justify-center mb-4">
-            <span className="section-label">{t("clientsLabel")}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-6 text-balance section-heading-editorial">
-            {t("clientsTitle")}
-          </h2>
-          <p className="text-lg text-white/55 leading-relaxed">{t("clientsDescription")}</p>
-        </div>
-      </div>
-
-      {/* Marquee row 1 — left to right */}
-      <div className="overflow-hidden mb-4 reveal reveal-delay-1">
+      {/* Marquee row 1 */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.7, delay: 0.2 }}
+        className="overflow-hidden mb-5"
+      >
         <div className="marquee-track">
           {[...clientsRow1, ...clientsRow1].map((client, i) => (
             <ClientCard key={i} client={client} />
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      {/* Marquee row 2 — right to left */}
-      <div className="overflow-hidden reveal reveal-delay-2">
+      {/* Marquee row 2 */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.7, delay: 0.35 }}
+        className="overflow-hidden"
+      >
         <div className="marquee-track-reverse">
           {[...clientsRow2, ...clientsRow2].map((client, i) => (
             <ClientCard key={i} client={client} />
           ))}
         </div>
-      </div>
+      </motion.div>
 
-      <div className="mirror-divider absolute bottom-0 left-0 right-0" />
+      <div className="absolute bottom-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)" }} />
     </section>
   )
 }

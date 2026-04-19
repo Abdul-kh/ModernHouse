@@ -1,17 +1,17 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { motion, useInView, AnimatePresence } from "framer-motion"
 import { useLanguage } from "@/lib/language-context"
-import { X, ChevronLeft, ChevronRight, Sparkles, ChevronUp, ChevronDown } from "lucide-react"
-import { MirrorEngravedFrame } from "@/components/mirror-engraved-frame"
-import { useScrollReveal } from "@/hooks/use-scroll-reveal"
+import { X, ChevronLeft, ChevronRight } from "lucide-react"
 
 export function Projects() {
   const { t } = useLanguage()
   const [selectedProject, setSelectedProject] = useState<number | null>(null)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [infoExpanded, setInfoExpanded] = useState(false)
-  const ref = useScrollReveal()
+  const [activeFilter, setActiveFilter] = useState("All")
+  const sectionRef = useRef<HTMLElement>(null)
+  const isInView = useInView(sectionRef, { once: true, margin: "-80px" })
 
   const projects = [
     {
@@ -60,243 +60,159 @@ export function Projects() {
     },
   ]
 
-  const handleProjectClick = (index: number) => {
-    setSelectedProject(index)
-    setCurrentImageIndex(0)
-  }
+  const categories = ["All", t("commercialProject"), t("residentialProject"), t("hospitalityProject")]
+  const filtered = activeFilter === "All" ? projects : projects.filter((p) => p.category === activeFilter)
 
-  const handleCloseGallery = () => {
-    setSelectedProject(null)
-    setCurrentImageIndex(0)
-  }
+  const handleProjectClick = (index: number) => { setSelectedProject(index); setCurrentImageIndex(0) }
+  const handleCloseGallery = () => { setSelectedProject(null); setCurrentImageIndex(0) }
+  const handleNextImage = () => { if (selectedProject !== null) setCurrentImageIndex((p) => (p + 1) % projects[selectedProject].gallery.length) }
+  const handlePrevImage = () => { if (selectedProject !== null) setCurrentImageIndex((p) => (p - 1 + projects[selectedProject].gallery.length) % projects[selectedProject].gallery.length) }
 
-  const handleNextImage = () => {
-    if (selectedProject !== null) {
-      setCurrentImageIndex((prev) => (prev + 1) % projects[selectedProject].gallery.length)
-    }
-  }
-
-  const handlePrevImage = () => {
-    if (selectedProject !== null) {
-      setCurrentImageIndex(
-        (prev) => (prev - 1 + projects[selectedProject].gallery.length) % projects[selectedProject].gallery.length,
-      )
-    }
-  }
-
-  // Lock background scroll when preview is open and hide header
   useEffect(() => {
     if (selectedProject !== null) {
-      const previous = document.body.style.overflow
       document.body.style.overflow = "hidden"
       document.body.classList.add("gallery-open")
-      return () => {
-        document.body.style.overflow = previous
-        document.body.classList.remove("gallery-open")
-      }
+      return () => { document.body.style.overflow = ""; document.body.classList.remove("gallery-open") }
     }
   }, [selectedProject])
 
   return (
-    <section id="projects" className="py-24 px-4 lg:px-8 relative overflow-hidden bg-background" ref={ref as React.RefObject<HTMLDivElement>}>
-      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
-        <div className="absolute inset-0 damask-black opacity-20" />
-      </div>
-      <div className="mirror-divider absolute top-0 left-0 right-0" />
+    <section id="projects" ref={sectionRef} className="py-24 relative overflow-hidden section-bg-1">
+      <div className="absolute inset-0 damask-black opacity-15 pointer-events-none" />
+      <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent)" }} />
 
-      <div className="container mx-auto relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 reveal">
-          <div className="flex justify-center mb-4">
-            <span className="section-label">{t("projectsLabel")}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground mb-5 text-balance section-heading-editorial">
-            {t("projectsTitle")}
-          </h2>
-          <p className="text-base text-white/50 leading-relaxed">{t("projectsDescription")}</p>
-        </div>
+      <div className="container mx-auto px-4 lg:px-8 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7 }}
+          className="max-w-3xl mx-auto text-center mb-10"
+        >
+          <div className="flex justify-center mb-4"><span className="section-label">{t("projectsLabel")}</span></div>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-4 section-heading-editorial">{t("projectsTitle")}</h2>
+          <p className="text-base text-white/45 leading-relaxed">{t("projectsDescription")}</p>
+        </motion.div>
 
-        {/* Asymmetric masonry grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              onClick={() => handleProjectClick(index)}
-              className={`group cursor-pointer relative reveal reveal-delay-${(index % 4) + 1}`}
+        {/* Filter tabs */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="flex flex-wrap justify-center gap-2 mb-12"
+        >
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveFilter(cat)}
+              className={`filter-tab${activeFilter === cat ? " active" : ""}`}
             >
-              {/* Main mirror container — alternating portrait/landscape proportions */}
-              <div className={`relative mx-auto ${
-                index === 0 ? "aspect-[3/4]" :
-                index === 1 ? "aspect-[4/5]" :
-                index === 2 ? "aspect-[4/5]" :
-                "aspect-[3/4]"
-              }`}>
-                <MirrorEngravedFrame className="w-full h-full animate-mirror-glow group-hover:scale-[1.02] transition-transform duration-500">
-                  <img
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/30 pointer-events-none" />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-[4]">
-                    <div className="text-center transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <Sparkles className="h-8 w-8 text-primary mx-auto mb-3 animate-pulse" />
-                      <span className="text-white font-semibold text-lg bg-primary/90 backdrop-blur-md px-6 py-3 rounded-full shadow-lg border border-white/20 inline-block">
-                        {t("viewGallery")}
-                      </span>
-                    </div>
-                  </div>
-                </MirrorEngravedFrame>
-              </div>
-
-              {/* Project info */}
-              <div className="text-center mt-6">
-                <span className="section-label justify-center">{project.category}</span>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground group-hover:text-primary transition-colors duration-300 mt-2 font-playfair-heading">{project.title}</h3>
-              </div>
-            </div>
+              {cat}
+            </button>
           ))}
-        </div>
-      </div>
+        </motion.div>
 
-      {selectedProject !== null && (
-        <div className="fixed inset-0 z-[100] bg-white/5 backdrop-blur-3xl overflow-hidden">
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/65" />
-            <div className="absolute inset-0 opacity-40 lux-vignette" />
-          </div>
-          <button
-            onClick={handleCloseGallery}
-            className="absolute top-4 right-4 text-white hover:text-primary transition-colors z-[130]"
-            aria-label={t("closeGallery")}
-          >
-            <X className="h-8 w-8" />
-          </button>
-
-          {/* Image stage */}
-          <div
-            className="absolute inset-0 flex items-center justify-center px-4 py-16 transition-transform duration-500"
-            style={{ transform: infoExpanded ? "translateY(-140px)" : "translateY(0px)" }}
-          >
-            <div className="relative w-full max-w-6xl">
-              <div
-                className="relative mx-auto rounded-3xl overflow-hidden shadow-2xl mirror-frame-3d"
-                style={{ maxHeight: "72vh" }}
-              >
-                {/* Constrain height without stretching */}
-                <div className="relative w-full" style={{ height: "72vh", maxHeight: "72vh" }}>
-                  <img
-                    src={projects[selectedProject].gallery[currentImageIndex] || "/placeholder.svg"}
-                    alt={`${projects[selectedProject].title} - Image ${currentImageIndex + 1}`}
-                    className="w-full h-full object-contain bg-transparent"
-                  />
-
-                  <div className="absolute inset-0 pointer-events-none">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-black/35" />
-                    <div className="absolute top-0 left-0 right-0 h-14 oriental-mosaic opacity-20 mix-blend-overlay" />
-                    <div className="absolute bottom-0 left-0 right-0 h-16 oriental-mosaic opacity-18 mix-blend-overlay" />
-                    <div className="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-white/12 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white/10 to-transparent" />
-                  </div>
-
-                  {/* Mirror reflection overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/20 pointer-events-none" />
-
-                  {/* Navigation Arrows */}
-                  {projects[selectedProject].gallery.length > 1 && (
-                    <>
-                      <button
-                        onClick={handlePrevImage}
-                        className="absolute top-1/2 -translate-y-1/2 left-4 sm:left-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-30 border border-white/20 shadow-lg"
-                        aria-label={t("previousImage")}
-                      >
-                        <ChevronLeft className="h-7 w-7" />
-                      </button>
-                      <button
-                        onClick={handleNextImage}
-                        className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-6 bg-white/20 hover:bg-white/30 backdrop-blur-lg text-white p-4 rounded-full transition-all z-30 border border-white/20 shadow-lg"
-                        aria-label={t("nextImage")}
-                      >
-                        <ChevronRight className="h-7 w-7" />
-                      </button>
-                    </>
-                  )}
-
-                  {/* Round thumbnail previews */}
-                  {projects[selectedProject].gallery.length > 1 && (
-                    <div className="absolute bottom-0 left-0 right-0 z-20 bg-gradient-to-t from-black/90 via-black/55 to-transparent p-4">
-                      <div className="flex flex-wrap gap-3 justify-center">
-                        {projects[selectedProject].gallery.map((img, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => setCurrentImageIndex(idx)}
-                            className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden border-3 transition-all shadow-lg ${
-                              idx === currentImageIndex
-                                ? "border-white scale-110 shadow-white/30"
-                                : "border-white/30 opacity-80 hover:opacity-100 hover:scale-105"
-                            }`}
-                            aria-label={`${t("thumbnail")} ${idx + 1}`}
-                          >
-                            <img
-                              src={img || "/placeholder.svg"}
-                              alt={`Thumbnail ${idx + 1}`}
-                              className="w-full h-full object-cover"
-                            />
-                            {idx === currentImageIndex && (
-                              <div className="absolute inset-0 bg-white/10" />
-                            )}
-                          </button>
-                        ))}
+        {/* Asymmetric masonry */}
+        <AnimatePresence mode="popLayout">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
+            {filtered.map((project, index) => {
+              const originalIndex = projects.indexOf(project)
+              return (
+                <motion.div
+                  key={project.title}
+                  layout
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                  onClick={() => handleProjectClick(originalIndex)}
+                  className="group cursor-pointer"
+                  data-cursor-hover
+                >
+                  <div
+                    className="relative overflow-hidden mirror-frame-3d"
+                    style={{ aspectRatio: index % 3 === 0 ? "3/4" : "4/5" }}
+                  >
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0.2), transparent)" }} />
+                    <div className="absolute inset-x-0 bottom-0 p-6">
+                      <p className="text-[10px] uppercase tracking-[0.2em] mb-2" style={{ color: "var(--lux-gold)" }}>{project.category}</p>
+                      <h3 className="text-lg md:text-xl font-bold text-white font-playfair-heading">{project.title}</h3>
+                      <div className="flex items-center gap-2 mt-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                        <span className="text-xs text-white/70">{t("viewGallery")}</span>
+                        <div className="h-px flex-1 bg-white/30 max-w-[40px]" />
                       </div>
                     </div>
-                  )}
-                </div>
-              </div>
-            </div>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                      style={{ boxShadow: "inset 0 0 0 1px rgba(255,220,120,0.25)" }} />
+                  </div>
+                </motion.div>
+              )
+            })}
           </div>
+        </AnimatePresence>
+      </div>
 
-          {/* Bottom-center toggle button */}
-          <div className="absolute left-1/2 -translate-x-1/2 bottom-6 z-[140]">
-            <button
-              onClick={() => setInfoExpanded(!infoExpanded)}
-              className="flex items-center gap-2 px-5 py-3 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-xl border border-white/20 text-white shadow-2xl transition-all"
-              aria-label={infoExpanded ? t("hideProjectDetails") : t("showProjectDetails")}
-            >
-              {infoExpanded ? <ChevronDown className="h-5 w-5" /> : <ChevronUp className="h-5 w-5" />}
-              <span className="text-sm font-semibold">{infoExpanded ? t("hideProjectDetails") : t("showProjectDetails")}</span>
-            </button>
-          </div>
-
-          {/* Fixed bottom drawer */}
-          <div
-            className={`fixed left-0 right-0 bottom-0 z-[120] transition-transform duration-500 ${
-              infoExpanded ? "translate-y-0" : "translate-y-full"
-            }`}
+      {/* Gallery Modal */}
+      <AnimatePresence>
+        {selectedProject !== null && (
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[100] flex flex-col"
+            style={{ background: "rgba(5,5,5,0.95)", backdropFilter: "blur(20px)" }}
           >
-            <div className="mx-auto max-w-6xl px-4 pb-8">
-              <div className="glass-card rounded-3xl p-6 border border-white/20 shadow-2xl">
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="text-sm text-primary font-medium px-4 py-2 bg-primary/10 rounded-full border border-white/20">
-                    {projects[selectedProject].category}
-                  </span>
-                  <div className="flex items-center gap-2 text-white/60">
-                    <Sparkles className="h-4 w-4 text-primary" />
-                    <span className="text-sm">
-                      {currentImageIndex + 1} / {projects[selectedProject].gallery.length}
-                    </span>
+            <button onClick={handleCloseGallery} className="absolute top-5 right-5 z-50 text-white/70 hover:text-white transition-colors p-2">
+              <X className="h-7 w-7" />
+            </button>
+            <div className="flex-1 flex items-center justify-center p-6 pt-16">
+              <div className="w-full max-w-5xl">
+                <div className="relative rounded-2xl overflow-hidden mirror-frame-3d" style={{ maxHeight: "70vh" }}>
+                  <div style={{ height: "70vh" }}>
+                    <AnimatePresence mode="wait">
+                      <motion.img
+                        key={currentImageIndex}
+                        src={projects[selectedProject].gallery[currentImageIndex]}
+                        alt={`${projects[selectedProject].title} ${currentImageIndex + 1}`}
+                        className="w-full h-full object-contain"
+                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35 }}
+                      />
+                    </AnimatePresence>
+                    {projects[selectedProject].gallery.length > 1 && (
+                      <>
+                        <button onClick={handlePrevImage} className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm border border-white/15 z-30 transition-all">
+                          <ChevronLeft className="h-6 w-6" />
+                        </button>
+                        <button onClick={handleNextImage} className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-3 rounded-full backdrop-blur-sm border border-white/15 z-30 transition-all">
+                          <ChevronRight className="h-6 w-6" />
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3 bg-gradient-to-r from-white to-primary/40 bg-clip-text text-transparent">
-                  {projects[selectedProject].title}
-                </h3>
-                <div className="max-h-[30vh] overflow-y-auto pr-2">
-                  <p className="text-white/80 leading-relaxed text-base">{projects[selectedProject].description}</p>
+                <div className="mt-5 text-center">
+                  <div className="flex justify-center gap-2 mb-3">
+                    {projects[selectedProject].gallery.map((_, idx) => (
+                      <button key={idx} onClick={() => setCurrentImageIndex(idx)}
+                        className="h-1.5 rounded-full transition-all duration-300"
+                        style={{ width: idx === currentImageIndex ? "2rem" : "0.375rem", background: idx === currentImageIndex ? "var(--lux-gold)" : "rgba(255,255,255,0.2)" }} />
+                    ))}
+                  </div>
+                  <p className="text-[10px] uppercase tracking-[0.2em] mb-1" style={{ color: "var(--lux-gold)" }}>{projects[selectedProject].category}</p>
+                  <h3 className="text-xl font-bold text-white font-playfair-heading mb-2">{projects[selectedProject].title}</h3>
+                  <p className="text-white/50 text-sm max-w-2xl mx-auto leading-relaxed">{projects[selectedProject].description}</p>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

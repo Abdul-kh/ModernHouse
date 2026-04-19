@@ -21,6 +21,26 @@ const translations = {
     clients: "Clients",
     contact: "Contact",
     getQuote: "Get a Quote",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    process: "Process",
+
+    // Process journey
+    processLabel: "How we work",
+    processTitle: "From sketch to the wall — without guesswork",
+    processDescription:
+      "Five deliberate stages: align the design with your space, fabricate and finish in Erbil, protect every edge in transit, then install and verify under real light.",
+    step1Title: "Consultation & survey",
+    step1Body:
+      "Intent, site measurements, and material direction — locked to your lighting plan and architecture before anything is cut.",
+    step2Title: "Workshop fabrication",
+    step2Body: "Cutting, carving, and core finishing in our Erbil workshop with QC at each handoff.",
+    step3Title: "Finishing & protection",
+    step3Body: "Edges, engraving, polish, and protective prep so the piece travels clean and arrives ready.",
+    step4Title: "Installation",
+    step4Body: "Leveling, sealing, and checks in the room’s actual light — not a rushed fit-and-forget.",
+    step5Title: "Aftercare",
+    step5Body: "Straightforward guidance on care, humidity, and keeping the reflection crisp for years.",
 
     // Hero
     heroKicker: "Mirrors • Etched Glass • Iraqi Craft",
@@ -120,6 +140,12 @@ const translations = {
     testimonialQuote: "Modern House transformed our hotel lobby into something extraordinary. The engraved mirror panels they crafted are unlike anything we have seen — guests photograph them every day. The attention to detail and the quality of installation was truly exceptional.",
     testimonialAuthor: "General Manager",
     testimonialCompany: "Rotana Hotel Erbil",
+    testimonialQuote2: "We commissioned custom shower mirrors with LED frames for our entire villa project. The craftsmanship exceeded every expectation. Every single piece was delivered on time and installed with absolute precision.",
+    testimonialAuthor2: "Project Director",
+    testimonialCompany2: "Dream City Erbil",
+    testimonialQuote3: "The carved glass panels Modern House delivered for our mall's entrance are a statement piece — visitors stop and admire them daily. Outstanding quality and a team that truly understands luxury interiors.",
+    testimonialAuthor3: "Facilities Manager",
+    testimonialCompany3: "Family Mall Erbil",
 
     // Contact
     contactLabel: "Get In Touch",
@@ -167,6 +193,26 @@ const translations = {
     clients: "العملاء",
     contact: "اتصل بنا",
     getQuote: "احصل على عرض سعر",
+    openMenu: "فتح القائمة",
+    closeMenu: "إغلاق القائمة",
+    process: "الآلية",
+
+    // Process journey
+    processLabel: "كيف نعمل",
+    processTitle: "من الرسمة إلى الجدار — بخطوات واضحة",
+    processDescription:
+      "خمس مراحل متعمدة: مواءمة التصميم مع المساحة، التصنيع والتشطيب في أربيل، حماية كل حافة أثناء النقل، ثم التركيب والتحقق تحت الضوء الحقيقي.",
+    step1Title: "استشارة ومعاينة",
+    step1Body:
+      "الهدف، القياسات، واتجاه المواد — مربوطة بمخطط الإضاءة والعمارة قبل أي قص.",
+    step2Title: "تصنيع في الورشة",
+    step2Body: "القص والحفر والتشطيب الأساسي في أربيل مع مراقبة جودة عند كل تسليم.",
+    step3Title: "تشطيب وحماية",
+    step3Body: "الحواف والحفر واللمعان والتجهيز الواقي حتى تصل القطعة نظيفة وجاهزة.",
+    step4Title: "تركيب",
+    step4Body: "التسوية والعزل والفحص في إضاءة الغرفة الفعلية — لا تركيب عابر.",
+    step5Title: "متابعة",
+    step5Body: "إرشادات بسيطة للعناية والرطوبة وحفظ وضوح الانعكاس لسنوات.",
 
     // Hero
     heroKicker: "مرايا • زجاج محفور • حرفة عراقية",
@@ -262,6 +308,12 @@ const translations = {
     testimonialQuote: "حوّلت مودرن هاوس ردهة فندقنا إلى شيء استثنائي. ألواح المرايا المحفورة التي صنعوها لم نرَ مثيلها من قبل — الضيوف يصورونها كل يوم. كان الاهتمام بالتفاصيل وجودة التركيب استثنائيين حقاً.",
     testimonialAuthor: "المدير العام",
     testimonialCompany: "فندق روتانا أربيل",
+    testimonialQuote2: "طلبنا مرايا حمام مخصصة بإطارات LED لمشروع الفيلا بأكمله. تجاوزت الحرفية كل توقعاتنا. سُلّمت كل قطعة في الوقت المحدد وركّبت بدقة مطلقة.",
+    testimonialAuthor2: "مدير المشروع",
+    testimonialCompany2: "مدينة الحلم أربيل",
+    testimonialQuote3: "ألواح الزجاج المنحوت التي قدّمتها مودرن هاوس لمدخل مولّنا قطعة فنية رائعة — يتوقف الزوار لإعجابهم بها يومياً. جودة استثنائية وفريق يفهم معنى الفخامة حقاً.",
+    testimonialAuthor3: "مدير المرافق",
+    testimonialCompany3: "فاميلي مول أربيل",
 
     // Contact
     contactLabel: "تواصل معنا",

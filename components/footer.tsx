@@ -42,18 +42,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 max-w-7xl mx-auto mb-12">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-3 mb-4 group">
+            <Link href="/" className="mb-4 inline-flex items-center group">
               <Image
                 src="/logo.png"
-                alt="Modern House Logo"
-                width={44}
-                height={44}
-                className="object-contain opacity-90 group-hover:opacity-100 transition-opacity"
+                alt="Modern House"
+                width={220}
+                height={260}
+                className="h-16 w-auto object-contain object-left opacity-90 transition-opacity group-hover:opacity-100 sm:h-[4.5rem]"
               />
-              <div className="flex flex-col leading-none">
-                <span className="wordmark text-white/90">Modern</span>
-                <span className="wordmark" style={{ color: 'var(--lux-gold)' }}>House</span>
-              </div>
             </Link>
             <p className="text-white/35 text-xs leading-relaxed mb-5">{t("footerDescription")}</p>
             <p className="text-[10px] uppercase tracking-[0.2em]" style={{ color: 'rgba(255,220,120,0.5)' }}>

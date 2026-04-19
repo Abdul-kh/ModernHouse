@@ -53,6 +53,17 @@ body::before {
   z-index: -2;
 }
 
+.grain-layer {
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.4'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  opacity: 0.04;
+  pointer-events: none;
+  z-index: 9997;
+  mix-blend-mode: overlay;
+}
+
 body::after {
   content: "";
   position: fixed;
@@ -1377,4 +1388,188 @@ html[dir="rtl"].font-scheherazade * {
 
 .scroll-indicator {
   animation: scrollBounce 2s ease-in-out infinite;
+}
+
+/* Grain handled by .grain-layer div in layout */
+
+/* ==========================================
+   ORNAMENTAL BRAND DIVIDER
+   ========================================== */
+
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+.ornament-divider::before,
+.ornament-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,220,120,0.35));
+  max-width: 240px;
+}
+
+.ornament-divider::after {
+  background: linear-gradient(90deg, rgba(255,220,120,0.35), transparent);
+}
+
+.ornament-divider-icon {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: rgba(255,220,120,0.6);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+}
+
+/* ==========================================
+   SECTION BACKGROUNDS — alternating gradients
+   ========================================== */
+
+.section-bg-1 {
+  background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(80,10,10,0.35) 0%, transparent 70%), oklch(0.11 0.01 0);
+}
+
+.section-bg-2 {
+  background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(60,8,8,0.25) 0%, transparent 60%), oklch(0.10 0.01 0);
+}
+
+.section-bg-3 {
+  background: radial-gradient(ellipse 70% 55% at 20% 60%, rgba(50,8,8,0.2) 0%, transparent 65%), oklch(0.12 0.01 0);
+}
+
+/* ==========================================
+   GOLD GRADIENT BORDER — animated
+   ========================================== */
+
+@property --gold-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes goldBorderSpin {
+  to { --gold-angle: 360deg; }
+}
+
+.gold-border-animated {
+  border: 1px solid transparent;
+  background-image: linear-gradient(oklch(0.12 0.01 0), oklch(0.12 0.01 0)),
+    conic-gradient(from var(--gold-angle), rgba(255,220,120,0.6), rgba(255,220,120,0.1), rgba(255,220,120,0.6));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: goldBorderSpin 4s linear infinite;
+}
+
+/* ==========================================
+   HERO — new animation classes
+   ========================================== */
+
+@keyframes goldParticleFloat {
+  0%   { transform: translateY(0px) translateX(0px); opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 0.8; }
+  100% { transform: translateY(-120px) translateX(var(--px, 20px)); opacity: 0; }
+}
+
+.gold-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--lux-gold);
+  pointer-events: none;
+  animation: goldParticleFloat var(--duration, 3s) var(--delay, 0s) ease-in-out infinite;
+  box-shadow: 0 0 6px 2px rgba(255,220,120,0.6);
+}
+
+/* ==========================================
+   3D TILT CARD
+   ========================================== */
+
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease;
+}
+
+.tilt-card-inner {
+  transform: translateZ(30px);
+}
+
+/* ==========================================
+   HORIZONTAL SCROLL SNAP — Services
+   ========================================== */
+
+.service-scroll-container {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1rem 0 2rem 0;
+}
+
+.service-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.service-scroll-card {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+/* ==========================================
+   FILTER TABS — Projects
+   ========================================== */
+
+.filter-tab {
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.5);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.filter-tab:hover {
+  color: white;
+  border-color: rgba(255,255,255,0.3);
+}
+
+.filter-tab.active {
+  background: var(--lux-gold);
+  border-color: var(--lux-gold);
+  color: #0a0a0a;
+}
+
+/* ==========================================
+   FLOATING LABEL INPUTS — Contact
+   ========================================== */
+
+.input-gold:focus {
+  border-bottom-color: var(--lux-gold) !important;
+  box-shadow: 0 1px 0 0 var(--lux-gold);
+  outline: none;
+}
+
+/* ==========================================
+   CURSOR HIDE on desktop (custom cursor active)
+   ========================================== */
+
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
 }

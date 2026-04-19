@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Lightbulb } from "lucide-react"
 import { useLanguage } from "@/lib/language-context"
@@ -13,401 +14,308 @@ const heroImages = [
   "/decorative-colored-glass-panels-with-artistic-patt.jpg",
 ]
 
+const PARTICLES = Array.from({ length: 18 }, (_, i) => ({
+  id: i,
+  left: `${10 + Math.random() * 80}%`,
+  top: `${20 + Math.random() * 60}%`,
+  duration: 3 + Math.random() * 3,
+  delay: Math.random() * 4,
+  px: `${(Math.random() - 0.5) * 60}px`,
+}))
+
 export function Hero() {
   const { t } = useLanguage()
   const { transitionToSection } = useTransition()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-  const [isTransitioning, setIsTransitioning] = useState(false)
+  const mirrorRef = useRef<HTMLDivElement>(null)
+
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
+  const rotateX = useSpring(useTransform(mouseY, [-300, 300], [12, -12]), { stiffness: 200, damping: 30 })
+  const rotateY = useSpring(useTransform(mouseX, [-300, 300], [-12, 12]), { stiffness: 200, damping: 30 })
+
   const lightModes = [
-    { name: "white", color: "255,255,255", filterHue: "none" },
-    { name: "neutral", color: "255,225,190", filterHue: "sepia(0.15) saturate(1.2) brightness(1.05)" },
-    { name: "warm", color: "255,183,110", filterHue: "sepia(0.35) saturate(1.4) brightness(1.1)" },
-    { name: "off", color: "255,255,255", filterHue: "none" },
+    { name: "white", color: "255,255,255" },
+    { name: "warm", color: "255,183,110" },
+    { name: "off", color: "255,255,255" },
   ]
   const [lightModeIndex, setLightModeIndex] = useState(0)
-  const [autoCycle, setAutoCycle] = useState(true)
-  const [lastManualChange, setLastManualChange] = useState(0)
   const currentLight = lightModes[lightModeIndex]
   const lightsOn = currentLight.name !== "off"
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsTransitioning(true)
-      setTimeout(() => {
-        setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)
-        setIsTransitioning(false)
-      }, 600)
+      setCurrentImageIndex((prev) => (prev + 1) % heroImages.length)
     }, 5000)
     return () => clearInterval(interval)
   }, [])
 
-  // Auto-cycle light modes
-  useEffect(() => {
-    if (!autoCycle) return
-    
-    const interval = setInterval(() => {
-      // Skip auto-cycling if user manually changed lights recently (within 10 seconds)
-      const now = Date.now()
-      if (now - lastManualChange < 10000) return
-      
-      setLightModeIndex((prev) => (prev + 1) % lightModes.length)
-    }, 1500) // Change light every 3 seconds
-    
-    return () => clearInterval(interval)
-  }, [autoCycle, lastManualChange, lightModes.length])
-
-  const handleManualLightChange = () => {
-    const now = Date.now()
-    setLastManualChange(now)
-    
-    // Temporarily disable auto-cycle for 10 seconds after manual change
-    setAutoCycle(false)
-    setTimeout(() => setAutoCycle(true), 10000)
-    
-    setLightModeIndex((prev) => (prev + 1) % lightModes.length)
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!mirrorRef.current) return
+    const rect = mirrorRef.current.getBoundingClientRect()
+    const cx = rect.left + rect.width / 2
+    const cy = rect.top + rect.height / 2
+    mouseX.set(e.clientX - cx)
+    mouseY.set(e.clientY - cy)
   }
 
-  const getPrevIndex = () => (currentImageIndex - 1 + heroImages.length) % heroImages.length
-  const getNextIndex = () => (currentImageIndex + 1) % heroImages.length
+  const handleMouseLeave = () => {
+    mouseX.set(0)
+    mouseY.set(0)
+  }
+
+  const titleWords1 = t("heroTitleLine1").split(" ")
+  const titleWords2 = t("heroTitleLine2").split(" ")
+
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.08 } },
+  }
+  const wordVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" as const } },
+  }
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-background">
-      <div className="absolute inset-0 z-0" style={{ backgroundColor: 'oklch(0.12 0.01 0)' }}>
-        <div className="absolute inset-0 damask-black opacity-20" />
+    <section
+      id="hero"
+      className="relative min-h-screen flex flex-col overflow-hidden section-bg-1"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Ambient glow blobs */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{ background: "radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%)" }} />
+        <div className="absolute bottom-1/3 left-1/3 w-[400px] h-[400px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(255,220,120,0.05) 0%, transparent 70%)" }} />
+        <div className="absolute inset-0 damask-black opacity-15" />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-20 flex-1 flex items-center">
-        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-7xl mx-auto w-full">
-          <div className="order-2 lg:order-1 text-center lg:text-left space-y-8 animate-fade-in-up">
-            <div className="space-y-5">
-              {/* Gold label */}
-              <div className="flex justify-center lg:justify-start">
-                <span className="section-label">{t("heroLabel")}</span>
-              </div>
+      {/* Gold particles */}
+      <div className="absolute inset-0 pointer-events-none z-[1] overflow-hidden">
+        {PARTICLES.map((p) => (
+          <div
+            key={p.id}
+            className="gold-particle"
+            style={{
+              left: p.left,
+              top: p.top,
+              "--duration": `${p.duration}s`,
+              "--delay": `${p.delay}s`,
+              "--px": p.px,
+            } as React.CSSProperties}
+          />
+        ))}
+      </div>
 
-              {/* Editorial two-line headline */}
-              <h1 className="text-balance drop-shadow-2xl">
-                <span className="block text-4xl md:text-5xl xl:text-6xl font-light tracking-tight text-white/70 font-playfair-heading">
-                  {t("heroTitleLine1")}
-                </span>
-                <span className="block text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight text-white font-playfair-heading [text-shadow:0_18px_60px_rgba(0,0,0,0.8)]">
-                  {t("heroTitleLine2")}
-                </span>
-              </h1>
+      {/* Main content */}
+      <div className="container mx-auto px-4 lg:px-8 relative z-10 pt-28 pb-8 flex-1 flex items-center">
+        <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto w-full">
 
-              <p className="text-base md:text-lg text-white/60 leading-relaxed max-w-md lg:max-w-none mx-auto lg:mx-0">
-                {t("heroDescription")}
-              </p>
-            </div>
+          {/* LEFT — Text Content */}
+          <motion.div
+            className="order-2 lg:order-1 text-center lg:text-left space-y-8"
+            initial="hidden"
+            animate="visible"
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.12, delayChildren: 0.1 } } }}
+          >
+            <motion.div
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
+              className="flex justify-center lg:justify-start"
+            >
+              <span className="section-label">{t("heroLabel")}</span>
+            </motion.div>
 
-            <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+            <h1 className="text-balance drop-shadow-2xl">
+              <motion.div
+                className="flex flex-wrap justify-center lg:justify-start gap-x-3 gap-y-1 mb-2"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {titleWords1.map((word, i) => (
+                  <motion.span
+                    key={i}
+                    variants={wordVariants}
+                    className="text-4xl md:text-5xl xl:text-6xl font-light tracking-tight text-white/65 font-playfair-heading inline-block"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.div>
+              <motion.div
+                className="flex flex-wrap justify-center lg:justify-start gap-x-3 gap-y-1"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                style={{ transition: "all 0s" }}
+              >
+                {titleWords2.map((word, i) => (
+                  <motion.span
+                    key={i}
+                    variants={{ ...wordVariants, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" as const, delay: titleWords1.length * 0.08 + i * 0.09 } } }}
+                    initial="hidden"
+                    animate="visible"
+                    className="text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight text-white font-playfair-heading inline-block [text-shadow:0_8px_40px_rgba(0,0,0,0.6)]"
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+              </motion.div>
+            </h1>
+
+            <motion.p
+              variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6 } } }}
+              className="text-base md:text-lg text-white/55 leading-relaxed max-w-md mx-auto lg:mx-0"
+            >
+              {t("heroDescription")}
+            </motion.p>
+
+            <motion.div
+              variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
+              className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4"
+            >
               <Button
                 size="lg"
                 onClick={() => transitionToSection("projects")}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 group shadow-2xl hover:shadow-primary/50 transition-all text-base px-8 py-6"
+                className="bg-primary text-white hover:bg-primary/90 group shadow-2xl hover:shadow-primary/40 transition-all text-base px-8 py-6 relative overflow-hidden"
               >
-                {t("exploreWork")}
-                <ArrowRight className="ltr:ml-2 rtl:mr-2 h-5 w-5 group-hover:ltr:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform" />
+                <span className="relative z-10 flex items-center gap-2">
+                  {t("exploreWork")}
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </span>
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 onClick={() => transitionToSection("contact")}
-                className="border-2 border-white/30 text-white hover:bg-white/10 bg-transparent backdrop-blur-sm text-base px-8 py-6 shadow-2xl transition-all"
+                className="border border-white/20 text-white hover:bg-white/8 bg-transparent backdrop-blur-sm text-base px-8 py-6 transition-all hover:border-white/40"
               >
                 {t("requestConsultation")}
               </Button>
-            </div>
+            </motion.div>
 
-            <div className="flex items-center justify-center lg:justify-start gap-3 pt-2">
+            <motion.div
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.5, delay: 0.4 } } }}
+              className="flex items-center justify-center lg:justify-start gap-2.5 pt-2"
+            >
               {heroImages.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => {
-                    setIsTransitioning(true)
-                    setTimeout(() => {
-                      setCurrentImageIndex(index)
-                      setIsTransitioning(false)
-                    }, 600)
-                  }}
-                  className={`h-1.5 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex 
-                      ? "w-10 bg-[var(--lux-gold)] shadow-lg" 
-                      : "w-1.5 bg-white/25 hover:bg-white/50 hover:w-5"
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`h-1.5 rounded-full transition-all duration-500 ${
+                    index === currentImageIndex
+                      ? "w-10 shadow-lg"
+                      : "w-1.5 bg-white/20 hover:bg-white/40 hover:w-4"
                   }`}
+                  style={index === currentImageIndex ? { background: "var(--lux-gold)", boxShadow: "0 0 8px rgba(255,220,120,0.5)" } : {}}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="order-1 lg:order-2 relative h-[500px] md:h-[600px] lg:h-[700px]" style={{ perspective: "2000px" }}>
-            <button
-              onClick={() => {
-                setIsTransitioning(true)
-                setTimeout(() => {
-                  setCurrentImageIndex(getPrevIndex())
-                  setIsTransitioning(false)
-                }, 600)
-              }}
-              className="absolute left-0 top-1/2 -translate-y-1/2 w-[140px] h-[200px] sm:w-[180px] sm:h-[260px] md:w-[280px] md:h-[400px] opacity-30 sm:opacity-40 md:opacity-50 hover:opacity-70 scale-80 hover:scale-85 translate-x-[-55%] sm:translate-x-[-40%] md:-translate-x-8 z-0 transition-all duration-500 cursor-pointer group"
+          {/* RIGHT — 3D Mouse-Reactive Mirror */}
+          <div
+            ref={mirrorRef}
+            className="order-1 lg:order-2 flex items-center justify-center relative"
+            style={{ perspective: "1200px" }}
+          >
+            <motion.div
+              style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+              className="relative w-[300px] h-[430px] md:w-[360px] md:h-[510px] lg:w-[420px] lg:h-[590px]"
             >
               <div className="mirror-frame-3d w-full h-full overflow-hidden relative">
-                <div className="engraved-pattern">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={currentImageIndex}
+                    src={heroImages[currentImageIndex]}
+                    alt={`Mirror showcase ${currentImageIndex + 1}`}
+                    className="w-full h-full object-cover"
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.97 }}
+                    transition={{ duration: 0.7, ease: "easeInOut" }}
+                  />
+                </AnimatePresence>
+
+                {/* Mirror shine overlay */}
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-white/12 via-transparent to-black/30" />
+
+                {/* LED engraved border */}
+                <div className="absolute inset-0 pointer-events-none" style={{ borderRadius: "inherit" }}>
                   <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 140" preserveAspectRatio="none">
                     <defs>
-                      <clipPath id="borderOnlyLeft">
-                        <rect x="0" y="0" width="100" height="140" rx="15"/>
-                        <rect x="10" y="10" width="80" height="120" rx="8"/>
-                      </clipPath>
-                      <pattern id="mosaicBorderLeft" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                        <path d="M5 0 L10 5 L5 10 L0 5 Z" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="0.6"/>
-                        <circle cx="5" cy="5" r="1.2" fill="rgba(255,255,255,0.3)"/>
-                      </pattern>
-                      <filter id="ledGlowLeft" x="-50%" y="-50%" width="200%" height="200%">
+                      <filter id="led" x="-50%" y="-50%" width="200%" height="200%">
                         <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
+                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
                       </filter>
                     </defs>
-                    <g clipPath="url(#borderOnlyLeft)">
-                      <rect x="0" y="0" width="100" height="140" rx="15" fill="url(#mosaicBorderLeft)" opacity="0.4"/>
-                      <rect x="2" y="2" width="96" height="136" rx="13" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" opacity="0.5"/>
-                      <rect x="6" y="6" width="88" height="128" rx="10" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" opacity="0.3"/>
-                    </g>
-                    <g opacity="0.5">
-                      <circle cx="50" cy="5" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                      <circle cx="50" cy="135" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                      <circle cx="5" cy="70" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                      <circle cx="95" cy="70" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                    </g>
-                  </svg>
-                </div>
-                <img
-                  src={heroImages[getPrevIndex()] || "/placeholder.svg"}
-                  alt="Previous mirror"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
-              </div>
-            </button>
-
-            <div 
-              className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[460px] md:w-[380px] md:h-[540px] lg:w-[440px] lg:h-[620px] z-10 transition-all duration-700 ${
-                isTransitioning ? "scale-95 opacity-80" : "scale-100 opacity-100"
-              }`}
-            >
-              <div className="mirror-frame-3d w-full h-full overflow-hidden relative">
-                
-                {/* Large Mirror Tile Engravings - Border Only */}
-                <div className="absolute inset-0 pointer-events-none" style={{ borderRadius: 'inherit' }}>
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 140" preserveAspectRatio="none">
-                    <defs>
-                      {/* LED Glow Filter */}
-                      <filter id="ledGlow" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                      
-                      <filter id="ledGlowStrong" x="-100%" y="-100%" width="300%" height="300%">
-                        <feGaussianBlur stdDeviation="3" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-
-                      {/* Large Mirror Tile Pattern - Much bigger tiles */}
-                      <pattern id="mirrorTilePattern" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-                        {/* Large diamond/tile shape */}
-                        <path d="M12 0 L24 12 L12 24 L0 12 Z" fill="none" stroke={`rgba(${currentLight.color},0.5)`} strokeWidth="0.8"/>
-                        {/* Inner diamond */}
-                        <path d="M12 4 L20 12 L12 20 L4 12 Z" fill="none" stroke={`rgba(${currentLight.color},0.35)`} strokeWidth="0.6"/>
-                        {/* Center dot */}
-                        <circle cx="12" cy="12" r="2" fill="none" stroke={`rgba(${currentLight.color},0.4)`} strokeWidth="0.5"/>
-                        {/* Cross lines */}
-                        <path d="M12 0 L12 24 M0 12 L24 12" stroke={`rgba(${currentLight.color},0.2)`} strokeWidth="0.3"/>
-                      </pattern>
-
-                      {/* Corner Ornament - Large LED Style */}
-                      <g id="cornerTileLed">
-                        <circle cx="0" cy="0" r="8" fill="none" stroke={`rgba(${currentLight.color},0.6)`} strokeWidth="1.2"/>
-                        <circle cx="0" cy="0" r="4" fill={`rgba(${currentLight.color},0.25)`}/>
-                        <path d="M0 -8 L0 8 M-8 0 L8 0" stroke={`rgba(${currentLight.color},0.4)`} strokeWidth="0.6"/>
-                        <circle cx="0" cy="0" r="1.5" fill={`rgba(${currentLight.color},0.8)`}/>
-                      </g>
-                    </defs>
-
-                    {/* Outer Border Frame - Only the lines/tiles, no full rect fill */}
-                    <g clipPath="url(#borderOnly)">
-                      {/* Top border with large tiles */}
-                      <rect x="0" y="0" width="100" height="12" fill="url(#mirrorTilePattern)" opacity={lightsOn ? "0.8" : "0.3"} 
-                        filter={lightsOn ? "url(#ledGlow)" : ""}/>
-                      {/* Bottom border */}
-                      <rect x="0" y="128" width="100" height="12" fill="url(#mirrorTilePattern)" opacity={lightsOn ? "0.8" : "0.3"} 
-                        filter={lightsOn ? "url(#ledGlow)" : ""}/>
-                      {/* Left border */}
-                      <rect x="0" y="12" width="12" height="116" fill="url(#mirrorTilePattern)" opacity={lightsOn ? "0.8" : "0.3"} 
-                        filter={lightsOn ? "url(#ledGlow)" : ""}/>
-                      {/* Right border */}
-                      <rect x="88" y="12" width="12" height="116" fill="url(#mirrorTilePattern)" opacity={lightsOn ? "0.8" : "0.3"} 
-                        filter={lightsOn ? "url(#ledGlow)" : ""}/>
-                      
-                      {/* Inner decorative border lines - only engravings */}
-                      <rect x="12" y="12" width="76" height="116" rx="10" fill="none" stroke={`rgba(${currentLight.color},0.5)`} strokeWidth="2" 
-                        opacity={lightsOn ? "0.9" : "0.4"} filter={lightsOn ? "url(#ledGlow)" : ""}/>
-                      <rect x="16" y="16" width="68" height="108" rx="8" fill="none" stroke={`rgba(${currentLight.color},0.3)`} strokeWidth="1" 
-                        opacity={lightsOn ? "0.7" : "0.25"} filter={lightsOn ? "url(#ledGlow)" : ""}/>
-                    </g>
-
-                    {/* Corner LED Accents - Large */}
-                    <g opacity={lightsOn ? "1" : "0.5"}>
-                      <g transform="translate(12, 12)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}>
-                        <use href="#cornerTileLed"/>
-                      </g>
-                      <g transform="translate(88, 12)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}>
-                        <use href="#cornerTileLed"/>
-                      </g>
-                      <g transform="translate(88, 128)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}>
-                        <use href="#cornerTileLed"/>
-                      </g>
-                      <g transform="translate(12, 128)" filter={lightsOn ? "url(#ledGlowStrong)" : ""}>
-                        <use href="#cornerTileLed"/>
-                      </g>
-                    </g>
-
-                    {/* Side Midpoint LED Accents - Large */}
-                    <g opacity={lightsOn ? "1" : "0.5"}>
-                      <circle cx="50" cy="10" r="4" fill={`rgba(${currentLight.color},0.7)`} filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
-                      <circle cx="50" cy="130" r="4" fill={`rgba(${currentLight.color},0.7)`} filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
-                      <circle cx="10" cy="70" r="4" fill={`rgba(${currentLight.color},0.7)`} filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
-                      <circle cx="90" cy="70" r="4" fill={`rgba(${currentLight.color},0.7)`} filter={lightsOn ? "url(#ledGlowStrong)" : ""}/>
-                    </g>
+                    <rect x="6" y="6" width="88" height="128" rx="10" fill="none"
+                      stroke={lightsOn ? `rgba(${currentLight.color},0.7)` : "rgba(255,255,255,0.15)"}
+                      strokeWidth="1.5" filter={lightsOn ? "url(#led)" : ""} />
+                    <rect x="10" y="10" width="80" height="120" rx="8" fill="none"
+                      stroke={lightsOn ? `rgba(${currentLight.color},0.4)` : "rgba(255,255,255,0.08)"}
+                      strokeWidth="0.8" />
+                    {lightsOn && (
+                      <>
+                        <circle cx="6" cy="6" r="3" fill={`rgba(${currentLight.color},0.9)`} filter="url(#led)" />
+                        <circle cx="94" cy="6" r="3" fill={`rgba(${currentLight.color},0.9)`} filter="url(#led)" />
+                        <circle cx="94" cy="134" r="3" fill={`rgba(${currentLight.color},0.9)`} filter="url(#led)" />
+                        <circle cx="6" cy="134" r="3" fill={`rgba(${currentLight.color},0.9)`} filter="url(#led)" />
+                        <circle cx="50" cy="6" r="2.5" fill={`rgba(${currentLight.color},0.7)`} filter="url(#led)" />
+                        <circle cx="50" cy="134" r="2.5" fill={`rgba(${currentLight.color},0.7)`} filter="url(#led)" />
+                      </>
+                    )}
                   </svg>
                 </div>
 
-                <img
-                  src={heroImages[currentImageIndex] || "/placeholder.svg"}
-                  alt={`Mirror showcase ${currentImageIndex + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                
-                {/* Light Toggle Button */}
+                {/* Light Toggle */}
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleManualLightChange()
-                  }}
-                  className={`engraved-light-button ${lightsOn ? 'active' : ''}`}
-                  style={lightsOn ? { '--light-color': currentLight.color } as React.CSSProperties : undefined}
+                  onClick={() => setLightModeIndex((prev) => (prev + 1) % lightModes.length)}
+                  className={`engraved-light-button ${lightsOn ? "active" : ""}`}
+                  style={lightsOn ? { "--light-color": currentLight.color } as React.CSSProperties : undefined}
                   aria-label={`Light mode: ${currentLight.name}`}
                 >
                   <Lightbulb className="button-icon" />
                 </button>
               </div>
-              
-            </div>
 
-            <button
-              onClick={() => {
-                setIsTransitioning(true)
-                setTimeout(() => {
-                  setCurrentImageIndex(getNextIndex())
-                  setIsTransitioning(false)
-                }, 600)
-              }}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-[140px] h-[200px] sm:w-[180px] sm:h-[260px] md:w-[280px] md:h-[400px] opacity-30 sm:opacity-40 md:opacity-50 hover:opacity-70 scale-80 hover:scale-85 translate-x-[55%] sm:translate-x-[40%] md:translate-x-8 z-0 transition-all duration-500 cursor-pointer group"
-            >
-              <div className="mirror-frame-3d w-full h-full overflow-hidden relative">
-                <div className="engraved-pattern">
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 140" preserveAspectRatio="none">
-                    <defs>
-                      <clipPath id="borderOnlyRight">
-                        <rect x="0" y="0" width="100" height="140" rx="15"/>
-                        <rect x="10" y="10" width="80" height="120" rx="8"/>
-                      </clipPath>
-                      <pattern id="mosaicBorderRight" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-                        <path d="M5 0 L10 5 L5 10 L0 5 Z" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="0.6"/>
-                        <circle cx="5" cy="5" r="1.2" fill="rgba(255,255,255,0.3)"/>
-                      </pattern>
-                      <filter id="ledGlowRight" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                        <feMerge>
-                          <feMergeNode in="blur"/>
-                          <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                      </filter>
-                    </defs>
-                    <g clipPath="url(#borderOnlyRight)">
-                      <rect x="0" y="0" width="100" height="140" rx="15" fill="url(#mosaicBorderRight)" opacity="0.4"/>
-                      <rect x="2" y="2" width="96" height="136" rx="13" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" opacity="0.5"/>
-                      <rect x="6" y="6" width="88" height="128" rx="10" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="1" opacity="0.3"/>
-                    </g>
-                    <g opacity="0.5">
-                      <circle cx="50" cy="5" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                      <circle cx="50" cy="135" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                      <circle cx="5" cy="70" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                      <circle cx="95" cy="70" r="2.5" fill="rgba(255,255,255,0.5)"/>
-                    </g>
-                  </svg>
-                </div>
-                <img
-                  src={heroImages[getNextIndex()] || "/placeholder.svg"}
-                  alt="Next mirror"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-300" />
-              </div>
-            </button>
-
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-              <div className="absolute bottom-1/4 right-1/4 w-40 h-40 bg-white/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-            </div>
+              {/* Gold shadow beneath mirror */}
+              <div
+                className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4/5 h-12 rounded-full blur-2xl opacity-20"
+                style={{ background: "radial-gradient(ellipse, rgba(255,220,120,0.8), transparent)" }}
+              />
+            </motion.div>
           </div>
         </div>
       </div>
 
-      <div className="absolute inset-0 pointer-events-none z-[2]">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
-      </div>
-
-      {/* Keyword marquee strip at the very bottom */}
-      <div className="relative z-10 w-full pb-8 pt-4 overflow-hidden">
-        <div className="mirror-divider mb-5 opacity-40" />
+      {/* Bottom keyword marquee */}
+      <div className="relative z-10 w-full pb-8 pt-4">
+        <div className="mirror-divider mb-5 opacity-30" />
         <div className="overflow-hidden">
           <div className="keyword-strip">
             {[
-              "CUSTOM MIRRORS", "·", "CARVED GLASS", "·", "LED LIGHTING", "·",
-              "ORIENTAL PATTERNS", "·", "SHOWER MIRRORS", "·", "ENGRAVED FRAMES", "·",
-              "DECORATIVE GLASS", "·", "ERBIL CRAFT", "·",
-              "CUSTOM MIRRORS", "·", "CARVED GLASS", "·", "LED LIGHTING", "·",
-              "ORIENTAL PATTERNS", "·", "SHOWER MIRRORS", "·", "ENGRAVED FRAMES", "·",
-              "DECORATIVE GLASS", "·", "ERBIL CRAFT", "·",
+              "CUSTOM MIRRORS","·","CARVED GLASS","·","LED LIGHTING","·",
+              "ORIENTAL PATTERNS","·","SHOWER MIRRORS","·","ENGRAVED FRAMES","·",
+              "DECORATIVE GLASS","·","ERBIL CRAFT","·",
+              "CUSTOM MIRRORS","·","CARVED GLASS","·","LED LIGHTING","·",
+              "ORIENTAL PATTERNS","·","SHOWER MIRRORS","·","ENGRAVED FRAMES","·",
+              "DECORATIVE GLASS","·","ERBIL CRAFT","·",
             ].map((word, i) => (
-              <span
-                key={i}
-                className={`text-[10px] font-bold tracking-[0.25em] px-4 whitespace-nowrap ${
-                  word === "·" ? "text-[var(--lux-gold)] opacity-50" : "text-white/25"
-                }`}
-              >
+              <span key={i} className={`text-[10px] font-bold tracking-[0.25em] px-4 whitespace-nowrap ${word === "·" ? "opacity-40" : "text-white/20"}`}
+                style={word === "·" ? { color: "var(--lux-gold)" } : {}}>
                 {word}
               </span>
             ))}
           </div>
         </div>
-        {/* Scroll indicator */}
-        <div className="flex justify-center mt-5">
-          <div className="scroll-indicator flex flex-col items-center gap-1.5 opacity-40">
+        <div className="flex justify-center mt-6">
+          <div className="scroll-indicator flex flex-col items-center gap-1.5 opacity-35">
             <span className="text-[9px] text-white tracking-[0.3em] uppercase">Scroll</span>
-            <div className="w-px h-8 bg-gradient-to-b from-white/60 to-transparent" />
+            <div className="w-px h-8 bg-gradient-to-b from-white/50 to-transparent" />
           </div>
         </div>
       </div>

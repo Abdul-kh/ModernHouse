@@ -11,6 +11,8 @@ import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { MirrorTransitionOverlay } from "@/components/mirror-transition-overlay"
 import { useMirrorTransition } from "@/hooks/use-mirror-transition"
+import { SmoothScroll } from "@/components/smooth-scroll"
+import { CustomCursor } from "@/components/cursor"
 import { createContext, useContext } from "react"
 import "./globals.css"
 
@@ -111,8 +113,12 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${cairo.variable} ${playfairDisplay.variable} ${montserrat.variable} ${raleway.variable} ${oswald.variable} ${poppins.variable} ${amiri.variable} ${tajawal.variable} ${katibeh.variable} ${almarai.variable} ${scheherazadeNew.variable}`}>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} ${cairo.variable} ${playfairDisplay.variable} ${montserrat.variable} ${raleway.variable} ${oswald.variable} ${poppins.variable} ${amiri.variable} ${tajawal.variable} ${katibeh.variable} ${almarai.variable} ${scheherazadeNew.variable} antialiased`}>
         <TransitionContext.Provider value={{ transitionToSection, isTransitioning }}>
-          <Suspense fallback={null}>{children}</Suspense>
+          <div className="grain-layer" aria-hidden="true" />
+          <SmoothScroll>
+            <Suspense fallback={null}>{children}</Suspense>
+          </SmoothScroll>
           <MirrorTransitionOverlay isActive={isTransitioning} />
+          <CustomCursor />
           <Analytics />
         </TransitionContext.Provider>
       </body>
